@@ -3,6 +3,7 @@ package com.example.mangavinek
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import org.jetbrains.anko.AnkoLogger
 import android.widget.Toast.makeText as makeText1
 import androidx.recyclerview.widget.RecyclerView
+import org.jetbrains.anko.toast
 import org.jsoup.select.Elements
 
 class MainActivity : AppCompatActivity(), AnkoLogger {
@@ -18,7 +20,8 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     private var itemList2 = arrayListOf<Model>()
     private lateinit var newsViewModel: NewsViewModel
     private lateinit var gridLayoutManager: GridLayoutManager
-    private var releasedLoad: Boolean? = true
+    private var releasedLoad: Boolean = true
+    private var count : Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +30,18 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         initViewModel()
 
         button5.setOnClickListener {
-            adapter.clear(itemList2)
-            newsViewModel.reload("http://soquadrinhos.com/forumdisplay.php?fid=2")
+            if(releasedLoad){
+                count = 1
+                adapter.clear(itemList2)
+                newsViewModel.reload("http://soquadrinhos.com/forumdisplay.php?fid=2&page=$count")
+                //Toast.makeText(applicationContext, "Se fudeu!", Toast.LENGTH_SHORT).show()
+            }
         }
         teste()
         initUi()
     }
 
     private fun teste() {
-        var count = 2
         recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -43,13 +49,14 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                     val visibleItemCount = gridLayoutManager.childCount
                     val totalIntemCount = gridLayoutManager.itemCount
                     val pastVisibleItems = gridLayoutManager.findFirstVisibleItemPosition()
-                    if (releasedLoad == true) {
+                    if (releasedLoad) {
                         if (visibleItemCount + pastVisibleItems >= totalIntemCount) {
                             newsViewModel.reload("http://soquadrinhos.com/forumdisplay.php?fid=2&page=${count++}")
                             releasedLoad = false
-                        } else if (totalIntemCount == 20) {
-                            count = 2
                         }
+//                        } else if (totalIntemCount == 20) {
+//                            count = 2
+//                        }
                     }
                 }
             }
@@ -66,7 +73,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 model.data.forEach {
                     itemList2.add(Model(it))
                 }
-                adapter.notifyDataSetChanged()
+                adapter.notifyItemMoved(itemList2.size-20, itemList2.size)
                 releasedLoad = true
                 progress_bar.visibility = View.GONE
                 text_erro.visibility = View.GONE
@@ -85,8 +92,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     private fun initUi() {
         adapter = ItemAdapter(itemList2, this)
         recycler_view.adapter = adapter
-        recycler_view.hasFixedSize()
-        gridLayoutManager = GridLayoutManager(this, 3)
+        gridLayoutManager = GridLayoutManager(this, 2)
         recycler_view.layoutManager = gridLayoutManager
     }
 }
