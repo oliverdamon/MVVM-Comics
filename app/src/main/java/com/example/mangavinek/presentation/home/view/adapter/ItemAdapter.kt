@@ -37,8 +37,7 @@ class ItemAdapter(private var listItem: ArrayList<Model>, private var context: C
             .load(dataItem.image)
             .apply(
                 RequestOptions()
-                    .fitCenter()
-                    .format(DecodeFormat.PREFER_ARGB_8888)
+                    .placeholder(R.drawable.ic_image_24dp)
             )
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.image)

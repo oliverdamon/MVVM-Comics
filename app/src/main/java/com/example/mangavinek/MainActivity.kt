@@ -53,10 +53,12 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 if (releasedLoad) {
                     if (visibleItemCount + pastVisibleItems >= totalIntemCount) {
                         newsViewModel.init(Constant.HOME_URL_PAGINATION.plus(count++))
+                        progress_bottom.visibility = View.VISIBLE
                         releasedLoad = false
                     }
                 }
             }
+            progress_bar.visibility = View.GONE
         }
     }
 
@@ -73,6 +75,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 adapter.notifyItemMoved(itemList2.size-20, itemList2.size)
                 releasedLoad = true
                 progress_bar.visibility = View.GONE
+                progress_bottom.visibility = View.GONE
                 text_erro.visibility = View.GONE
             }
             is Resource.Error -> {
