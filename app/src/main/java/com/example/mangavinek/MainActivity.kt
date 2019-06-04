@@ -24,20 +24,20 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     private lateinit var newsViewModel: NewsViewModel
     private lateinit var gridLayoutManager: GridLayoutManager
     private var releasedLoad: Boolean = true
-    private var count : Int = 2
+    private var page : Int = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         newsViewModel = ViewModelProviders.of(this).get(NewsViewModel::class.java)
-        newsViewModel.init(Constant.HOME_URL)
+        newsViewModel.init()
         initViewModel()
 
         button5.setOnClickListener {
             if(releasedLoad){
-                count = 2
+                page = 2
                 adapter.clear(itemList2)
-                newsViewModel.init(Constant.HOME_URL)
+                newsViewModel.init()
             }
         }
         initUi()
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 val pastVisibleItems = gridLayoutManager.findFirstVisibleItemPosition()
                 if (releasedLoad) {
                     if (visibleItemCount + pastVisibleItems >= totalIntemCount) {
-                        newsViewModel.init(Constant.HOME_URL_PAGINATION.plus(count++))
+                        newsViewModel.init(page++)
                         progress_bottom.visibility = View.VISIBLE
                         releasedLoad = false
                     }
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 model.data.forEach {
                     itemList2.add(Model(it))
                 }
-                adapter.notifyItemMoved(itemList2.size-20, itemList2.size)
+                adapter.notifyItemChanged(itemList2.size-20, itemList2.size)
                 releasedLoad = true
                 progress_bar.visibility = View.GONE
                 progress_bottom.visibility = View.GONE
