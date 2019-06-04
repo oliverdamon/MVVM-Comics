@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProviders
 import org.jetbrains.anko.AnkoLogger
 import android.widget.Toast.makeText as makeText1
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mangavinek.core.constant.Constant
 import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.model.home.entity.Model
 import com.example.mangavinek.presentation.home.view.adapter.ItemAdapter
