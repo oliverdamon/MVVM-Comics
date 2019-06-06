@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import androidx.lifecycle.ViewModelProviders
 import org.jetbrains.anko.AnkoLogger
 import android.widget.Toast.makeText as makeText1
-import androidx.recyclerview.widget.RecyclerView
+import com.example.mangavinek.core.util.PaginationScroll
 import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.model.home.entity.Model
 import com.example.mangavinek.presentation.home.view.adapter.ItemAdapter
@@ -19,9 +19,8 @@ import org.jsoup.select.Elements
 class MainActivity : AppCompatActivity(), AnkoLogger {
 
     private lateinit var adapter: ItemAdapter
-    private var itemList2 = arrayListOf<Model>()
+    private var itemList = arrayListOf<Model>()
     private lateinit var newsViewModel: NewsViewModel
-    private lateinit var gridLayoutManager: GridLayoutManager
     private var releasedLoad: Boolean = true
     private var page : Int = 2
 
@@ -35,64 +34,70 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         button5.setOnClickListener {
             if(releasedLoad){
                 page = 2
-                adapter.clear(itemList2)
+                adapter.clear(itemList)
                 newsViewModel.init()
             }
         }
         initUi()
     }
 
-    private val onScroll = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            if (dy > 0) {
-                val visibleItemCount = gridLayoutManager.childCount
-                val totalIntemCount = gridLayoutManager.itemCount
-                val pastVisibleItems = gridLayoutManager.findFirstVisibleItemPosition()
-                if (releasedLoad) {
-                    if (visibleItemCount + pastVisibleItems >= totalIntemCount) {
-                        newsViewModel.init(page++)
-                        progress_bottom.visibility = View.VISIBLE
-                        releasedLoad = false
-                    }
-                }
-            }
-            progress_bar.visibility = View.GONE
-        }
-    }
-
-    private val stateObserverHot = Observer<Resource<Elements>> { model ->
-        when (model) {
-            is Resource.Start -> {
-                progress_bar.visibility = View.VISIBLE
-                text_erro.visibility = View.GONE
-            }
-            is Resource.Success -> {
-                model.data.forEach {
-                    itemList2.add(Model(it))
-                }
-                adapter.notifyItemChanged(itemList2.size-20, itemList2.size)
-                releasedLoad = true
-                progress_bar.visibility = View.GONE
-                progress_bottom.visibility = View.GONE
-                text_erro.visibility = View.GONE
-            }
-            is Resource.Error -> {
-                progress_bar.visibility = View.GONE
-                text_erro.visibility = View.VISIBLE
-            }
-        }
-    }
-
     private fun initViewModel() {
-        newsViewModel.mutableLiveDataHot?.observe(this, stateObserverHot)
+        newsViewModel.mutableLiveDataHot?.observe(this, Observer<Resource<Elements>> { model ->
+            when (model) {
+                is Resource.Start -> {
+                    screenLoading()
+                }
+                is Resource.Success -> {
+                    model.data.forEach {
+                        itemList.add(Model(it))
+                    }
+                    adapter.notifyItemChanged(itemList.size - 20, itemList.size)
+                    screenSuccess()
+                }
+                is Resource.Error -> {
+                    screenError()
+                }
+            }
+        })
     }
 
     private fun initUi() {
-        adapter = ItemAdapter(itemList2, this)
+        adapter = ItemAdapter(itemList, this)
         recycler_view.adapter = adapter
-        recycler_view.addOnScrollListener(onScroll)
-        gridLayoutManager = GridLayoutManager(this, 3)
+        val gridLayoutManager = GridLayoutManager(this, 3)
+        recycler_view.addOnScrollListener(object : PaginationScroll(gridLayoutManager) {
+            override fun loadMoreItems() {
+                newsViewModel.init(page++)
+                progress_bottom.visibility = View.VISIBLE
+                releasedLoad = false
+            }
+
+            override fun isLoading(): Boolean {
+                return releasedLoad
+            }
+
+            override fun hideMoreItems() {
+                progress_bar.visibility = View.GONE
+            }
+        })
         recycler_view.layoutManager = gridLayoutManager
+    }
+
+    private fun screenSuccess(){
+        progress_bar.visibility = View.GONE
+        progress_bottom.visibility = View.GONE
+        text_erro.visibility = View.GONE
+        releasedLoad = true
+    }
+
+    private fun screenLoading(){
+        progress_bar.visibility = View.VISIBLE
+        text_erro.visibility = View.GONE
+    }
+
+    private fun screenError(){
+        text_erro.visibility = View.VISIBLE
+        progress_bottom.visibility = View.GONE
+        progress_bar.visibility = View.GONE
     }
 }
