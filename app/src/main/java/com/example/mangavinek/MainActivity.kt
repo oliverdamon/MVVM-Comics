@@ -15,6 +15,8 @@ import com.example.mangavinek.model.home.entity.Model
 import com.example.mangavinek.presentation.home.view.adapter.ItemAdapter
 import com.example.mangavinek.presentation.home.view.viewmodel.NewsViewModel
 import org.jsoup.select.Elements
+import kotlinx.coroutines.*
+
 
 class MainActivity : AppCompatActivity(), AnkoLogger {
 
@@ -31,13 +33,18 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         newsViewModel.init()
         initViewModel()
 
-        button5.setOnClickListener {
-            if(releasedLoad){
-                page = 2
-                adapter.clear(itemList)
-                newsViewModel.init()
+        swipe_refresh.setOnRefreshListener{
+            GlobalScope.launch(context = Dispatchers.Main) {
+                if(releasedLoad){
+                    delay(1000)
+                    page = 2
+                    adapter.clear(itemList)
+                    newsViewModel.init()
+                }
+                swipe_refresh.isRefreshing = false
             }
         }
+
         initUi()
     }
 

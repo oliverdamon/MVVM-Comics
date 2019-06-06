@@ -12,6 +12,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.mangavinek.model.home.entity.Model
 import com.example.mangavinek.R
+import com.example.mangavinek.presentation.detail.view.activity.DetailActivity
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.startActivity
 
 
 class ItemAdapter(private var listItem: ArrayList<Model>, private var context: Context) :
@@ -41,6 +44,10 @@ class ItemAdapter(private var listItem: ArrayList<Model>, private var context: C
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.image)
 
+        holder.image.setOnClickListener {
+            context.longToast("http://soquadrinhos.com/${dataItem.link}")
+            context.startActivity<DetailActivity>("url" to "http://soquadrinhos.com/${dataItem.link}")
+        }
     }
 
     fun clear(datas: ArrayList<Model>) {

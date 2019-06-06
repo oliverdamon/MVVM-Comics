@@ -3,4 +3,9 @@
     <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="black">#212121</color>
+    <color name="black_transparency">#70212121</color>
+    <color name="background_gradient">#F2131313</color>
+    <color name="white">#FFFFFF</color>
 </resources>

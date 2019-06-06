@@ -6,4 +6,8 @@ object ApiServiceSoup {
     fun getListHot(url: String): Elements {
         return JSoupService.getApiClient(url).select("td table.tborder")
     }
+
+    fun getDetail(url: String): Elements {
+        return JSoupService.getApiClient(url).select(".forums table")
+    }
 }
