@@ -12,4 +12,7 @@ data class DetailResponse(var element: Element){
     val chapter = element.select("table.smalltext tbody tr:nth-child(7) td:nth-child(3)").text().toString()
     val sinopse = element.select("table.tborder:nth-child(1) span").text().toString()
     val image = element.select("a.cbimg img").attr("src").toString()
+    val issueAvailable = element.select("div.issue-br").text().toString()
+    val issueTranslated = element.select("div.issue-tr").text().toString()
+    val issueUnavailable = element.select("div.issue-en").text().toString()
 }

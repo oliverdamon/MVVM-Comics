@@ -12,6 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.mangavinek.model.home.entity.Model
 import com.example.mangavinek.R
+import com.example.mangavinek.core.constant.Constant
 import com.example.mangavinek.presentation.detail.view.activity.DetailActivity
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.startActivity
@@ -45,8 +46,12 @@ class ItemAdapter(private var listItem: ArrayList<Model>, private var context: C
             .into(holder.image)
 
         holder.image.setOnClickListener {
-            context.longToast("http://soquadrinhos.com/${dataItem.link}")
-            context.startActivity<DetailActivity>("url" to "http://soquadrinhos.com/${dataItem.link}")
+            context.startActivity<DetailActivity>("url" to Constant.BASE_URL.plus(dataItem.link))
+        }
+
+        holder.image.setOnLongClickListener {
+            context.longToast(dataItem.title)
+            true
         }
     }
 

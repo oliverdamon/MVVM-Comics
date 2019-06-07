@@ -8,6 +8,6 @@ object ApiServiceSoup {
     }
 
     fun getDetail(url: String): Elements {
-        return JSoupService.getApiClient(url).select(".forums table")
+        return JSoupService.getApiClient(url).select(".forums")
     }
 }
