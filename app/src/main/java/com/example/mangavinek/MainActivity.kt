@@ -17,7 +17,6 @@ import com.example.mangavinek.presentation.home.view.viewmodel.NewsViewModel
 import org.jsoup.select.Elements
 import kotlinx.coroutines.*
 
-
 class MainActivity : AppCompatActivity(), AnkoLogger {
 
     private lateinit var adapter: ItemAdapter

@@ -11,8 +11,20 @@ import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.model.detail.entity.DetailResponse
 import com.example.mangavinek.presentation.detail.view.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.android.synthetic.main.activity_detail.image_cover
+import kotlinx.android.synthetic.main.activity_detail.text_publication
+import kotlinx.android.synthetic.main.activity_detail.text_publishing
+import kotlinx.android.synthetic.main.activity_detail.text_sinopse
+import kotlinx.android.synthetic.main.activity_detail.text_status
+import kotlinx.android.synthetic.main.activity_detail.text_title
+import kotlinx.android.synthetic.main.activity_detail.text_title_original
+import kotlinx.android.synthetic.main.activity_detail.text_year
 import org.jetbrains.anko.AnkoLogger
 import org.jsoup.select.Elements
+import android.text.Spannable
+import android.graphics.Typeface
+import android.text.style.StyleSpan
+import android.text.SpannableString
 
 class DetailActivity : AppCompatActivity(), AnkoLogger {
     private val detailViewModel: DetailViewModel by lazy {
@@ -31,19 +43,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
                 }
                 is Resource.Success -> {
                     model.data.let {
-                        val value = DetailResponse(it[0])
-                        text_title.text = value.title
-                        text_title_original.text = value.titleOriginal
-                        text_status.text = value.status
-                        text_publishing.text = value.publishing
-                        text_publication.text = value.publication
-                        text_year.text = value.year
-                        text_chapters.text = value.chapter
-                        text_sinopse.text = value.sinopse
-
-                        Glide.with(this@DetailActivity)
-                            .load(Constant.BASE_URL.plus(value.image))
-                            .into(image_cover)
+                        populateDetail(DetailResponse(it[0]))
                     }
                 }
                 is Resource.Error -> {
@@ -51,5 +51,32 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
             }
         })
 
+    }
+
+    private fun populateDetail(detailResponse: DetailResponse?){
+        detailResponse?.let {
+            text_title.text = it.title
+            text_title_original.text = getStringBold("Nome original: ${it.titleOriginal}", "Nome original:")
+            text_status.text = detailResponse.status
+            text_publishing.text = getStringBold("Editora: ${it.publishing}", "Editora:")
+            text_publication.text = getStringBold("Publicação: ${it.publication}", "Publicação:")
+            text_year.text = getStringBold("Volume: ${it.year}", "Volume:")
+            text_sinopse.text = it.sinopse
+            val urlImage = Constant.BASE_URL.plus(it.image)
+
+            Glide.with(this@DetailActivity)
+                .load(urlImage)
+                .into(image_cover)
+
+            Glide.with(this@DetailActivity)
+                .load(urlImage)
+                .into(image_cover_complet)
+        }
+    }
+
+    private fun getStringBold(textComplete: String, textSpecific: String): SpannableString {
+        val spannableString = SpannableString(textComplete)
+        spannableString.setSpan(StyleSpan(Typeface.BOLD), 0, textSpecific.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        return spannableString
     }
 }
