@@ -10,4 +10,8 @@ object ApiServiceSoup {
     fun getDetail(url: String): Elements {
         return JSoupService.getApiClient(url).select(".forums")
     }
+
+    fun getDetailChapter(url: String): Elements {
+        return JSoupService.getApiClient(url).select(".capa a")
+    }
 }

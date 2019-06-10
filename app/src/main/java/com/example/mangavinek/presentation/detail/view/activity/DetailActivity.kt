@@ -25,11 +25,23 @@ import android.text.Spannable
 import android.graphics.Typeface
 import android.text.style.StyleSpan
 import android.text.SpannableString
+import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.mangavinek.core.util.PaginationScroll
+import com.example.mangavinek.model.detail.entity.StatusChapter
+import com.example.mangavinek.presentation.detail.view.adapter.StatusChapterAdapter
+import com.example.mangavinek.presentation.detail.view.fragment.DetailChapterFragment
+import com.example.mangavinek.presentation.home.view.adapter.ItemAdapter
+import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.info
+import java.util.*
 
 class DetailActivity : AppCompatActivity(), AnkoLogger {
     private val detailViewModel: DetailViewModel by lazy {
         ViewModelProviders.of(this).get(DetailViewModel::class.java)
     }
+
+    private lateinit var adapter: StatusChapterAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +65,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
 
     }
 
-    private fun populateDetail(detailResponse: DetailResponse?){
+    private fun populateDetail(detailResponse: DetailResponse?) {
         detailResponse?.let {
             text_title.text = it.title
             text_title_original.text = getStringBold("Nome original: ${it.titleOriginal}", "Nome original:")
@@ -71,12 +83,58 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
             Glide.with(this@DetailActivity)
                 .load(urlImage)
                 .into(image_cover_complet)
+
+            initRecycler(mergeStatusList(it))
         }
+    }
+
+    private fun mergeStatusList(it: DetailResponse) : MutableList<StatusChapter> {
+        val partsAvailable = it.issueAvailable.split(" ".toRegex())
+        val partsTranslated = it.issueTranslated.split(" ".toRegex())
+        val partsUnavailable = it.issueUnavailable.split(" ".toRegex())
+        val mutableList = mutableListOf<StatusChapter>()
+
+
+        partsAvailable.forEach {
+            if (!it.isEmpty()) {
+                val statusChapter = StatusChapter("available", it)
+                mutableList.add(statusChapter)
+            }
+        }
+
+        partsTranslated.forEach {
+            if (!it.isEmpty()) {
+                val statusChapter = StatusChapter("translated", it)
+                mutableList.add(statusChapter)
+            }
+        }
+
+        partsUnavailable.forEach {
+            if (!it.isEmpty()) {
+                val statusChapter = StatusChapter("unavailable", it)
+                mutableList.add(statusChapter)
+            }
+        }
+
+        return mutableList
     }
 
     private fun getStringBold(textComplete: String, textSpecific: String): SpannableString {
         val spannableString = SpannableString(textComplete)
         spannableString.setSpan(StyleSpan(Typeface.BOLD), 0, textSpecific.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         return spannableString
+    }
+
+    private fun initFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_chapter, DetailChapterFragment())
+            .commit()
+    }
+
+    private fun initRecycler(list: List<StatusChapter>){
+        adapter = StatusChapterAdapter(list, this)
+        recycler_chapter_status.adapter = adapter
+        val gridLayoutManager = GridLayoutManager(this, 3)
+        recycler_chapter_status.layoutManager = gridLayoutManager
     }
 }

@@ -8,9 +8,14 @@ import org.jsoup.select.Elements
 
 class DetailViewModel : ViewModel() {
     var mutableLiveData: MutableLiveData<Resource<Elements>>? = null
+    var mutableLiveDataChapter: MutableLiveData<Resource<Elements>>? = null
     var detailRepository: DetailRepository? = DetailRepository()
 
     fun init(url: String){
         mutableLiveData = detailRepository?.getDetail(url)
+    }
+
+    fun init2(url: String){
+        mutableLiveDataChapter = detailRepository?.getDetailChapter(url)
     }
 }

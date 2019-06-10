@@ -8,4 +8,10 @@
     <color name="black_transparency">#70212121</color>
     <color name="background_gradient">#F2131313</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="available_color">#58c10c</color>
+    <color name="unavailable_color">#cd0000</color>
+    <color name="translated_color">#1f7be5</color>
+
+
 </resources>

@@ -29,4 +29,21 @@ class DetailRepository {
         }
         return dataModel
     }
+
+    fun getDetailChapter(url: String): MutableLiveData<Resource<Elements>> {
+        CoroutineScope(Dispatchers.IO).launch {
+            dataModel.postValue(Resource.Start())
+            try {
+                val response: Elements? = ApiServiceSoup.getDetailChapter(url)
+                withContext(Dispatchers.Main) {
+                    response?.let {
+                        dataModel.value = Resource.Success(it)
+                    }
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return dataModel
+    }
 }

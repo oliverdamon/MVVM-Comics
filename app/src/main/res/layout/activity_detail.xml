@@ -89,7 +89,7 @@
                     android:layout_marginBottom="8dp"
                     android:elevation="2dp"
                     style="@style/CardView.Dark"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/frame_chapter"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -102,6 +102,9 @@
                         android:orientation="vertical"
                         android:padding="10dp">
 
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" android:id="@+id/recycler_chapter_status"/>
                     <TextView
                             android:id="@+id/text_title_original"
                             android:layout_width="wrap_content"
@@ -151,6 +154,17 @@
                         android:scaleType="centerCrop"/>
 
             </androidx.cardview.widget.CardView>
+            <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/frame_chapter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginRight="16dp" android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="16dp">
+
+            </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
