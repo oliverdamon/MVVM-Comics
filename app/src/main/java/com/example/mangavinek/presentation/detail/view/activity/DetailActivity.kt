@@ -25,16 +25,10 @@ import android.text.Spannable
 import android.graphics.Typeface
 import android.text.style.StyleSpan
 import android.text.SpannableString
-import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.mangavinek.core.util.PaginationScroll
 import com.example.mangavinek.model.detail.entity.StatusChapter
 import com.example.mangavinek.presentation.detail.view.adapter.StatusChapterAdapter
 import com.example.mangavinek.presentation.detail.view.fragment.DetailChapterFragment
-import com.example.mangavinek.presentation.home.view.adapter.ItemAdapter
-import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.info
-import java.util.*
 
 class DetailActivity : AppCompatActivity(), AnkoLogger {
     private val detailViewModel: DetailViewModel by lazy {
@@ -54,9 +48,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
                 is Resource.Start -> {
                 }
                 is Resource.Success -> {
-                    model.data.let {
-                        populateDetail(DetailResponse(it[0]))
-                    }
+                    populateDetail(DetailResponse(model.data[0]))
                 }
                 is Resource.Error -> {
                 }
@@ -84,16 +76,16 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
                 .load(urlImage)
                 .into(image_cover_complet)
 
-            initRecycler(mergeStatusList(it))
+            //initRecycler(mergeStatusList(it))
+            initFragment(it)
         }
     }
 
-    private fun mergeStatusList(it: DetailResponse) : MutableList<StatusChapter> {
+    private fun mergeStatusList(it: DetailResponse): MutableList<StatusChapter> {
         val partsAvailable = it.issueAvailable.split(" ".toRegex())
         val partsTranslated = it.issueTranslated.split(" ".toRegex())
         val partsUnavailable = it.issueUnavailable.split(" ".toRegex())
         val mutableList = mutableListOf<StatusChapter>()
-
 
         partsAvailable.forEach {
             if (!it.isEmpty()) {
@@ -125,13 +117,20 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
         return spannableString
     }
 
-    private fun initFragment() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frame_chapter, DetailChapterFragment())
-            .commit()
+    private fun initFragment(detailResponse: DetailResponse?) {
+        detailResponse?.let {
+            val fragment = DetailChapterFragment()
+            val args = Bundle()
+            args.putString("urlChapter", it.link)
+            fragment.arguments = args
+            val manager = supportFragmentManager
+            val transaction = manager.beginTransaction()
+            transaction.replace(R.id.frame_chapter, fragment)
+                .commit()
+        }
     }
 
-    private fun initRecycler(list: List<StatusChapter>){
+    private fun initRecycler(list: List<StatusChapter>) {
         adapter = StatusChapterAdapter(list, this)
         recycler_chapter_status.adapter = adapter
         val gridLayoutManager = GridLayoutManager(this, 3)

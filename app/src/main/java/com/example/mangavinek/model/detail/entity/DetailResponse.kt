@@ -15,7 +15,10 @@ data class DetailResponse(var element: Element){
     val issueAvailable = element.select("div.issue-br").text().toString()
     val issueTranslated = element.select("div.issue-tr").text().toString()
     val issueUnavailable = element.select("div.issue-en").text().toString()
-    val imageChapter = element.select("img").attr("src").toString()
+    val link = element.select("td.trow1 a.iframe").attr("href").toString()
 }
-
+data class DetailChapterResponse(var element: Element){
+    val imageChapter = element.select("img").attr("src").toString()
+    val linkChapter = element.select("a").attr("href").toString()
+}
 data class StatusChapter(val status: String, val number : String)

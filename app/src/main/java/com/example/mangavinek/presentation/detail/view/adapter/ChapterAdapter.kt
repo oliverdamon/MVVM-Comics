@@ -11,9 +11,10 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.mangavinek.R
-import com.example.mangavinek.model.detail.entity.DetailResponse
+import com.example.mangavinek.model.detail.entity.DetailChapterResponse
+import org.jetbrains.anko.browse
 
-class ChapterAdapter(private var listItem: ArrayList<DetailResponse>, private var context: Context) :
+class ChapterAdapter(private var listItem: ArrayList<DetailChapterResponse>, private var context: Context) :
     RecyclerView.Adapter<ChapterAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ItemViewHolder {
@@ -39,6 +40,7 @@ class ChapterAdapter(private var listItem: ArrayList<DetailResponse>, private va
             .into(holder.image)
 
         holder.image.setOnClickListener {
+            context.browse(dataItem.linkChapter)
         }
     }
 
