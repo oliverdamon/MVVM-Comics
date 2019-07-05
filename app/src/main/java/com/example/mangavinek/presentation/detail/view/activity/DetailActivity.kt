@@ -1,5 +1,7 @@
 package com.example.mangavinek.presentation.detail.view.activity
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -25,10 +27,14 @@ import android.text.Spannable
 import android.graphics.Typeface
 import android.text.style.StyleSpan
 import android.text.SpannableString
+import android.view.View
+import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.model.detail.entity.StatusChapter
 import com.example.mangavinek.presentation.detail.view.adapter.StatusChapterAdapter
 import com.example.mangavinek.presentation.detail.view.fragment.DetailChapterFragment
+import kotlinx.android.synthetic.main.loading_screen.*
 
 class DetailActivity : AppCompatActivity(), AnkoLogger {
     private val detailViewModel: DetailViewModel by lazy {
@@ -46,11 +52,17 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
         detailViewModel.mutableLiveData?.observe(this, Observer<Resource<Elements>> { model ->
             when (model) {
                 is Resource.Start -> {
+                    constraint_load.visibility = View.VISIBLE
+                    scroll_view.visibility = View.GONE
                 }
                 is Resource.Success -> {
+                    scroll_view.visibility = View.VISIBLE
+                    constraint_load.visibility = View.GONE
                     populateDetail(DetailResponse(model.data[0]))
                 }
                 is Resource.Error -> {
+                    scroll_view.visibility = View.GONE
+                    constraint_load.visibility = View.GONE
                 }
             }
         })
@@ -76,7 +88,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
                 .load(urlImage)
                 .into(image_cover_complet)
 
-            //initRecycler(mergeStatusList(it))
+            initRecycler(mergeStatusList(it))
             initFragment(it)
         }
     }
@@ -88,25 +100,27 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
         val mutableList = mutableListOf<StatusChapter>()
 
         partsAvailable.forEach {
-            if (!it.isEmpty()) {
+            if (it.isNotEmpty()) {
                 val statusChapter = StatusChapter("available", it)
                 mutableList.add(statusChapter)
             }
         }
 
         partsTranslated.forEach {
-            if (!it.isEmpty()) {
+            if (it.isNotEmpty()) {
                 val statusChapter = StatusChapter("translated", it)
                 mutableList.add(statusChapter)
             }
         }
 
         partsUnavailable.forEach {
-            if (!it.isEmpty()) {
+            if (it.isNotEmpty()) {
                 val statusChapter = StatusChapter("unavailable", it)
                 mutableList.add(statusChapter)
             }
         }
+
+        mutableList.sortWith(compareBy(StatusChapter::number))
 
         return mutableList
     }
@@ -128,12 +142,31 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
             transaction.replace(R.id.frame_chapter, fragment)
                 .commit()
         }
+        buttonShowChapter.setOnClickListener {
+            checkButton(buttonShowChapter, buttonShowStatus, true)
+        }
+
+        buttonShowStatus.setOnClickListener {
+            checkButton(buttonShowStatus, buttonShowChapter, false)
+        }
+    }
+
+    @SuppressLint("PrivateResource")
+    private fun checkButton(checked: Button, unChecked: Button, isCheck: Boolean) {
+        checked.setBackgroundColor(ContextCompat.getColor(this, R.color.background_material_light))
+        checked.setTextColor(Color.parseColor("#FF424242"))
+
+        unChecked.setBackgroundColor(Color.parseColor("#FF424242"))
+        unChecked.setTextColor(ContextCompat.getColor(this, R.color.material_grey_600))
+
+        frame_chapter.visibility = if (isCheck) View.VISIBLE else View.GONE
+        recycler_chapter_status.visibility = if (isCheck) View.GONE else View.VISIBLE
     }
 
     private fun initRecycler(list: List<StatusChapter>) {
         adapter = StatusChapterAdapter(list, this)
         recycler_chapter_status.adapter = adapter
-        val gridLayoutManager = GridLayoutManager(this, 3)
+        val gridLayoutManager = GridLayoutManager(this, 4)
         recycler_chapter_status.layoutManager = gridLayoutManager
     }
 }

@@ -47,10 +47,10 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
         return view
     }
 
-    fun initViewModel(){
+    private fun initViewModel(){
         val url = arguments?.getString("urlChapter")
         url?.let {
-            detailViewModel.init2(it)
+            detailViewModel.initChapter(it)
         }
     }
 

@@ -26,9 +26,9 @@ class StatusChapterAdapter(private var listItem: List<StatusChapter>, private va
         val dataItem = listItem[p1]
 
         when (dataItem.status){
-            "available" -> holder.background.setBackgroundColor(ContextCompat.getColor(context, R.color.available_color))
-            "unavailable" -> holder.background.setBackgroundColor(ContextCompat.getColor(context, R.color.unavailable_color))
-            "translated" -> holder.background.setBackgroundColor(ContextCompat.getColor(context, R.color.translated_color))
+            "available" -> holder.title.setBackgroundColor(ContextCompat.getColor(context, R.color.available_color))
+            "unavailable" -> holder.title.setBackgroundColor(ContextCompat.getColor(context, R.color.unavailable_color))
+            "translated" -> holder.title.setBackgroundColor(ContextCompat.getColor(context, R.color.translated_color))
         }
 
         holder.title.text = dataItem.number
@@ -36,6 +36,5 @@ class StatusChapterAdapter(private var listItem: List<StatusChapter>, private va
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title = view.text_number_chapter
-        val background = view.ll_parent
     }
 }

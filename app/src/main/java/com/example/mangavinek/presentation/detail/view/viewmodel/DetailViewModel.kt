@@ -15,7 +15,7 @@ class DetailViewModel : ViewModel() {
         mutableLiveData = detailRepository?.getDetail(url)
     }
 
-    fun init2(url: String){
+    fun initChapter(url: String){
         mutableLiveDataChapter = detailRepository?.getDetailChapter(url)
     }
 }
