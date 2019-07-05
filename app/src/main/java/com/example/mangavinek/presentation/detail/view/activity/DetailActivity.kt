@@ -30,6 +30,8 @@ import android.text.SpannableString
 import android.view.View
 import android.widget.Button
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.model.detail.entity.StatusChapter
 import com.example.mangavinek.presentation.detail.view.adapter.StatusChapterAdapter
@@ -137,10 +139,10 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
             val args = Bundle()
             args.putString("urlChapter", it.link)
             fragment.arguments = args
-            val manager = supportFragmentManager
-            val transaction = manager.beginTransaction()
-            transaction.replace(R.id.frame_chapter, fragment)
-                .commit()
+
+            supportFragmentManager.inTransaction {
+                add(R.id.frame_chapter, fragment)
+            }
         }
         buttonShowChapter.setOnClickListener {
             checkButton(buttonShowChapter, buttonShowStatus, true)
@@ -149,6 +151,10 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
         buttonShowStatus.setOnClickListener {
             checkButton(buttonShowStatus, buttonShowChapter, false)
         }
+    }
+
+    private inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
+        beginTransaction().func().commit()
     }
 
     @SuppressLint("PrivateResource")
