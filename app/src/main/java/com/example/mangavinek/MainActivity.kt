@@ -11,6 +11,7 @@ import org.jetbrains.anko.AnkoLogger
 import android.widget.Toast.makeText as makeText1
 import com.example.mangavinek.core.util.PaginationScroll
 import com.example.mangavinek.core.util.Resource
+import com.example.mangavinek.core.util.Resource.*
 import com.example.mangavinek.model.home.entity.Model
 import com.example.mangavinek.presentation.home.view.adapter.ItemAdapter
 import com.example.mangavinek.presentation.home.view.viewmodel.NewsViewModel
@@ -50,17 +51,17 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     private fun initViewModel() {
         newsViewModel.mutableLiveDataHot?.observe(this, Observer<Resource<Elements>> { model ->
             when (model) {
-                is Resource.Start -> {
+                is Start -> {
                     screenLoading()
                 }
-                is Resource.Success -> {
+                is Success -> {
                     model.data.forEach {
                         itemList.add(Model(it))
                     }
                     adapter.notifyItemChanged(itemList.size - 20, itemList.size)
                     screenSuccess()
                 }
-                is Resource.Error -> {
+                is Error -> {
                     screenError()
                 }
             }

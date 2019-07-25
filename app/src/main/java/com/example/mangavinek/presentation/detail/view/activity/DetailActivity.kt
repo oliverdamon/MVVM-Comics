@@ -1,7 +1,6 @@
 package com.example.mangavinek.presentation.detail.view.activity
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -13,14 +12,6 @@ import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.model.detail.entity.DetailResponse
 import com.example.mangavinek.presentation.detail.view.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.activity_detail.image_cover
-import kotlinx.android.synthetic.main.activity_detail.text_publication
-import kotlinx.android.synthetic.main.activity_detail.text_publishing
-import kotlinx.android.synthetic.main.activity_detail.text_sinopse
-import kotlinx.android.synthetic.main.activity_detail.text_status
-import kotlinx.android.synthetic.main.activity_detail.text_title
-import kotlinx.android.synthetic.main.activity_detail.text_title_original
-import kotlinx.android.synthetic.main.activity_detail.text_year
 import org.jetbrains.anko.AnkoLogger
 import org.jsoup.select.Elements
 import android.text.Spannable
@@ -36,7 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.model.detail.entity.StatusChapter
 import com.example.mangavinek.presentation.detail.view.adapter.StatusChapterAdapter
 import com.example.mangavinek.presentation.detail.view.fragment.DetailChapterFragment
-import kotlinx.android.synthetic.main.loading_screen.*
+import kotlinx.android.synthetic.main.layout_detail.*
 
 class DetailActivity : AppCompatActivity(), AnkoLogger {
     private val detailViewModel: DetailViewModel by lazy {
@@ -49,26 +40,21 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         val url: String = intent.getStringExtra("url")
-        detailViewModel.init(url)
 
+        detailViewModel.init(url)
         detailViewModel.mutableLiveData?.observe(this, Observer<Resource<Elements>> { model ->
             when (model) {
                 is Resource.Start -> {
-                    constraint_load.visibility = View.VISIBLE
-                    scroll_view.visibility = View.GONE
                 }
                 is Resource.Success -> {
-                    scroll_view.visibility = View.VISIBLE
-                    constraint_load.visibility = View.GONE
+                    layout_detail.visibility = View.VISIBLE
+                    layout_loading.visibility = View.GONE
                     populateDetail(DetailResponse(model.data[0]))
                 }
                 is Resource.Error -> {
-                    scroll_view.visibility = View.GONE
-                    constraint_load.visibility = View.GONE
                 }
             }
         })
-
     }
 
     private fun populateDetail(detailResponse: DetailResponse?) {
@@ -145,11 +131,11 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
             }
         }
         buttonShowChapter.setOnClickListener {
-            checkButton(buttonShowChapter, buttonShowStatus, true)
+            checkButton(checked = buttonShowChapter, unChecked = buttonShowStatus, isCheck = true)
         }
 
         buttonShowStatus.setOnClickListener {
-            checkButton(buttonShowStatus, buttonShowChapter, false)
+            checkButton(checked = buttonShowStatus, unChecked = buttonShowChapter, isCheck = false)
         }
     }
 
@@ -160,10 +146,10 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
     @SuppressLint("PrivateResource")
     private fun checkButton(checked: Button, unChecked: Button, isCheck: Boolean) {
         checked.setBackgroundColor(ContextCompat.getColor(this, R.color.background_material_light))
-        checked.setTextColor(Color.parseColor("#FF424242"))
+        checked.setTextColor(ContextCompat.getColor(this, R.color.background_grey))
 
-        unChecked.setBackgroundColor(Color.parseColor("#FF424242"))
-        unChecked.setTextColor(ContextCompat.getColor(this, R.color.material_grey_600))
+        unChecked.setBackgroundColor(ContextCompat.getColor(this, R.color.background_grey))
+        unChecked.setTextColor(ContextCompat.getColor(this, R.color.dark_grey))
 
         frame_chapter.visibility = if (isCheck) View.VISIBLE else View.GONE
         recycler_chapter_status.visibility = if (isCheck) View.GONE else View.VISIBLE

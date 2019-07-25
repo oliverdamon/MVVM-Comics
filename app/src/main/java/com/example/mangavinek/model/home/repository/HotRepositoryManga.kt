@@ -5,7 +5,6 @@ import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.api.ApiServiceSoup
 import kotlinx.coroutines.*
 import org.jsoup.select.Elements
-import java.io.IOException
 
 class HotRepositoryManga {
 
@@ -21,7 +20,8 @@ class HotRepositoryManga {
                         dataModel.value = Resource.Success(it)
                     }
                 }
-            } catch (e: IOException) {
+            } catch (e: Throwable) {
+                dataModel.postValue(Resource.Error(e))
                 e.printStackTrace()
             }
         }

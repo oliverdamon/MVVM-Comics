@@ -2,7 +2,7 @@ package com.example.mangavinek.model.detail.entity
 
 import org.jsoup.nodes.Element
 
-data class DetailResponse(var element: Element){
+class DetailResponse(var element: Element){
     val title = element.select(".thead strong").text().toString()
     val titleOriginal = element.select("table.smalltext tbody tr:nth-child(2) td:nth-child(3)").text().toString()
     val year = element.select("table.smalltext tbody tr:nth-child(3) td:nth-child(3)").text().toString()

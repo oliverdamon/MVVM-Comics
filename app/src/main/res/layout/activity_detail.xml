@@ -4,12 +4,14 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:gravity="center"
-              android:orientation="vertical" android:background="#303030">
+              android:orientation="vertical"
+              android:background="#303030">
 
-<include layout="@layout/loading_screen"
-android:visibility="gone"
-/>
+    <include layout="@layout/loading_screen"
+             android:visibility="visible"
+             android:id="@+id/layout_loading"
+             tools:visibility="gone"/>
+
     <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
@@ -20,187 +22,12 @@ android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <TextView
-                    android:id="@+id/text_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/cardView2"
-                    app:layout_constraintTop_toBottomOf="@+id/image_cover_complet"
-                    android:textColor="@android:color/darker_gray"/>
-
-            <TextView
-                    android:id="@+id/text_status"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/cardView2"
-                    app:layout_constraintTop_toBottomOf="@+id/text_title"
-                    android:textColor="@android:color/darker_gray"/>
-
-            <ImageView
-                    android:id="@+id/image_cover_complet"
-                    android:layout_width="0dp"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-            <ImageView
-                    android:id="@+id/image_cover_complet_effect"
-                    android:layout_width="0dp"
-                    android:layout_height="200dp"
-                    android:background="#78000000"
-                    android:scaleType="centerCrop"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-            <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:elevation="2dp"
-                    style="@style/CardView.Dark"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView2"
-                    app:layout_constraintVertical_bias="0.0" app:cardCornerRadius="4dp">
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                    <TextView
-                            android:id="@+id/text_title_original"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@android:color/darker_gray"/>
-
-                    <TextView
-                            android:id="@+id/text_publishing"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:textColor="@android:color/darker_gray"/>
-
-                    <TextView
-                            android:id="@+id/text_publication"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" android:textColor="@android:color/darker_gray"/>
-
-                    <TextView
-                            android:id="@+id/text_year"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/darker_gray"/>
-                    <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" android:id="@+id/text_sinopse"
-                            android:textColor="@android:color/darker_gray" android:textSize="12sp"
-                            android:layout_marginTop="5dp"/>
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView2"
-                    android:layout_width="120dp"
-                    android:layout_height="175dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="112dp"
-                    style="@style/CardView.Dark"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_cover_complet"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" app:cardCornerRadius="4dp">
-
-                <ImageView
-                        android:id="@+id/image_cover"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"/>
-
-            </androidx.cardview.widget.CardView>
-
-            <LinearLayout
-                    android:id="@+id/linear_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" android:orientation="horizontal"
-                    android:layout_marginLeft="16dp" android:layout_marginStart="16dp" android:layout_marginRight="16dp"
-                    android:layout_marginEnd="16dp" android:layout_marginTop="16dp">
-                <Button
-                        android:text="Status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/buttonShowStatus"
-                        android:layout_weight="1" android:background="@color/cardview_light_background"
-                        android:textColor="#FF424242"/>
-                <Button
-                        android:text="Edições"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/buttonShowChapter"
-                        android:layout_weight="1" android:background="#FF424242"
-                        android:textColor="@android:color/darker_gray"/>
-            </LinearLayout>
-            <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/recycler_chapter_status"
-                    app:layout_constraintTop_toBottomOf="@id/linear_button"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginRight="16dp" android:layout_marginLeft="16dp"
-                    android:layout_marginBottom="16dp" android:visibility="visible" android:layout_marginTop="8dp"/>
-            <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/frame_chapter"
-                    app:layout_constraintTop_toBottomOf="@id/linear_button"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginRight="16dp" android:layout_marginLeft="16dp"
-                    android:layout_marginBottom="16dp" android:visibility="gone" android:layout_marginTop="8dp">
-
-            </FrameLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <include layout="@layout/layout_detail"
+                     android:visibility="gone"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:id="@+id/layout_detail"
+                     tools:visibility="visible"/>
 
     </androidx.core.widget.NestedScrollView>
-
-
 </LinearLayout>
