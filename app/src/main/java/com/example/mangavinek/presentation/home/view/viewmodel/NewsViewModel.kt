@@ -13,7 +13,7 @@ class NewsViewModel : ViewModel() {
     var newsRepository: HotRepositoryManga? =
         HotRepositoryManga()
 
-    fun init(page: Int = 1){
+    fun init(page: Int){
         mutableLiveDataHot = newsRepository?.getListHot(Constant.HOME_URL_PAGINATION.plus(page))
     }
 

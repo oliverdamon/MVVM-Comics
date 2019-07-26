@@ -1,13 +1,11 @@
 package com.example.mangavinek.presentation.detail.view.fragment
 
 import android.content.Context
-import android.os.Build
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
