@@ -10,12 +10,14 @@ import org.jsoup.select.Elements
 
 class HomePresenter(private val view: PresentationHome.View, private val activity: FragmentActivity) : Presenter {
 
+    private val viewModel = view.viewModel()
+
     override fun initViewModel(page: Int) {
-        view.viewModel().init(page)
+        viewModel.init(page)
     }
 
     override fun loadData() {
-        view.viewModel().mutableLiveDataHot?.observe(activity, Observer<Resource<Elements>> { model ->
+        viewModel.mutableLiveDataHot?.observe(activity, Observer<Resource<Elements>> { model ->
             when (model) {
                 is Start -> {
                     view.screenLoading()

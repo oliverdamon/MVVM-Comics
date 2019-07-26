@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         addFragment(R.id.view_pager, HomeFragment())
+
         initUi()
     }
 

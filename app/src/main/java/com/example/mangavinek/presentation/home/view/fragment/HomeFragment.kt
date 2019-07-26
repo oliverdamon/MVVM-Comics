@@ -25,6 +25,11 @@ class HomeFragment : Fragment(), AnkoLogger, PresentationHome.View {
     private val adapter: ItemAdapter by lazy{
         ItemAdapter(itemList, context!!)
     }
+
+    private val presenter by lazy{
+        presenter()
+    }
+
     private var itemList = arrayListOf<Model>()
     private var releasedLoad: Boolean = true
     private var page : Int = 2
@@ -36,8 +41,8 @@ class HomeFragment : Fragment(), AnkoLogger, PresentationHome.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter().initViewModel()
-        presenter().loadData()
+        presenter.initViewModel()
+        presenter.loadData()
 
         swipe_refresh.setOnRefreshListener{
             GlobalScope.launch(context = Dispatchers.Main) {
@@ -45,7 +50,7 @@ class HomeFragment : Fragment(), AnkoLogger, PresentationHome.View {
                     delay(1000)
                     page = 2
                     adapter.clear(itemList)
-                    presenter().initViewModel()
+                    presenter.initViewModel()
                 }
                 swipe_refresh.isRefreshing = false
             }
@@ -58,7 +63,7 @@ class HomeFragment : Fragment(), AnkoLogger, PresentationHome.View {
         return ViewModelProviders.of(this).get(NewsViewModel::class.java)
     }
 
-    fun presenter(): PresentationHome.Presenter {
+    override fun presenter(): PresentationHome.Presenter {
         return HomePresenter(this, activity!!)
     }
 
@@ -74,7 +79,7 @@ class HomeFragment : Fragment(), AnkoLogger, PresentationHome.View {
         val gridLayoutManager = GridLayoutManager(context, 3)
         recycler_view.addOnScrollListener(object : PaginationScroll(gridLayoutManager) {
             override fun loadMoreItems() {
-                presenter().initViewModel(page++)
+                presenter.initViewModel(page++)
                 progress_bottom.visibility = View.VISIBLE
                 releasedLoad = false
             }
