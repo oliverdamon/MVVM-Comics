@@ -1,4 +1,4 @@
-package com.example.mangavinek.presentation.home.view
+package com.example.mangavinek.presentation.home
 
 import com.example.mangavinek.core.base.Base
 import com.example.mangavinek.presentation.home.view.viewmodel.NewsViewModel

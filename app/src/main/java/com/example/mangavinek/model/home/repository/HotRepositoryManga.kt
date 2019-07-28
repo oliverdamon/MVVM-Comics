@@ -9,9 +9,10 @@ import org.jsoup.select.Elements
 class HotRepositoryManga {
 
     private val dataModel: MutableLiveData<Resource<Elements>> = MutableLiveData()
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     fun getListHot(url: String): MutableLiveData<Resource<Elements>> {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             dataModel.postValue(Resource.Start())
             try {
                 val links: Elements? = ApiServiceSoup.getListHot(url)

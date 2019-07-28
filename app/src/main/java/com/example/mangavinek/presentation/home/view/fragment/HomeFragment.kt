@@ -13,16 +13,16 @@ import org.jetbrains.anko.AnkoLogger
 import android.widget.Toast.makeText as makeText1
 import com.example.mangavinek.core.util.PaginationScroll
 import com.example.mangavinek.model.home.entity.Model
-import com.example.mangavinek.presentation.home.view.PresentationHome
+import com.example.mangavinek.presentation.home.presenter.HomePresenter
+import com.example.mangavinek.presentation.home.PresentationHome
 import com.example.mangavinek.presentation.home.view.adapter.ItemAdapter
 import kotlinx.coroutines.*
-import com.example.mangavinek.presentation.home.view.presenter.HomePresenter
 import com.example.mangavinek.presentation.home.view.viewmodel.NewsViewModel
 import org.jsoup.select.Elements
 
 class HomeFragment : Fragment(), AnkoLogger, PresentationHome.View {
 
-    private val adapter: ItemAdapter by lazy{
+    private val adapterItem: ItemAdapter by lazy{
         ItemAdapter(itemList, context!!)
     }
 
@@ -41,15 +41,17 @@ class HomeFragment : Fragment(), AnkoLogger, PresentationHome.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter.initViewModel()
-        presenter.loadData()
+        presenter.apply {
+            initViewModel()
+            loadData()
+        }
 
         swipe_refresh.setOnRefreshListener{
             GlobalScope.launch(context = Dispatchers.Main) {
                 if(releasedLoad){
                     delay(1000)
                     page = 2
-                    adapter.clear(itemList)
+                    adapterItem.clear(itemList)
                     presenter.initViewModel()
                 }
                 swipe_refresh.isRefreshing = false
@@ -71,28 +73,30 @@ class HomeFragment : Fragment(), AnkoLogger, PresentationHome.View {
         elements.forEach {
             itemList.add(Model(it))
         }
-        adapter.notifyItemChanged(itemList.size - 20, itemList.size)
+        adapterItem.notifyItemChanged(itemList.size - 20, itemList.size)
     }
 
     private fun initUi() {
-        recycler_view.adapter = adapter
-        val gridLayoutManager = GridLayoutManager(context, 3)
-        recycler_view.addOnScrollListener(object : PaginationScroll(gridLayoutManager) {
-            override fun loadMoreItems() {
-                presenter.initViewModel(page++)
-                progress_bottom.visibility = View.VISIBLE
-                releasedLoad = false
-            }
+        with(recycler_view) {
+            adapter = adapterItem
+            val gridLayoutManager = GridLayoutManager(context, 3)
+            addOnScrollListener(object : PaginationScroll(gridLayoutManager) {
+                override fun loadMoreItems() {
+                    presenter.initViewModel(page++)
+                    progress_bottom.visibility = View.VISIBLE
+                    releasedLoad = false
+                }
 
-            override fun isLoading(): Boolean {
-                return releasedLoad
-            }
+                override fun isLoading(): Boolean {
+                    return releasedLoad
+                }
 
-            override fun hideMoreItems() {
-                progress_bar.visibility = View.GONE
-            }
-        })
-        recycler_view.layoutManager = gridLayoutManager
+                override fun hideMoreItems() {
+                    progress_bar.visibility = View.GONE
+                }
+            })
+            layoutManager = gridLayoutManager
+        }
     }
 
     override fun screenSuccess(){

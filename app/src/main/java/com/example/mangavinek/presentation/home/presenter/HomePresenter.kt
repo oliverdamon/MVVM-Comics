@@ -1,11 +1,11 @@
-package com.example.mangavinek.presentation.home.view.presenter
+package com.example.mangavinek.presentation.home.presenter
 
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.core.util.Resource.*
-import com.example.mangavinek.presentation.home.view.PresentationHome
-import com.example.mangavinek.presentation.home.view.PresentationHome.Presenter
+import com.example.mangavinek.presentation.home.PresentationHome
+import com.example.mangavinek.presentation.home.PresentationHome.Presenter
 import org.jsoup.select.Elements
 
 class HomePresenter(private val view: PresentationHome.View, private val activity: FragmentActivity) : Presenter {

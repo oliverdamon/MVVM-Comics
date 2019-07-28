@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         initUi()
     }
 
-    fun initUi(){
+    private fun initUi(){
         bottom_navigation.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun AppCompatActivity.addFragment(frameId: Int, fragment: Fragment) {
+    private fun AppCompatActivity.addFragment(frameId: Int, fragment: Fragment) {
         supportFragmentManager.inTransaction{replace(frameId, fragment)}
     }
 
