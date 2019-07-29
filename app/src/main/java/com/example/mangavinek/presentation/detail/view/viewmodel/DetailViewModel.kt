@@ -6,16 +6,15 @@ import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.model.detail.repository.DetailRepository
 import org.jsoup.select.Elements
 
-class DetailViewModel : ViewModel() {
+class DetailViewModel(val detailRepository: DetailRepository) : ViewModel() {
     var mutableLiveData: MutableLiveData<Resource<Elements>>? = null
     var mutableLiveDataChapter: MutableLiveData<Resource<Elements>>? = null
-    var detailRepository: DetailRepository? = DetailRepository()
 
     fun init(url: String){
-        mutableLiveData = detailRepository?.getDetail(url)
+        mutableLiveData = detailRepository.getDetail(url)
     }
 
     fun initChapter(url: String){
-        mutableLiveDataChapter = detailRepository?.getDetailChapter(url)
+        mutableLiveDataChapter = detailRepository.getDetailChapter(url)
     }
 }

@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        addFragment(R.id.view_pager, HomeFragment())
+        supportFragmentManager.addFragment(HomeFragment(), HomeFragment.TAG)
 
         initUi()
     }
@@ -24,20 +24,30 @@ class MainActivity : AppCompatActivity() {
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.ic_home -> {
-                    addFragment(R.id.view_pager, HomeFragment())
+                    supportFragmentManager.addFragment(HomeFragment(), HomeFragment.TAG)
                 }
-                R.id.ic_hqs -> {}
+                R.id.ic_hqs -> {
+                }
             }
             return@setOnNavigationItemSelectedListener true
         }
     }
 
-    private fun AppCompatActivity.addFragment(frameId: Int, fragment: Fragment) {
-        supportFragmentManager.inTransaction{replace(frameId, fragment)}
-    }
-
-    private inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
-        beginTransaction().func().commit()
+    fun FragmentManager.addFragment(fragment: Fragment, tag: String) {
+        var current = findFragmentByTag(tag)
+        beginTransaction().apply {
+                primaryNavigationFragment?.let { hide(it) }
+                if (current == null) {
+                    current = fragment
+                    add(R.id.view_pager, current!!, tag)
+                } else {
+                    show(current!!)
+                }
+            }
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .setPrimaryNavigationFragment(current)
+            .setReorderingAllowed(true)
+            .commitNowAllowingStateLoss()
     }
 
 }

@@ -12,39 +12,51 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.mangavinek.R
 import com.example.mangavinek.core.constant.Constant
+import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.model.detail.entity.DetailResponse
 import com.example.mangavinek.model.detail.entity.StatusChapter
-import com.example.mangavinek.presentation.detail.PresentationDetail
-import com.example.mangavinek.presentation.detail.presenter.DetailPresenter
 import com.example.mangavinek.presentation.detail.view.adapter.StatusChapterAdapter
 import com.example.mangavinek.presentation.detail.view.fragment.DetailChapterFragment
 import com.example.mangavinek.presentation.detail.view.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.layout_detail.*
 import org.jetbrains.anko.AnkoLogger
+import org.jsoup.select.Elements
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DetailActivity : AppCompatActivity(), AnkoLogger, PresentationDetail.View {
+class DetailActivity : AppCompatActivity(), AnkoLogger {
 
-    private val presenter by lazy {
-        presenter()
-    }
+    private val viewModel by viewModel<DetailViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
-        presenter.apply {
-            val url: String = intent.getStringExtra("url")
-            initViewModel(url)
-            loadData()
-        }
+        val url: String = intent.getStringExtra("url")
+        viewModel.init(url)
+        loadData()
     }
 
-    override fun populateDetail(detailResponse: DetailResponse?) {
+    private fun loadData() {
+        viewModel.mutableLiveData?.observe(this, Observer<Resource<Elements>> { model ->
+            when (model) {
+                is Resource.Start -> {
+                }
+                is Resource.Success -> {
+                    populateDetail(DetailResponse(model.data[0]))
+                    screenSuccess()
+                }
+                is Resource.Error -> {
+                }
+            }
+        })
+    }
+
+    private fun populateDetail(detailResponse: DetailResponse?) {
         detailResponse?.let {
             text_title.text = it.title
             text_title_original.text = getStringBold("Nome original: ${it.titleOriginal}", "Nome original:")
@@ -68,26 +80,14 @@ class DetailActivity : AppCompatActivity(), AnkoLogger, PresentationDetail.View 
         }
     }
 
-    override fun screenSuccess() {
+    private fun screenSuccess() {
         layout_detail.visibility = View.VISIBLE
         layout_loading.visibility = View.GONE
     }
 
-    override fun screenLoading() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    private fun screenLoading() {}
 
-    override fun screenError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun presenter(): PresentationDetail.Presenter {
-        return DetailPresenter(this)
-    }
-
-    override fun viewModel(): DetailViewModel {
-        return ViewModelProviders.of(this).get(DetailViewModel::class.java)
-    }
+    private fun screenError() {}
 
     private fun mergeStatusList(it: DetailResponse): MutableList<StatusChapter> {
         val partsAvailable = it.issueAvailable.split(" ".toRegex())
@@ -163,7 +163,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger, PresentationDetail.View 
     }
 
     private fun initRecycler(list: List<StatusChapter>) {
-        with(recycler_chapter_status){
+        with(recycler_chapter_status) {
             adapter = StatusChapterAdapter(list, this@DetailActivity)
             val gridLayoutManager = GridLayoutManager(this@DetailActivity, 4)
             layoutManager = gridLayoutManager
