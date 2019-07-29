@@ -18,7 +18,7 @@ import org.jetbrains.anko.longToast
 import org.jetbrains.anko.startActivity
 
 
-class ItemAdapter(private var listItem: ArrayList<Model>, private var context: Context) :
+class ItemAdapter(var listItem: ArrayList<Model>, private var context: Context) :
     RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ItemViewHolder {

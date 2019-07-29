@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.mangavinek.presentation.home.view.fragment.HomeFragment
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -19,10 +20,10 @@ class MainActivity : AppCompatActivity() {
         initUi()
     }
 
-    private fun initUi(){
+    private fun initUi() {
         bottom_navigation.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
-            when(item.itemId) {
+            when (item.itemId) {
                 R.id.ic_home -> {
                     supportFragmentManager.addFragment(HomeFragment(), HomeFragment.TAG)
                 }
@@ -36,18 +37,28 @@ class MainActivity : AppCompatActivity() {
     fun FragmentManager.addFragment(fragment: Fragment, tag: String) {
         var current = findFragmentByTag(tag)
         beginTransaction().apply {
-                primaryNavigationFragment?.let { hide(it) }
-                if (current == null) {
-                    current = fragment
-                    add(R.id.view_pager, current!!, tag)
-                } else {
-                    show(current!!)
-                }
+            primaryNavigationFragment?.let { hide(it) }
+            if (current == null) {
+                current = fragment
+                add(R.id.view_pager, current!!, tag)
+            } else {
+                show(current!!)
             }
+        }
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             .setPrimaryNavigationFragment(current)
             .setReorderingAllowed(true)
             .commitNowAllowingStateLoss()
     }
 
+    override fun onBackPressed() {
+        finishApp()
+    }
+
+    private fun finishApp() {
+        Snackbar.make(constraint_main, "Sair do app?", Snackbar.LENGTH_LONG)
+            .setAction("Sim") {
+                System.exit(0)
+            }.show()
+    }
 }

@@ -64,7 +64,7 @@ class HomeFragment : Fragment(), AnkoLogger {
         initUi()
     }
 
-    fun loadData() {
+    private fun loadData() {
         viewModel.mutableLiveDataHot?.observe(this, Observer<Resource<Elements>> { model ->
             when (model) {
                 is Resource.Start -> {
@@ -81,7 +81,7 @@ class HomeFragment : Fragment(), AnkoLogger {
         })
     }
 
-    fun populate(elements: Elements) {
+    private fun populate(elements: Elements) {
         elements.forEach {
             itemList.add(Model(it))
         }
@@ -111,19 +111,19 @@ class HomeFragment : Fragment(), AnkoLogger {
         }
     }
 
-    fun screenSuccess() {
+    private fun screenSuccess() {
         progress_bar.visibility = View.GONE
         progress_bottom.visibility = View.GONE
         text_erro.visibility = View.GONE
         releasedLoad = true
     }
 
-    fun screenLoading() {
+    private fun screenLoading() {
         progress_bar.visibility = View.VISIBLE
         text_erro.visibility = View.GONE
     }
 
-    fun screenError() {
+    private fun screenError() {
         text_erro.visibility = View.VISIBLE
         progress_bottom.visibility = View.GONE
         progress_bar.visibility = View.GONE

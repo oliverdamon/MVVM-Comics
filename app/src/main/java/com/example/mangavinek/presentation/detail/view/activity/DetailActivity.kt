@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.example.mangavinek.R
 import com.example.mangavinek.core.constant.Constant
 import com.example.mangavinek.core.util.Resource
+import com.example.mangavinek.core.util.Resource.*
 import com.example.mangavinek.model.detail.entity.DetailResponse
 import com.example.mangavinek.model.detail.entity.StatusChapter
 import com.example.mangavinek.presentation.detail.view.adapter.StatusChapterAdapter
@@ -44,13 +45,13 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
     private fun loadData() {
         viewModel.mutableLiveData?.observe(this, Observer<Resource<Elements>> { model ->
             when (model) {
-                is Resource.Start -> {
+                is Start -> {
                 }
-                is Resource.Success -> {
+                is Success -> {
                     populateDetail(DetailResponse(model.data[0]))
                     screenSuccess()
                 }
-                is Resource.Error -> {
+                is Error -> {
                 }
             }
         })

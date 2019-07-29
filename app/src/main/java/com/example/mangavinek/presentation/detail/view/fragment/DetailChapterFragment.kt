@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
 import com.example.mangavinek.core.util.Resource
+import com.example.mangavinek.core.util.Resource.*
 import com.example.mangavinek.model.detail.entity.DetailChapterResponse
 import com.example.mangavinek.presentation.detail.view.adapter.ChapterAdapter
 import com.example.mangavinek.presentation.detail.view.viewmodel.DetailViewModel
@@ -41,14 +42,14 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
     private fun loadData() {
         viewModel.mutableLiveDataChapter?.observe(this, Observer<Resource<Elements>> { model ->
             when (model) {
-                is Resource.Start -> {
+                is Start -> {
                     //screenLoading()
                 }
-                is Resource.Success -> {
+                is Success -> {
                     populate(model.data)
                     screenSuccess()
                 }
-                is Resource.Error -> {
+                is Error -> {
                     //screenError()
                 }
             }
