@@ -11,6 +11,7 @@ import com.example.mangavinek.R
 import com.example.mangavinek.core.util.PaginationScroll
 import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.model.home.entity.Model
+import com.example.mangavinek.model.home.entity.getItems
 import com.example.mangavinek.presentation.home.view.adapter.ItemAdapter
 import com.example.mangavinek.presentation.home.view.viewmodel.NewsViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -71,7 +72,7 @@ class HomeFragment : Fragment(), AnkoLogger {
                     screenLoading()
                 }
                 is Resource.Success -> {
-                    populate(model.data)
+                    populate(model.data.getItems())
                     screenSuccess()
                 }
                 is Resource.Error -> {
@@ -81,10 +82,8 @@ class HomeFragment : Fragment(), AnkoLogger {
         })
     }
 
-    private fun populate(elements: Elements) {
-        elements.forEach {
-            itemList.add(Model(it))
-        }
+    private fun populate(listModel: List<Model>) {
+        itemList.addAll(listModel)
         adapterItem.notifyItemChanged(itemList.size - 20, itemList.size)
     }
 
