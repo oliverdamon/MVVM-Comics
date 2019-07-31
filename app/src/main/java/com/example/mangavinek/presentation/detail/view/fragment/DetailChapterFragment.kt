@@ -11,6 +11,7 @@ import com.example.mangavinek.R
 import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.core.util.Resource.*
 import com.example.mangavinek.model.detail.entity.DetailChapterResponse
+import com.example.mangavinek.model.detail.entity.getItems
 import com.example.mangavinek.presentation.detail.view.adapter.ChapterAdapter
 import com.example.mangavinek.presentation.detail.view.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.fragment_detail_chapter.view.*
@@ -46,7 +47,7 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
                     //screenLoading()
                 }
                 is Success -> {
-                    populate(model.data)
+                    populate(model.data.getItems())
                     screenSuccess()
                 }
                 is Error -> {
@@ -56,11 +57,9 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
         })
     }
 
-    private fun populate(elements: Elements) {
+    private fun populate(listDetailChapterResponse: List<DetailChapterResponse>) {
         itemList.clear()
-        elements.forEach {
-            itemList.add(DetailChapterResponse(it))
-        }
+        itemList.addAll(listDetailChapterResponse)
         adapterChapter.notifyDataSetChanged()
     }
 

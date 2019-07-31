@@ -1,8 +1,9 @@
 package com.example.mangavinek.model.detail.entity
 
 import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 
-class DetailResponse(var element: Element){
+class DetailResponse(var element: Element) {
     val title = element.select(".thead strong").text().toString()
     val titleOriginal = element.select("table.smalltext tbody tr:nth-child(2) td:nth-child(3)").text().toString()
     val year = element.select("table.smalltext tbody tr:nth-child(3) td:nth-child(3)").text().toString()
@@ -17,8 +18,17 @@ class DetailResponse(var element: Element){
     val issueUnavailable = element.select("div.issue-en").text().toString()
     val link = element.select("td.trow1 a.iframe").attr("href").toString()
 }
-data class DetailChapterResponse(var element: Element){
+
+data class DetailChapterResponse(var element: Element) {
     val imageChapter = element.select("img").attr("src").toString()
     val linkChapter = element.select("a").attr("href").toString()
 }
-data class StatusChapter(val status: String, val number : String)
+
+data class StatusChapter(val status: String, val number: String)
+
+fun Elements.getItems(): MutableList<DetailChapterResponse> {
+    val transformedElements = mutableListOf<DetailChapterResponse>()
+    this.mapNotNull { transformedElements.add(DetailChapterResponse(it)) }
+
+    return transformedElements
+}
