@@ -10,7 +10,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true"
-            android:name=".core.AppApplication">
+            android:name=".AppApplication">
         <activity android:name=".MainActivity"
                   android:configChanges="screenSize|orientation">
             <intent-filter>
@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.detail.view.activity.DetailActivity"/>
+        <activity android:name="com.example.mangavinek.detail.presentation.view.activity.DetailActivity"/>
     </application>
 
 </manifest>

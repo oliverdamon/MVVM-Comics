@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#303030"
-            tools:context=".presentation.home.view.fragment.HomeFragment">
+            tools:context=".home.presentation.view.fragment.HomeFragment">
         <Button
                 android:text="Refresh"
                 android:layout_width="0dp"

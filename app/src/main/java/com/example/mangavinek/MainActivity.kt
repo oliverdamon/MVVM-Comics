@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.example.mangavinek.presentation.home.view.fragment.HomeFragment
+import com.example.mangavinek.home.presentation.view.fragment.HomeFragment
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*

@@ -1,9 +1,9 @@
 package com.example.mangavinek.core.di.module
 
-import com.example.mangavinek.model.detail.repository.DetailRepository
-import com.example.mangavinek.model.home.repository.HotRepositoryManga
-import com.example.mangavinek.presentation.detail.view.viewmodel.DetailViewModel
-import com.example.mangavinek.presentation.home.view.viewmodel.NewsViewModel
+import com.example.mangavinek.detail.model.repository.DetailRepository
+import com.example.mangavinek.home.model.repository.HotRepositoryManga
+import com.example.mangavinek.detail.presentation.viewmodel.DetailViewModel
+import com.example.mangavinek.home.presentation.viewmodel.NewsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
