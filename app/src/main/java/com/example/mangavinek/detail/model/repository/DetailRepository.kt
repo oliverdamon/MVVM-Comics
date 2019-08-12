@@ -6,12 +6,12 @@ import com.example.mangavinek.detail.model.domain.entity.DetailResponse
 import com.example.mangavinek.detail.model.domain.entity.getItemDetail
 import com.example.mangavinek.detail.model.domain.entity.getItems
 
-class DetailRepository {
+class DetailRepository(private val apiServiceSoup: ApiServiceSoup) {
 
-    fun getDetail(url: String): DetailResponse? = ApiServiceSoup.getDetail(url).getItemDetail()
+    fun getDetail(url: String): DetailResponse? = apiServiceSoup.getDetail(url).getItemDetail()
 
     fun getDetailChapter(url: String): MutableList<DetailChapterResponse>? {
-        val movieResponse = ApiServiceSoup.getDetailChapter(url)
+        val movieResponse = apiServiceSoup.getDetailChapter(url)
         return movieResponse.getItems()
     }
 }
