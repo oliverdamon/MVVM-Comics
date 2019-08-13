@@ -48,6 +48,7 @@ class PublishingFragment: Fragment(){
     private fun initUi() {
         with(recycler_publishing) {
             adapter = adapterItem
+            isNestedScrollingEnabled = false
             val gridLayoutManager = GridLayoutManager(context, 2)
             layoutManager = gridLayoutManager
         }

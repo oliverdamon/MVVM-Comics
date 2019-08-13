@@ -1,5 +1,6 @@
 package com.example.mangavinek.detail.presentation.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.load.HttpException
@@ -7,6 +8,7 @@ import com.example.mangavinek.core.util.StateLiveData
 import com.example.mangavinek.core.util.StateMutableLiveData
 import com.example.mangavinek.detail.model.domain.entity.DetailChapterResponse
 import com.example.mangavinek.detail.model.domain.entity.DetailResponse
+import com.example.mangavinek.detail.model.domain.entity.StatusChapter
 import com.example.mangavinek.detail.model.repository.DetailRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,5 +55,11 @@ class DetailViewModel(private val repository: DetailRepository) : ViewModel() {
                 stateDetailChapter.loading.value = false
             }
         }
+    }
+
+    val mergeStatusList = MutableLiveData<MutableList<StatusChapter>>()
+
+    fun fetchListStatus(detailResponse: DetailResponse) {
+        mergeStatusList.value = repository.mergeStatusList(detailResponse)
     }
 }

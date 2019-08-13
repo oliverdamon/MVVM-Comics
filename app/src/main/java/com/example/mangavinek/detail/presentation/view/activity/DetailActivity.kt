@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.mangavinek.R
@@ -56,7 +57,8 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
     private fun populateDetail(detailResponse: DetailResponse?) {
         detailResponse?.let {
             text_title.text = it.title
-            text_title_original.text = getStringBold("Nome original: ${it.titleOriginal}", "Nome original:")
+            text_title_original.text = getStringBold("Nome original: ${it.titleOriginal}",
+                "Nome original:")
             text_status.text = detailResponse.status
             text_publishing.text = getStringBold("Editora: ${it.publishing}", "Editora:")
             text_publication.text = getStringBold("Publicação: ${it.publication}", "Publicação:")
@@ -72,7 +74,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
                 .load(urlImage)
                 .into(image_cover_complet)
 
-            initRecycler(mergeStatusList(it))
+            initRecycler(it)
             initFragment(it.link)
         }
     }
@@ -86,36 +88,19 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
 
     private fun showError() {}
 
-    private fun mergeStatusList(it: DetailResponse): MutableList<StatusChapter> {
-        val partsAvailable = it.issueAvailable.split(" ".toRegex())
-        val partsTranslated = it.issueTranslated.split(" ".toRegex())
-        val partsUnavailable = it.issueUnavailable.split(" ".toRegex())
-        val mutableList = mutableListOf<StatusChapter>()
+    private fun mergeStatusList(): List<StatusChapter> {
+        var list = listOf<StatusChapter>()
+        viewModel.mergeStatusList.observe(this, Observer { list = it })
+        return list
+    }
 
-        partsAvailable.forEach {
-            if (it.isNotEmpty()) {
-                val statusChapter = StatusChapter("available", it)
-                mutableList.add(statusChapter)
-            }
+    private fun initRecycler(detailResponse: DetailResponse) {
+        viewModel.fetchListStatus(detailResponse)
+        with(recycler_chapter_status) {
+            adapter = StatusChapterAdapter(mergeStatusList())
+            val gridLayoutManager = GridLayoutManager(this@DetailActivity, 4)
+            layoutManager = gridLayoutManager
         }
-
-        partsTranslated.forEach {
-            if (it.isNotEmpty()) {
-                val statusChapter = StatusChapter("translated", it)
-                mutableList.add(statusChapter)
-            }
-        }
-
-        partsUnavailable.forEach {
-            if (it.isNotEmpty()) {
-                val statusChapter = StatusChapter("unavailable", it)
-                mutableList.add(statusChapter)
-            }
-        }
-
-        mutableList.sortWith(compareBy(StatusChapter::number))
-
-        return mutableList
     }
 
     private fun getStringBold(textComplete: String, textSpecific: String): SpannableString {
@@ -157,13 +142,5 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
 
         frame_chapter.visibility = if (isCheck) View.VISIBLE else View.GONE
         recycler_chapter_status.visibility = if (isCheck) View.GONE else View.VISIBLE
-    }
-
-    private fun initRecycler(list: List<StatusChapter>) {
-        with(recycler_chapter_status) {
-            adapter = StatusChapterAdapter(list)
-            val gridLayoutManager = GridLayoutManager(this@DetailActivity, 4)
-            layoutManager = gridLayoutManager
-        }
     }
 }
