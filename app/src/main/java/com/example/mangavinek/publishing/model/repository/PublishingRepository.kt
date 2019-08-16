@@ -11,6 +11,7 @@ class PublishingRepository {
     }
 
     private fun addListPublishing() {
+        itemList.add(PublishingObject("Todas"))
         itemList.add(PublishingObject("Avatar Press"))
         itemList.add(PublishingObject("Boom! Studios"))
         itemList.add(PublishingObject("Cross Overs"))

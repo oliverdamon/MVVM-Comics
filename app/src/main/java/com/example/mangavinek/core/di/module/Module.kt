@@ -1,5 +1,7 @@
 package com.example.mangavinek.core.di.module
 
+import com.example.mangavinek.catalog.model.repository.CatalogRepository
+import com.example.mangavinek.catalog.presentation.viewmodel.CatalogViewModel
 import com.example.mangavinek.core.api.ApiServiceSoup
 import com.example.mangavinek.detail.model.repository.DetailRepository
 import com.example.mangavinek.detail.presentation.viewmodel.DetailViewModel
@@ -14,12 +16,14 @@ val repositoryModule = module {
     single<HotRepositoryManga> { HotRepositoryManga(get()) }
     factory<DetailRepository> { DetailRepository(get()) }
     single<PublishingRepository> { PublishingRepository() }
+    factory<CatalogRepository>{ CatalogRepository(get()) }
 }
 
 val viewModelModule = module {
     viewModel<NewsViewModel> { NewsViewModel(get()) }
     viewModel<DetailViewModel> { DetailViewModel(get()) }
     viewModel<PublishingViewModel> { PublishingViewModel(get()) }
+    viewModel<CatalogViewModel> { CatalogViewModel(get()) }
 }
 
 val apiServiceClientModule = module {

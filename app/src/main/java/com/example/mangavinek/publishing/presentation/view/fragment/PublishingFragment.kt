@@ -8,10 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
+import com.example.mangavinek.catalog.presentation.view.activity.CatalogActivity
+import com.example.mangavinek.core.constant.BASE_URL_PUBLISHING
+import com.example.mangavinek.core.constant.BASE_URL_PUBLISHING_DEFAULT
 import com.example.mangavinek.publishing.model.domain.entity.PublishingObject
 import com.example.mangavinek.publishing.presentation.view.adapter.PublishingAdapter
 import com.example.mangavinek.publishing.presentation.viewmodel.PublishingViewModel
 import kotlinx.android.synthetic.main.fragment_publishing.*
+import org.jetbrains.anko.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PublishingFragment: Fragment(){
@@ -20,7 +24,12 @@ class PublishingFragment: Fragment(){
     }
 
     private val adapterItem: PublishingAdapter by lazy {
-        PublishingAdapter(itemList) {}
+        PublishingAdapter(itemList) {
+            val url = if (it.name.equals("Todas")) BASE_URL_PUBLISHING_DEFAULT
+            else String.format(BASE_URL_PUBLISHING, it.name)
+
+            context!!.startActivity<CatalogActivity>("url" to url)
+        }
     }
 
     private val viewModel by viewModel<PublishingViewModel>()
