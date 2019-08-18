@@ -81,10 +81,11 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
 
     private fun showSuccess() {
         layout_detail.visibility = View.VISIBLE
-        layout_loading.visibility = View.GONE
     }
 
-    private fun showLoading(isVisible: Boolean) {}
+    private fun showLoading(isVisible: Boolean) {
+        layout_loading.visibility = if (isVisible) View.VISIBLE else View.GONE
+    }
 
     private fun showError() {}
 

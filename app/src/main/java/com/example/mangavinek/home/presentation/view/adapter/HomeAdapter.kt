@@ -9,12 +9,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.mangavinek.R
-import com.example.mangavinek.home.model.domain.entity.Model
+import com.example.mangavinek.home.model.domain.entity.HomeResponse
 import kotlinx.android.synthetic.main.row_data.view.*
 
-class ItemAdapter(var listItem: ArrayList<Model>,
-                  private val onItemClickListener: ((model: Model) -> Unit)):
-    RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+class HomeAdapter(private var listItem: ArrayList<HomeResponse>,
+                  private val onItemClickListener: ((homeResponse: HomeResponse) -> Unit)):
+    RecyclerView.Adapter<HomeAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ItemViewHolder {
         val view = LayoutInflater.from(p0.context).inflate(R.layout.row_data, p0, false)
@@ -29,25 +29,25 @@ class ItemAdapter(var listItem: ArrayList<Model>,
         holder.bindView(dataItem)
     }
 
-    fun clear(datas: ArrayList<Model>) {
+    fun clear(datas: ArrayList<HomeResponse>) {
         listItem.clear()
         listItem.addAll(datas)
         notifyDataSetChanged()
     }
 
-    class ItemViewHolder(private val view: View, private val onItemClickListener: ((model: Model) -> Unit)):
+    class ItemViewHolder(private val view: View, private val onItemClickListener: ((homeResponse: HomeResponse) -> Unit)):
         RecyclerView.ViewHolder(view) {
 
-        val title = view.text_title
-        val image = view.image_cover
+        private val title = view.text_title
+        private val image = view.image_cover
 
-        fun bindView(model: Model) = with(view){
-            title.text = model.title
+        fun bindView(homeResponse: HomeResponse) = with(view){
+            title.text = homeResponse.title
 
             image.alpha = 0.3f
             image.animate().setDuration(400).setInterpolator(AccelerateDecelerateInterpolator()).alpha(1f)
             Glide.with(this)
-                .load(model.image)
+                .load(homeResponse.image)
                 .apply(
                     RequestOptions()
                         .placeholder(R.drawable.ic_image_24dp)
@@ -56,7 +56,7 @@ class ItemAdapter(var listItem: ArrayList<Model>,
                 .into(image)
 
             this.setOnClickListener {
-                onItemClickListener.invoke(model)
+                onItemClickListener.invoke(homeResponse)
             }
 
         }

@@ -9,12 +9,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.mangavinek.R
-import com.example.mangavinek.catalog.model.domain.entity.CatalogReponse
+import com.example.mangavinek.catalog.model.domain.entity.CatalogResponse
 import com.example.mangavinek.core.constant.BASE_URL
 import kotlinx.android.synthetic.main.row_data.view.*
 
-class CatalogAdapter(var listItem: ArrayList<CatalogReponse>,
-                     private val onItemClickListener: ((catalogResponse: CatalogReponse) -> Unit)):
+class CatalogAdapter(var listItem: ArrayList<CatalogResponse>,
+                     private val onItemClickListener: ((catalogResponse: CatalogResponse) -> Unit)):
     RecyclerView.Adapter<CatalogAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ItemViewHolder {
@@ -30,19 +30,19 @@ class CatalogAdapter(var listItem: ArrayList<CatalogReponse>,
         holder.bindView(dataItem)
     }
 
-    fun clear(datas: ArrayList<CatalogReponse>) {
+    fun clear(datas: ArrayList<CatalogResponse>) {
         listItem.clear()
         listItem.addAll(datas)
         notifyDataSetChanged()
     }
 
-    class ItemViewHolder(private val view: View, private val onItemClickListener: ((catalogResponse: CatalogReponse) -> Unit)):
+    class ItemViewHolder(private val view: View, private val onItemClickListener: ((catalogResponse: CatalogResponse) -> Unit)):
         RecyclerView.ViewHolder(view) {
 
         val title = view.text_title
         val image = view.image_cover
 
-        fun bindView(catalogResponse: CatalogReponse) = with(view){
+        fun bindView(catalogResponse: CatalogResponse) = with(view){
             title.text = catalogResponse.title
 
             image.alpha = 0.3f

@@ -3,15 +3,15 @@ package com.example.mangavinek.home.model.domain.entity
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
-data class Model(var element: Element){
+data class HomeResponse(var element: Element){
     val title = element.select(".thead").text().toString()
     val image = element.select("img").attr("src").toString()
     val link = element.select("a.button").attr("href").toString()
 }
 
-fun Elements.getItems(): MutableList<Model> {
-    val transformedElements = mutableListOf<Model>()
-    this.mapNotNull { transformedElements.add(Model(it)) }
+fun Elements.getItems(): MutableList<HomeResponse> {
+    val transformedElements = mutableListOf<HomeResponse>()
+    this.mapNotNull { transformedElements.add(HomeResponse(it)) }
 
     return transformedElements
 }

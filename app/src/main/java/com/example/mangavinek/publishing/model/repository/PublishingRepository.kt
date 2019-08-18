@@ -1,11 +1,11 @@
 package com.example.mangavinek.publishing.model.repository
 
-import com.example.mangavinek.publishing.model.domain.entity.PublishingObject
+import com.example.mangavinek.publishing.model.domain.mock.PublishingObject
 
 class PublishingRepository {
     private val itemList = arrayListOf<PublishingObject>()
 
-    fun listPublishing(): List<PublishingObject> {
+    fun listPublishing(): List<PublishingObject>? {
         addListPublishing()
         return itemList
     }

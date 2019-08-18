@@ -3,7 +3,6 @@ package com.example.mangavinek.detail.presentation.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.load.HttpException
 import com.example.mangavinek.core.util.StateLiveData
 import com.example.mangavinek.core.util.StateMutableLiveData
 import com.example.mangavinek.detail.model.domain.entity.DetailChapterResponse
@@ -23,13 +22,10 @@ class DetailViewModel(private val repository: DetailRepository) : ViewModel() {
             stateDetail.loading.value = true
             try {
                 withContext(Dispatchers.IO) {
-                    repository.getDetail(url)?.let {
-                        stateDetail.success.postValue(it)
-                    }
+                    stateDetail.success.postValue(repository.getDetail(url)?.let { it })
                 }
             } catch (t: Throwable) {
                 stateDetail.error.value = t
-            } catch (e: HttpException) {
             } finally {
                 stateDetail.loading.value = false
             }
@@ -44,13 +40,10 @@ class DetailViewModel(private val repository: DetailRepository) : ViewModel() {
             stateDetailChapter.loading.value = true
             try {
                 withContext(Dispatchers.IO) {
-                    repository.getDetailChapter(url)?.let {
-                        stateDetailChapter.success.postValue(it)
-                    }
+                    stateDetailChapter.success.postValue(repository.getDetailChapter(url)?.let { it })
                 }
             } catch (t: Throwable) {
                 stateDetailChapter.error.value = t
-            } catch (e: HttpException) {
             } finally {
                 stateDetailChapter.loading.value = false
             }

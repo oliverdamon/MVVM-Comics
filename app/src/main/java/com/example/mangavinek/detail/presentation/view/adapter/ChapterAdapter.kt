@@ -29,7 +29,7 @@ class ChapterAdapter(private var listItem: ArrayList<DetailChapterResponse>, pri
     }
 
     class ItemViewHolder(private val view: View, private val onItemClickListener: ((detailChapterResponse: DetailChapterResponse) -> Unit)) : RecyclerView.ViewHolder(view) {
-        val image = view.image_cover
+        private val image = view.image_cover
 
         fun bindView(detailChapterResponse: DetailChapterResponse) = with(view){
             image.alpha = 0.3f

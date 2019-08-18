@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun FragmentManager.addFragment(fragment: Fragment, tag: String) {
+    private fun FragmentManager.addFragment(fragment: Fragment, tag: String) {
         var current = findFragmentByTag(tag)
         beginTransaction().apply {
             primaryNavigationFragment?.let { hide(it) }

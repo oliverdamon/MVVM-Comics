@@ -8,8 +8,8 @@ class DetailRepository(private val apiServiceSoup: ApiServiceSoup) {
     fun getDetail(url: String): DetailResponse? = apiServiceSoup.getDetail(url).getItemDetail()
 
     fun getDetailChapter(url: String): MutableList<DetailChapterResponse>? {
-        val movieResponse = apiServiceSoup.getDetailChapter(url)
-        return movieResponse.getItems()
+        val response = apiServiceSoup.getDetailChapter(url)
+        return response.getItems()
     }
 
     fun mergeStatusList(detailResponse: DetailResponse): MutableList<StatusChapter> {

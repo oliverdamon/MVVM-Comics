@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
-import com.example.mangavinek.catalog.model.domain.entity.CatalogReponse
+import com.example.mangavinek.catalog.model.domain.entity.CatalogResponse
 import com.example.mangavinek.catalog.presentation.view.adapter.CatalogAdapter
 import com.example.mangavinek.catalog.presentation.viewmodel.CatalogViewModel
 import com.example.mangavinek.core.constant.BASE_URL
@@ -31,7 +31,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
 
     private val viewModel by viewModel<CatalogViewModel>()
 
-    private var itemList = arrayListOf<CatalogReponse>()
+    private var itemList = arrayListOf<CatalogResponse>()
     private var releasedLoad: Boolean = true
     private var page: Int = 2
     private var url: String = ""
@@ -80,13 +80,8 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
         return page
     }
 
-    private fun populate(listModel: List<CatalogReponse>) {
-        listModel.forEach {
-            if (!it.title.equals("Detalhes")){
-                itemList.add(it)
-            }
-        }
-
+    private fun populate(listCatalogResponse: List<CatalogResponse>) {
+        itemList.addAll(listCatalogResponse)
         adapterItem.notifyItemChanged(itemList.size - 15, itemList.size)
     }
 

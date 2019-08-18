@@ -26,7 +26,7 @@ class StatusChapterAdapter(private var listItem: List<StatusChapter>) :
     }
 
     class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        val title = view.text_number_chapter
+        private val title = view.text_number_chapter
 
         fun bindView(statusChapter: StatusChapter) = with(view) {
             when (statusChapter.status) {

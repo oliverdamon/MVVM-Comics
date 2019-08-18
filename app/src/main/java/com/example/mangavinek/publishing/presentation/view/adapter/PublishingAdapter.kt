@@ -5,10 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mangavinek.R
-import com.example.mangavinek.publishing.model.domain.entity.PublishingObject
+import com.example.mangavinek.publishing.model.domain.mock.PublishingObject
 import kotlinx.android.synthetic.main.row_data.view.*
 
-class PublishingAdapter(var listItem: ArrayList<PublishingObject>,
+class PublishingAdapter(private var listItem: ArrayList<PublishingObject>,
                         private val onItemClickListener: ((publishingObject: PublishingObject) -> Unit)):
     RecyclerView.Adapter<PublishingAdapter.ItemViewHolder>() {
 
@@ -28,8 +28,8 @@ class PublishingAdapter(var listItem: ArrayList<PublishingObject>,
     class ItemViewHolder(private val view: View, private val onItemClickListener: ((publishingObject: PublishingObject) -> Unit)):
         RecyclerView.ViewHolder(view) {
 
-        val title = view.text_title
-        val image = view.image_cover
+        private val title = view.text_title
+        private val image = view.image_cover
 
         fun bindView(publishingObject: PublishingObject) = with(view){
             title.text = publishingObject.name
