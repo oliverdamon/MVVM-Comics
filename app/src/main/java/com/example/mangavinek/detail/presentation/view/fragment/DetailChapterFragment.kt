@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
-import com.example.mangavinek.detail.model.domain.entity.DetailChapterResponse
+import com.example.mangavinek.data.model.detail.entity.DetailChapterResponse
 import com.example.mangavinek.detail.presentation.view.adapter.ChapterAdapter
 import com.example.mangavinek.detail.presentation.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.fragment_detail_chapter.view.*

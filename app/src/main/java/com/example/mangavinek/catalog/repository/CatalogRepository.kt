@@ -1,8 +1,8 @@
-package com.example.mangavinek.catalog.model.repository
+package com.example.mangavinek.catalog.repository
 
-import com.example.mangavinek.catalog.model.domain.entity.CatalogResponse
-import com.example.mangavinek.catalog.model.domain.entity.getItems
-import com.example.mangavinek.core.api.ApiServiceSoup
+import com.example.mangavinek.data.model.catalog.entity.CatalogResponse
+import com.example.mangavinek.data.model.catalog.entity.getItems
+import com.example.mangavinek.data.source.remote.ApiServiceSoup
 
 class CatalogRepository(private val apiServiceSoup: ApiServiceSoup) {
 

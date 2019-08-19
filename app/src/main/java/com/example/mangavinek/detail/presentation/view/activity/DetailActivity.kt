@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.mangavinek.R
 import com.example.mangavinek.core.constant.BASE_URL
-import com.example.mangavinek.detail.model.domain.entity.DetailResponse
-import com.example.mangavinek.detail.model.domain.entity.StatusChapter
+import com.example.mangavinek.data.model.detail.entity.DetailResponse
+import com.example.mangavinek.data.model.detail.entity.StatusChapter
 import com.example.mangavinek.detail.presentation.view.adapter.StatusChapterAdapter
 import com.example.mangavinek.detail.presentation.view.fragment.DetailChapterFragment
 import com.example.mangavinek.detail.presentation.viewmodel.DetailViewModel

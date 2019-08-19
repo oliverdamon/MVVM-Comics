@@ -1,4 +1,4 @@
-package com.example.mangavinek.catalog.model.domain.entity
+package com.example.mangavinek.data.model.catalog.entity
 
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements

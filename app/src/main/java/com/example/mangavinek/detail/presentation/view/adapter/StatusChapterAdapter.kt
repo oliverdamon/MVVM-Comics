@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mangavinek.R
-import com.example.mangavinek.detail.model.domain.entity.StatusChapter
+import com.example.mangavinek.data.model.detail.entity.StatusChapter
 import kotlinx.android.synthetic.main.row_chapter_status.view.*
 
 class StatusChapterAdapter(private var listItem: List<StatusChapter>) :

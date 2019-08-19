@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.mangavinek.core.constant.HOME_URL_PAGINATION
 import com.example.mangavinek.core.util.StateLiveData
 import com.example.mangavinek.core.util.StateMutableLiveData
-import com.example.mangavinek.home.model.domain.entity.HomeResponse
-import com.example.mangavinek.home.model.repository.HomeRepository
+import com.example.mangavinek.data.model.home.entity.HomeResponse
+import com.example.mangavinek.home.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

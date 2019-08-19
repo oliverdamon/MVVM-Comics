@@ -1,4 +1,4 @@
-package com.example.mangavinek.home.model.domain.entity
+package com.example.mangavinek.data.model.home.entity
 
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements

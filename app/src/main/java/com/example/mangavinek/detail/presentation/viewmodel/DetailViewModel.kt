@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mangavinek.core.util.StateLiveData
 import com.example.mangavinek.core.util.StateMutableLiveData
-import com.example.mangavinek.detail.model.domain.entity.DetailChapterResponse
-import com.example.mangavinek.detail.model.domain.entity.DetailResponse
-import com.example.mangavinek.detail.model.domain.entity.StatusChapter
-import com.example.mangavinek.detail.model.repository.DetailRepository
+import com.example.mangavinek.data.model.detail.entity.DetailChapterResponse
+import com.example.mangavinek.data.model.detail.entity.DetailResponse
+import com.example.mangavinek.data.model.detail.entity.StatusChapter
+import com.example.mangavinek.detail.repository.DetailRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

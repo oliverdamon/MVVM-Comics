@@ -1,4 +1,4 @@
-package com.example.mangavinek.core.api
+package com.example.mangavinek.core.service
 
 import org.jsoup.Connection
 import org.jsoup.Jsoup

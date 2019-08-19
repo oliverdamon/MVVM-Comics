@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mangavinek.R
-import com.example.mangavinek.publishing.model.domain.mock.PublishingObject
+import com.example.mangavinek.publishing.domain.PublishingDomain
 import kotlinx.android.synthetic.main.row_data.view.*
 
 class PublishingAdapter(
-    private var listItem: ArrayList<PublishingObject>,
-    private val onItemClickListener: ((publishingObject: PublishingObject) -> Unit)
+    private var listItem: ArrayList<PublishingDomain>,
+    private val onItemClickListener: ((publishingDomain: PublishingDomain) -> Unit)
 ) :
     RecyclerView.Adapter<PublishingAdapter.ItemViewHolder>() {
 
@@ -30,19 +30,19 @@ class PublishingAdapter(
 
     class ItemViewHolder(
         private val view: View,
-        private val onItemClickListener: ((publishingObject: PublishingObject) -> Unit)
+        private val onItemClickListener: ((publishingDomain: PublishingDomain) -> Unit)
     ) :
         RecyclerView.ViewHolder(view) {
 
         private val title = view.text_title
         private val image = view.image_cover
 
-        fun bindView(publishingObject: PublishingObject) = with(view) {
-            title.text = publishingObject.name
-            image.setImageDrawable(ContextCompat.getDrawable(context, publishingObject.image))
+        fun bindView(publishingDomain: PublishingDomain) = with(view) {
+            title.text = publishingDomain.name
+            image.setImageDrawable(ContextCompat.getDrawable(context, publishingDomain.image))
 
             this.setOnClickListener {
-                onItemClickListener.invoke(publishingObject)
+                onItemClickListener.invoke(publishingDomain)
             }
 
         }
