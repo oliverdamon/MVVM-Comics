@@ -22,12 +22,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <include layout="@layout/layout_detail"
-                     android:visibility="gone"
-                     android:layout_width="match_parent"
-                     android:layout_height="match_parent"
-                     android:id="@+id/layout_detail"
-                     tools:visibility="visible"/>
+        <include layout="@layout/layout_detail"
+                 android:visibility="gone"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:id="@+id/layout_detail"
+                 tools:visibility="visible"/>
 
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

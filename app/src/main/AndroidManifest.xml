@@ -19,8 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.example.mangavinek.detail.presentation.view.activity.DetailActivity"/>
-        <activity android:name=".catalog.presentation.view.activity.CatalogActivity"/>
+        <activity android:name="com.example.mangavinek.detail.presentation.view.activity.DetailActivity"
+                  android:configChanges="screenSize|orientation"/>
+        <activity android:name=".catalog.presentation.view.activity.CatalogActivity"
+                  android:configChanges="screenSize|orientation"/>
     </application>
 
 </manifest>

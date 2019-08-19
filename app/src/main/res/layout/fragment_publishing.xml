@@ -9,7 +9,7 @@
     <View
             android:layout_width="wrap_content"
             android:layout_height="150dp" android:id="@+id/view"
-            app:layout_constraintStart_toStartOf="@+id/nestedScrollView"
+            app:layout_constraintStart_toStartOf="@+id/nested_scroll_publishing"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
     <androidx.core.widget.NestedScrollView
@@ -18,11 +18,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent" android:id="@+id/nestedScrollView">
+            app:layout_constraintTop_toTopOf="parent" android:id="@+id/nested_scroll_publishing">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical">
             <TextView
-                    android:text="TextView"
+                    android:text="Selecione uma editora:"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"

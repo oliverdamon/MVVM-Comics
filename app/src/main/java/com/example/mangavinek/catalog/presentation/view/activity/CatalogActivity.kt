@@ -46,6 +46,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
                 if (releasedLoad) {
                     delay(1000)
                     page = 2
+                    text_erro.visibility = View.GONE
                     adapterItem.clear(itemList)
                     viewModel.fetchList(url)
                 }

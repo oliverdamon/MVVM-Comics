@@ -99,6 +99,8 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
         viewModel.fetchListStatus(detailResponse)
         with(recycler_chapter_status) {
             adapter = StatusChapterAdapter(mergeStatusList())
+            isNestedScrollingEnabled = false
+            isFocusable = false
             val gridLayoutManager = GridLayoutManager(this@DetailActivity, 4)
             layoutManager = gridLayoutManager
         }

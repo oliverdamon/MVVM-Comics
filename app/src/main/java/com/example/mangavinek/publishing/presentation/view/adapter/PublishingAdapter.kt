@@ -3,13 +3,16 @@ package com.example.mangavinek.publishing.presentation.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mangavinek.R
 import com.example.mangavinek.publishing.model.domain.mock.PublishingObject
 import kotlinx.android.synthetic.main.row_data.view.*
 
-class PublishingAdapter(private var listItem: ArrayList<PublishingObject>,
-                        private val onItemClickListener: ((publishingObject: PublishingObject) -> Unit)):
+class PublishingAdapter(
+    private var listItem: ArrayList<PublishingObject>,
+    private val onItemClickListener: ((publishingObject: PublishingObject) -> Unit)
+) :
     RecyclerView.Adapter<PublishingAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ItemViewHolder {
@@ -25,14 +28,18 @@ class PublishingAdapter(private var listItem: ArrayList<PublishingObject>,
         holder.bindView(dataItem)
     }
 
-    class ItemViewHolder(private val view: View, private val onItemClickListener: ((publishingObject: PublishingObject) -> Unit)):
+    class ItemViewHolder(
+        private val view: View,
+        private val onItemClickListener: ((publishingObject: PublishingObject) -> Unit)
+    ) :
         RecyclerView.ViewHolder(view) {
 
         private val title = view.text_title
         private val image = view.image_cover
 
-        fun bindView(publishingObject: PublishingObject) = with(view){
+        fun bindView(publishingObject: PublishingObject) = with(view) {
             title.text = publishingObject.name
+            image.setImageDrawable(ContextCompat.getDrawable(context, publishingObject.image))
 
             this.setOnClickListener {
                 onItemClickListener.invoke(publishingObject)

@@ -72,6 +72,8 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
     private fun initUi(view: View) {
         with(view.recycler_chapter) {
             adapter = adapterChapter
+            isNestedScrollingEnabled = false
+            isFocusable = false
             val gridLayoutManager = GridLayoutManager(context, 3)
             layoutManager = gridLayoutManager
         }

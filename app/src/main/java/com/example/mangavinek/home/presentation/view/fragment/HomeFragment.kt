@@ -53,6 +53,7 @@ class HomeFragment : Fragment(), AnkoLogger {
                 if (releasedLoad) {
                     delay(1000)
                     page = 2
+                    text_erro.visibility = View.GONE
                     adapterHome.clear(itemList)
                     viewModel.fetchList()
                 }
@@ -111,7 +112,6 @@ class HomeFragment : Fragment(), AnkoLogger {
     private fun showSuccess() {
         recycler_view.visibility = View.VISIBLE
         progress_bottom.visibility = View.GONE
-        text_erro.visibility = View.GONE
         releasedLoad = true
     }
 
