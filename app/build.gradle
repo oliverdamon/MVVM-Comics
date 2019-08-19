@@ -20,6 +20,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('login.properties').newDataInputStream())
+
+    def LOGIN_ACTION_URL = '"http://soquadrinhos.com/member.php"'
+    def USERNAME = properties.username ?: '"Username empty"'
+    def PASSWORD = properties.password ?: '"Password empty"'
+
+    android.buildTypes.each { type->
+        type.buildConfigField 'String', 'LOGIN_ACTION_URL', LOGIN_ACTION_URL
+        type.buildConfigField 'String', 'USERNAME', USERNAME
+        type.buildConfigField 'String', 'PASSWORD', PASSWORD
+    }
 }
 
 dependencies {
