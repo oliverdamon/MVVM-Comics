@@ -3,9 +3,9 @@ package com.example.mangavinek.catalog.presentation.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mangavinek.catalog.model.domain.entity.CatalogResponse
-import com.example.mangavinek.catalog.model.repository.CatalogRepository
+import com.example.mangavinek.catalog.repository.CatalogRepository
 import com.example.mangavinek.core.util.Resource
+import com.example.mangavinek.data.model.catalog.entity.CatalogResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
