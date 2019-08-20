@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.mangavinek.R
 import com.example.mangavinek.core.constant.BASE_URL
+import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.detail.model.domain.entity.DetailResponse
 import com.example.mangavinek.detail.model.domain.entity.StatusChapter
 import com.example.mangavinek.detail.presentation.view.adapter.StatusChapterAdapter
@@ -40,25 +41,31 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
     private fun loadData() {
         val url: String = intent.getStringExtra("url")
         viewModel.fetchDetail(url)
-        viewModel.getDetail.observe(this,
-            onSuccess = {
-                populateDetail(it)
-                showSuccess()
-            },
-            onLoading = {
-                showLoading(it)
-            },
-            onError = {
-                showError()
+        viewModel.getDetail.observe(this, Observer { resource ->
+            when (resource.status) {
+                Resource.Status.SUCCESS -> {
+                    resource.data?.let {
+                        populateDetail(it)
+                        showSuccess()
+                    }
+                }
+                Resource.Status.ERROR -> {
+                    showError()
+                }
+                Resource.Status.LOADING -> {
+                    resource.boolean?.let { showLoading(it) }
+                }
             }
-        )
+        })
     }
 
     private fun populateDetail(detailResponse: DetailResponse?) {
         detailResponse?.let {
             text_title.text = it.title
-            text_title_original.text = getStringBold("Nome original: ${it.titleOriginal}",
-                "Nome original:")
+            text_title_original.text = getStringBold(
+                "Nome original: ${it.titleOriginal}",
+                "Nome original:"
+            )
             text_status.text = detailResponse.status
             text_publishing.text = getStringBold("Editora: ${it.publishing}", "Editora:")
             text_publication.text = getStringBold("Publicação: ${it.publication}", "Publicação:")

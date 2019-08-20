@@ -1,10 +1,10 @@
 package com.example.mangavinek.home.presentation.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mangavinek.core.constant.HOME_URL_PAGINATION
-import com.example.mangavinek.core.util.StateLiveData
-import com.example.mangavinek.core.util.StateMutableLiveData
+import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.home.model.domain.entity.HomeResponse
 import com.example.mangavinek.home.model.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
@@ -13,23 +13,20 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 
-    private val state = StateMutableLiveData<MutableList<HomeResponse>, Throwable>()
-    val getList: StateLiveData<MutableList<HomeResponse>, Throwable> get() = state
+    val getList = MutableLiveData<Resource<MutableList<HomeResponse>>>()
 
     fun fetchList(page: Int = 1) {
         viewModelScope.launch {
-            state.loading.value = true
+            getList.value = Resource.loading(true)
             try {
                 withContext(Dispatchers.IO) {
-                    state.success.postValue(repository.getList(HOME_URL_PAGINATION.plus(page))?.let { it })
+                    getList.postValue(repository.getList(HOME_URL_PAGINATION.plus(page))?.let { Resource.success(it) })
                 }
             } catch (t: Throwable) {
-                state.error.value = t
+                getList.value = Resource.error(t)
             } finally {
-                state.loading.value = false
+                getList.value = Resource.loading(false)
             }
         }
     }
-
-
 }

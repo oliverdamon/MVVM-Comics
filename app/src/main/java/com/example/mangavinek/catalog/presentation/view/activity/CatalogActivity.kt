@@ -11,6 +11,7 @@ import com.example.mangavinek.catalog.presentation.view.adapter.CatalogAdapter
 import com.example.mangavinek.catalog.presentation.viewmodel.CatalogViewModel
 import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.util.PaginationScroll
+import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.detail.presentation.view.activity.DetailActivity
 import kotlinx.android.synthetic.main.activity_catalog.*
 import kotlinx.coroutines.Dispatchers
@@ -60,21 +61,25 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
 
     private fun loadData() {
         viewModel.fetchList(url)
-        viewModel.getListCatalog.observe(this,
-            onSuccess = {
-                populate(it)
-                showSuccess()
-            },
-            onLoading = {
-                showLoading(it)
-            },
-            onError = {
-                showError()
+        viewModel.getListCatalog.observe(this, Observer { resource ->
+            when (resource.status) {
+                Resource.Status.SUCCESS -> {
+                    resource.data?.let {
+                        populate(it)
+                        showSuccess()
+                    }
+                }
+                Resource.Status.ERROR -> {
+                    showError()
+                }
+                Resource.Status.LOADING -> {
+                    resource.boolean?.let { showLoading(it) }
+                }
             }
-        )
+        })
     }
 
-    private fun lastPage(): Int{
+    private fun lastPage(): Int {
         var page = 0
         viewModel.getLastPagination.observe(this, Observer { page = it })
 
@@ -92,7 +97,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
             val gridLayoutManager = GridLayoutManager(context, 3)
             addOnScrollListener(object : PaginationScroll(gridLayoutManager) {
                 override fun loadMoreItems() {
-                    if (page <= lastPage()){
+                    if (page <= lastPage()) {
                         viewModel.fetchList(url, page++)
                         progress_bottom.visibility = View.VISIBLE
                         releasedLoad = false

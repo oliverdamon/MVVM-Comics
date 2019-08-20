@@ -3,8 +3,7 @@ package com.example.mangavinek.detail.presentation.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mangavinek.core.util.StateLiveData
-import com.example.mangavinek.core.util.StateMutableLiveData
+import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.detail.model.domain.entity.DetailChapterResponse
 import com.example.mangavinek.detail.model.domain.entity.DetailResponse
 import com.example.mangavinek.detail.model.domain.entity.StatusChapter
@@ -14,38 +13,38 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DetailViewModel(private val repository: DetailRepository) : ViewModel() {
-    private val stateDetail = StateMutableLiveData<DetailResponse, Throwable>()
-    val getDetail: StateLiveData<DetailResponse, Throwable> get() = stateDetail
+    val getDetail = MutableLiveData<Resource<DetailResponse>>()
 
     fun fetchDetail(url: String) {
+
         viewModelScope.launch {
-            stateDetail.loading.value = true
+            getDetail.value = Resource.loading(true)
             try {
                 withContext(Dispatchers.IO) {
-                    stateDetail.success.postValue(repository.getDetail(url)?.let { it })
+                    getDetail.postValue(repository.getDetail(url)?.let { Resource.success(it) })
                 }
             } catch (t: Throwable) {
-                stateDetail.error.value = t
+                getDetail.value = Resource.error(t)
             } finally {
-                stateDetail.loading.value = false
+                getDetail.value = Resource.loading(false)
             }
         }
     }
 
-    private val stateDetailChapter = StateMutableLiveData<MutableList<DetailChapterResponse>, Throwable>()
-    val getListDetailChapter: StateLiveData<MutableList<DetailChapterResponse>, Throwable> get() = stateDetailChapter
+    val getListDetailChapter = MutableLiveData<Resource<MutableList<DetailChapterResponse>>>()
 
     fun fetchList(url: String) {
+
         viewModelScope.launch {
-            stateDetailChapter.loading.value = true
+            getListDetailChapter.value = Resource.loading(true)
             try {
                 withContext(Dispatchers.IO) {
-                    stateDetailChapter.success.postValue(repository.getDetailChapter(url)?.let { it })
+                    getListDetailChapter.postValue(repository.getDetailChapter(url)?.let { Resource.success(it) })
                 }
             } catch (t: Throwable) {
-                stateDetailChapter.error.value = t
+                getListDetailChapter.value = Resource.error(t)
             } finally {
-                stateDetailChapter.loading.value = false
+                getListDetailChapter.value = Resource.loading(false)
             }
         }
     }
