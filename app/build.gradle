@@ -44,6 +44,7 @@ dependencies {
     def coroutines_version = "1.2.1"
     def view_model_scope_version = "2.2.0-alpha03"
     def koin_version = "2.0.1"
+    def timber_version = "4.7.1"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -74,4 +75,6 @@ dependencies {
     implementation "org.koin:koin-androidx-scope:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    implementation "com.jakewharton.timber:timber:$timber_version"
 }

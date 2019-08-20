@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.anko.AnkoLogger
+import timber.log.Timber
 
 class CatalogViewModel(private val repository: CatalogRepository) : ViewModel(), AnkoLogger {
 
@@ -24,8 +25,8 @@ class CatalogViewModel(private val repository: CatalogRepository) : ViewModel(),
                 withContext(Dispatchers.IO) {
                     getListCatalog.postValue(repository.getListCatalog(url.plus(page))?.let { Resource.success(it) })
                 }
-            } catch (t: Throwable) {
-                getListCatalog.value = Resource.error(t)
+            } catch (e: Exception) {
+                getListCatalog.value = Resource.error(e)
             } finally {
                 getListCatalog.value = Resource.loading(false)
             }
@@ -37,7 +38,8 @@ class CatalogViewModel(private val repository: CatalogRepository) : ViewModel(),
         withContext(Dispatchers.IO) {
             try {
                 getLastPagination.postValue(repository.getLastPagination(url)?.let { it })
-            } catch (t: Throwable) {
+            } catch (e: Exception) {
+                Timber.d(e.message)
             }
         }
     }

@@ -23,8 +23,8 @@ class DetailViewModel(private val repository: DetailRepository) : ViewModel() {
                 withContext(Dispatchers.IO) {
                     getDetail.postValue(repository.getDetail(url)?.let { Resource.success(it) })
                 }
-            } catch (t: Throwable) {
-                getDetail.value = Resource.error(t)
+            } catch (e: Exception) {
+                getDetail.value = Resource.error(e)
             } finally {
                 getDetail.value = Resource.loading(false)
             }
@@ -41,8 +41,8 @@ class DetailViewModel(private val repository: DetailRepository) : ViewModel() {
                 withContext(Dispatchers.IO) {
                     getListDetailChapter.postValue(repository.getDetailChapter(url)?.let { Resource.success(it) })
                 }
-            } catch (t: Throwable) {
-                getListDetailChapter.value = Resource.error(t)
+            } catch (e: Exception) {
+                getListDetailChapter.value = Resource.error(e)
             } finally {
                 getListDetailChapter.value = Resource.loading(false)
             }

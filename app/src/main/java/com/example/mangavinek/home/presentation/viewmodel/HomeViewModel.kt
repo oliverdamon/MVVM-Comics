@@ -22,8 +22,8 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
                 withContext(Dispatchers.IO) {
                     getList.postValue(repository.getList(HOME_URL_PAGINATION.plus(page))?.let { Resource.success(it) })
                 }
-            } catch (t: Throwable) {
-                getList.value = Resource.error(t)
+            } catch (e: Exception) {
+                getList.value = Resource.error(e)
             } finally {
                 getList.value = Resource.loading(false)
             }
