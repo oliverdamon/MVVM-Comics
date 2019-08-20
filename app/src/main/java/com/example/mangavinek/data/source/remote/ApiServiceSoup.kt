@@ -1,5 +1,6 @@
-package com.example.mangavinek.core.api
+package com.example.mangavinek.data.source.remote
 
+import com.example.mangavinek.core.service.JSoupService
 import org.jsoup.select.Elements
 
 object ApiServiceSoup {

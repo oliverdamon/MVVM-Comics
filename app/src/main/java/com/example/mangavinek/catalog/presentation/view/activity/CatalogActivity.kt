@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
-import com.example.mangavinek.catalog.model.domain.entity.CatalogResponse
+import com.example.mangavinek.data.model.catalog.entity.CatalogResponse
 import com.example.mangavinek.catalog.presentation.view.adapter.CatalogAdapter
 import com.example.mangavinek.catalog.presentation.viewmodel.CatalogViewModel
 import com.example.mangavinek.core.constant.BASE_URL

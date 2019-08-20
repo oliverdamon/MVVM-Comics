@@ -12,7 +12,7 @@ import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.util.PaginationScroll
 import com.example.mangavinek.core.util.Resource
 import com.example.mangavinek.detail.presentation.view.activity.DetailActivity
-import com.example.mangavinek.home.model.domain.entity.HomeResponse
+import com.example.mangavinek.data.model.home.entity.HomeResponse
 import com.example.mangavinek.home.presentation.view.adapter.HomeAdapter
 import com.example.mangavinek.home.presentation.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*

@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.mangavinek.R
-import com.example.mangavinek.home.model.domain.entity.HomeResponse
+import com.example.mangavinek.data.model.home.entity.HomeResponse
 import kotlinx.android.synthetic.main.row_data.view.*
 
 class HomeAdapter(private var listItem: ArrayList<HomeResponse>,

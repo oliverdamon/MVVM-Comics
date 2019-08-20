@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.mangavinek.R
-import com.example.mangavinek.detail.model.domain.entity.DetailChapterResponse
+import com.example.mangavinek.data.model.detail.entity.DetailChapterResponse
 import kotlinx.android.synthetic.main.row_data.view.*
 
 class ChapterAdapter(private var listItem: ArrayList<DetailChapterResponse>, private val onItemClickListener: ((detailChapterResponse: DetailChapterResponse) -> Unit)) :

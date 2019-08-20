@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.mangavinek.R
-import com.example.mangavinek.catalog.model.domain.entity.CatalogResponse
+import com.example.mangavinek.data.model.catalog.entity.CatalogResponse
 import com.example.mangavinek.core.constant.BASE_URL
 import kotlinx.android.synthetic.main.row_data.view.*
 

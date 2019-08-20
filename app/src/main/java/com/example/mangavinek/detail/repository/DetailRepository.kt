@@ -1,7 +1,7 @@
-package com.example.mangavinek.detail.model.repository
+package com.example.mangavinek.detail.repository
 
-import com.example.mangavinek.core.api.ApiServiceSoup
-import com.example.mangavinek.detail.model.domain.entity.*
+import com.example.mangavinek.data.model.detail.entity.*
+import com.example.mangavinek.data.source.remote.ApiServiceSoup
 
 class DetailRepository(private val apiServiceSoup: ApiServiceSoup) {
 
