@@ -1,4 +1,4 @@
-package com.example.mangavinek.core.util
+package com.example.mangavinek.core.helper
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

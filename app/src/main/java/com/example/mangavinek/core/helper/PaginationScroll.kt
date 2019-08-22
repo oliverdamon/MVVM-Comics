@@ -1,4 +1,4 @@
-package com.example.mangavinek.core.util
+package com.example.mangavinek.core.helper
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView

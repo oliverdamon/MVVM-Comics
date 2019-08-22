@@ -10,8 +10,8 @@ import com.example.mangavinek.data.model.catalog.entity.CatalogResponse
 import com.example.mangavinek.catalog.presentation.view.adapter.CatalogAdapter
 import com.example.mangavinek.catalog.presentation.viewmodel.CatalogViewModel
 import com.example.mangavinek.core.constant.BASE_URL
-import com.example.mangavinek.core.util.PaginationScroll
-import com.example.mangavinek.core.util.Resource
+import com.example.mangavinek.core.helper.PaginationScroll
+import com.example.mangavinek.core.helper.Resource
 import com.example.mangavinek.detail.presentation.view.activity.DetailActivity
 import kotlinx.android.synthetic.main.activity_catalog.*
 import kotlinx.coroutines.Dispatchers

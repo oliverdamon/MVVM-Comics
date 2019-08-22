@@ -9,10 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
 import com.example.mangavinek.core.constant.BASE_URL
-import com.example.mangavinek.core.util.PaginationScroll
-import com.example.mangavinek.core.util.Resource
-import com.example.mangavinek.detail.presentation.view.activity.DetailActivity
+import com.example.mangavinek.core.helper.PaginationScroll
+import com.example.mangavinek.core.helper.Resource
 import com.example.mangavinek.data.model.home.entity.HomeResponse
+import com.example.mangavinek.detail.presentation.view.activity.DetailActivity
 import com.example.mangavinek.home.presentation.view.adapter.HomeAdapter
 import com.example.mangavinek.home.presentation.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import android.widget.Toast.makeText as makeText1
 
 class HomeFragment : Fragment(), AnkoLogger {
 

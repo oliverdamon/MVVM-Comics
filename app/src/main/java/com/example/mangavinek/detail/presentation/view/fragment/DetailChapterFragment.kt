@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
-import com.example.mangavinek.core.util.Resource
+import com.example.mangavinek.core.helper.Resource
 import com.example.mangavinek.data.model.detail.entity.DetailChapterResponse
 import com.example.mangavinek.detail.presentation.view.adapter.ChapterAdapter
 import com.example.mangavinek.detail.presentation.viewmodel.DetailViewModel

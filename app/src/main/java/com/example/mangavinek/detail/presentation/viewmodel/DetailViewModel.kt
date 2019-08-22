@@ -1,55 +1,25 @@
 package com.example.mangavinek.detail.presentation.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.mangavinek.core.util.Resource
+import com.example.mangavinek.core.base.BaseViewModel
+import com.example.mangavinek.core.helper.Resource
 import com.example.mangavinek.data.model.detail.entity.DetailChapterResponse
 import com.example.mangavinek.data.model.detail.entity.DetailResponse
 import com.example.mangavinek.data.model.detail.entity.StatusChapter
 import com.example.mangavinek.detail.repository.DetailRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class DetailViewModel(private val repository: DetailRepository) : ViewModel() {
+class DetailViewModel(private val repository: DetailRepository) : BaseViewModel() {
     val getDetail = MutableLiveData<Resource<DetailResponse>>()
+    val getListDetailChapter = MutableLiveData<Resource<MutableList<DetailChapterResponse>>>()
+    val mergeStatusList = MutableLiveData<MutableList<StatusChapter>>()
 
     fun fetchDetail(url: String) {
-
-        viewModelScope.launch {
-            getDetail.value = Resource.loading(true)
-            try {
-                withContext(Dispatchers.IO) {
-                    getDetail.postValue(repository.getDetail(url)?.let { Resource.success(it) })
-                }
-            } catch (e: Exception) {
-                getDetail.value = Resource.error(e)
-            } finally {
-                getDetail.value = Resource.loading(false)
-            }
-        }
+        getDetail.addCallbackCoroutines { repository.getDetail(url) }
     }
-
-    val getListDetailChapter = MutableLiveData<Resource<MutableList<DetailChapterResponse>>>()
 
     fun fetchList(url: String) {
-
-        viewModelScope.launch {
-            getListDetailChapter.value = Resource.loading(true)
-            try {
-                withContext(Dispatchers.IO) {
-                    getListDetailChapter.postValue(repository.getDetailChapter(url)?.let { Resource.success(it) })
-                }
-            } catch (e: Exception) {
-                getListDetailChapter.value = Resource.error(e)
-            } finally {
-                getListDetailChapter.value = Resource.loading(false)
-            }
-        }
+        getListDetailChapter.addCallbackCoroutines { repository.getDetailChapter(url) }
     }
-
-    val mergeStatusList = MutableLiveData<MutableList<StatusChapter>>()
 
     fun fetchListStatus(detailResponse: DetailResponse) {
         mergeStatusList.value = repository.mergeStatusList(detailResponse)
