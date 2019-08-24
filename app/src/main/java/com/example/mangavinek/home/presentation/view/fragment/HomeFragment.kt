@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
 import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.helper.PaginationScroll
-import com.example.mangavinek.core.helper.Resource
+import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.data.model.home.entity.HomeResponse
 import com.example.mangavinek.detail.presentation.view.activity.DetailActivity
 import com.example.mangavinek.home.presentation.view.adapter.HomeAdapter
@@ -68,22 +67,17 @@ class HomeFragment : Fragment(), AnkoLogger {
 
     private fun loadData() {
         viewModel.fetchList()
-        viewModel.getList.observe(this, Observer { resource ->
-            when (resource.status) {
-                Resource.Status.SUCCESS -> {
-                    resource.data?.let {
-                        populate(it)
-                        showSuccess()
-                    }
-                }
-                Resource.Status.ERROR -> {
-                    showError()
-                }
-                Resource.Status.LOADING -> {
-                    resource.boolean?.let { showLoading(it) }
-                }
-            }
-        })
+        viewModel.getList.observeResource(this,
+            onSuccess = {
+                populate(it)
+                showSuccess()
+            },
+            onError = {
+                showError()
+            },
+            onLoading = {
+                showLoading(it)
+            })
     }
 
     private fun populate(listHomeResponse: List<HomeResponse>) {

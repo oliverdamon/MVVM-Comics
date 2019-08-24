@@ -6,12 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
-import com.example.mangavinek.data.model.catalog.entity.CatalogResponse
 import com.example.mangavinek.catalog.presentation.view.adapter.CatalogAdapter
 import com.example.mangavinek.catalog.presentation.viewmodel.CatalogViewModel
 import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.helper.PaginationScroll
-import com.example.mangavinek.core.helper.Resource
+import com.example.mangavinek.core.helper.observeResource
+import com.example.mangavinek.data.model.catalog.entity.CatalogResponse
 import com.example.mangavinek.detail.presentation.view.activity.DetailActivity
 import kotlinx.android.synthetic.main.activity_catalog.*
 import kotlinx.coroutines.Dispatchers
@@ -61,22 +61,17 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
 
     private fun loadData() {
         viewModel.fetchList(url)
-        viewModel.getListCatalog.observe(this, Observer { resource ->
-            when (resource.status) {
-                Resource.Status.SUCCESS -> {
-                    resource.data?.let {
-                        populate(it)
-                        showSuccess()
-                    }
-                }
-                Resource.Status.ERROR -> {
-                    showError()
-                }
-                Resource.Status.LOADING -> {
-                    resource.boolean?.let { showLoading(it) }
-                }
-            }
-        })
+        viewModel.getListCatalog.observeResource(this,
+            onSuccess = {
+                populate(it)
+                showSuccess()
+            },
+            onError = {
+                showError()
+            },
+            onLoading = {
+                showLoading(it)
+            })
     }
 
     private fun lastPage(): Int {

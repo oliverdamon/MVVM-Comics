@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
-import com.example.mangavinek.core.helper.Resource
+import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.data.model.detail.entity.DetailChapterResponse
 import com.example.mangavinek.detail.presentation.view.adapter.ChapterAdapter
 import com.example.mangavinek.detail.presentation.viewmodel.DetailViewModel
@@ -43,22 +42,17 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
         url?.let {
             viewModel.fetchList(it)
         }
-        viewModel.getListDetailChapter.observe(this, Observer { resource ->
-            when (resource.status) {
-                Resource.Status.SUCCESS -> {
-                    resource.data?.let {
-                        populate(it)
-                        showSuccess()
-                    }
-                }
-                Resource.Status.ERROR -> {
-                    showError()
-                }
-                Resource.Status.LOADING -> {
-                    resource.boolean?.let { showLoading(it) }
-                }
-            }
-        })
+        viewModel.getListDetailChapter.observeResource(this,
+            onSuccess = {
+                populate(it)
+                showSuccess()
+            },
+            onError = {
+                showError()
+            },
+            onLoading = {
+                showLoading(it)
+            })
     }
 
     private fun populate(listDetailChapterResponse: List<DetailChapterResponse>) {

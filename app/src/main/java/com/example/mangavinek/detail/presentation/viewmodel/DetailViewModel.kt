@@ -1,12 +1,16 @@
 package com.example.mangavinek.detail.presentation.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.mangavinek.core.base.BaseViewModel
 import com.example.mangavinek.core.helper.Resource
 import com.example.mangavinek.data.model.detail.entity.DetailChapterResponse
 import com.example.mangavinek.data.model.detail.entity.DetailResponse
 import com.example.mangavinek.data.model.detail.entity.StatusChapter
 import com.example.mangavinek.detail.repository.DetailRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailViewModel(private val repository: DetailRepository) : BaseViewModel() {
     val getDetail = MutableLiveData<Resource<DetailResponse>>()
@@ -14,11 +18,33 @@ class DetailViewModel(private val repository: DetailRepository) : BaseViewModel(
     val mergeStatusList = MutableLiveData<MutableList<StatusChapter>>()
 
     fun fetchDetail(url: String) {
-        getDetail.addCallbackCoroutines { repository.getDetail(url) }
+        viewModelScope.launch {
+            getDetail.loading(true)
+            try {
+                withContext(Dispatchers.IO) {
+                    getDetail.success(repository.getDetail(url)?.let { it })
+                }
+            } catch (e: Exception) {
+                getDetail.error(e)
+            } finally {
+                getDetail.loading(false)
+            }
+        }
     }
 
     fun fetchList(url: String) {
-        getListDetailChapter.addCallbackCoroutines { repository.getDetailChapter(url) }
+        viewModelScope.launch {
+            getListDetailChapter.loading(true)
+            try {
+                withContext(Dispatchers.IO) {
+                    getListDetailChapter.success(repository.getDetailChapter(url)?.let { it })
+                }
+            } catch (e: Exception) {
+                getListDetailChapter.error(e)
+            } finally {
+                getListDetailChapter.loading(false)
+            }
+        }
     }
 
     fun fetchListStatus(detailResponse: DetailResponse) {

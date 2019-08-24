@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.mangavinek.R
 import com.example.mangavinek.core.constant.BASE_URL
-import com.example.mangavinek.core.helper.Resource
+import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.data.model.detail.entity.DetailResponse
 import com.example.mangavinek.data.model.detail.entity.StatusChapter
 import com.example.mangavinek.detail.presentation.view.adapter.StatusChapterAdapter
@@ -41,22 +41,17 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
     private fun loadData() {
         val url: String = intent.getStringExtra("url")
         viewModel.fetchDetail(url)
-        viewModel.getDetail.observe(this, Observer { resource ->
-            when (resource.status) {
-                Resource.Status.SUCCESS -> {
-                    resource.data?.let {
-                        populateDetail(it)
-                        showSuccess()
-                    }
-                }
-                Resource.Status.ERROR -> {
-                    showError()
-                }
-                Resource.Status.LOADING -> {
-                    resource.boolean?.let { showLoading(it) }
-                }
-            }
-        })
+        viewModel.getDetail.observeResource(this,
+            onSuccess = {
+                populateDetail(it)
+                showSuccess()
+            },
+            onError = {
+                showError()
+            },
+            onLoading = {
+                showLoading(it)
+            })
     }
 
     private fun populateDetail(detailResponse: DetailResponse?) {
