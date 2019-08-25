@@ -23,6 +23,8 @@
                   android:configChanges="screenSize|orientation"/>
         <activity android:name=".catalog.presentation.view.activity.CatalogActivity"
                   android:configChanges="screenSize|orientation"/>
+        <activity android:name=".catalog.presentation.view.activity.SearchActivity"
+                  android:configChanges="screenSize|orientation"/>
     </application>
 
 </manifest>

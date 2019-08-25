@@ -1,15 +1,19 @@
 package com.example.mangavinek
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.mangavinek.catalog.presentation.view.activity.SearchActivity
 import com.example.mangavinek.home.presentation.view.fragment.HomeFragment
 import com.example.mangavinek.publishing.presentation.view.fragment.PublishingFragment
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,6 +56,21 @@ class MainActivity : AppCompatActivity() {
             .setReorderingAllowed(true)
             .commitNowAllowingStateLoss()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        if (id == R.id.item_search) {
+            startActivity<SearchActivity>()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
     override fun onBackPressed() {
         finishApp()
