@@ -16,5 +16,5 @@ App para facilitar download de comics
 - Glide
 
 # Download
-Baixe o aplicativo na página [releases](https://github.com/oliverdamon/MVVM-Comics/releases).
+Baixe o aplicativo na página [release](https://github.com/oliverdamon/MVVM-Comics/releases).
 
