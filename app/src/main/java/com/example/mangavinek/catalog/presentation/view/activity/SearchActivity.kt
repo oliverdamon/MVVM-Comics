@@ -66,7 +66,7 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
-    private fun fetchViewModel(url: String){
+    private fun fetchViewModel(url: String) {
         page = 2
         lastPage = 0
         adapterItem.clear(itemList)
