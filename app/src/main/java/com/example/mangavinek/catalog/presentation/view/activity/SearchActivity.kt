@@ -17,6 +17,7 @@ import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.constant.BASE_URL_SEARCH
 import com.example.mangavinek.core.helper.PaginationScroll
 import com.example.mangavinek.core.helper.observeResource
+import com.example.mangavinek.core.util.maxNumberGridLayout
 import com.example.mangavinek.data.model.catalog.entity.CatalogResponse
 import com.example.mangavinek.detail.presentation.view.activity.DetailActivity
 import kotlinx.android.synthetic.main.activity_search.*
@@ -81,7 +82,7 @@ class SearchActivity : AppCompatActivity() {
     private fun initUi() {
         with(recycler_search) {
             adapter = adapterItem
-            val gridLayoutManager = GridLayoutManager(context, 3)
+            val gridLayoutManager = GridLayoutManager(context, maxNumberGridLayout(context))
             addOnScrollListener(object : PaginationScroll(gridLayoutManager) {
                 override fun loadMoreItems() {
                     if (page <= lastPage) {

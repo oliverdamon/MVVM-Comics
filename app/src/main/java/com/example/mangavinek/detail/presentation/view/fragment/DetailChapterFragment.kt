@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
 import com.example.mangavinek.core.helper.observeResource
+import com.example.mangavinek.core.util.maxNumberGridLayout
 import com.example.mangavinek.data.model.detail.entity.DetailChapterResponse
 import com.example.mangavinek.detail.presentation.view.adapter.ChapterAdapter
 import com.example.mangavinek.detail.presentation.viewmodel.DetailViewModel
@@ -74,7 +75,7 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
             adapter = adapterChapter
             isNestedScrollingEnabled = false
             isFocusable = false
-            val gridLayoutManager = GridLayoutManager(context, 3)
+            val gridLayoutManager = GridLayoutManager(context, maxNumberGridLayout(context))
             layoutManager = gridLayoutManager
         }
     }

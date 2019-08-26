@@ -11,6 +11,7 @@ import com.example.mangavinek.catalog.presentation.viewmodel.CatalogViewModel
 import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.helper.PaginationScroll
 import com.example.mangavinek.core.helper.observeResource
+import com.example.mangavinek.core.util.maxNumberGridLayout
 import com.example.mangavinek.data.model.catalog.entity.CatalogResponse
 import com.example.mangavinek.detail.presentation.view.activity.DetailActivity
 import kotlinx.android.synthetic.main.activity_catalog.*
@@ -89,7 +90,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
     private fun initUi() {
         with(recycler_catalog) {
             adapter = adapterItem
-            val gridLayoutManager = GridLayoutManager(context, 3)
+            val gridLayoutManager = GridLayoutManager(context, maxNumberGridLayout(context))
             addOnScrollListener(object : PaginationScroll(gridLayoutManager) {
                 override fun loadMoreItems() {
                     if (page <= lastPage()) {

@@ -10,6 +10,7 @@ import com.example.mangavinek.R
 import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.helper.PaginationScroll
 import com.example.mangavinek.core.helper.observeResource
+import com.example.mangavinek.core.util.maxNumberGridLayout
 import com.example.mangavinek.data.model.home.entity.HomeResponse
 import com.example.mangavinek.detail.presentation.view.activity.DetailActivity
 import com.example.mangavinek.home.presentation.view.adapter.HomeAdapter
@@ -88,7 +89,7 @@ class HomeFragment : Fragment(), AnkoLogger {
     private fun initUi() {
         with(recycler_view) {
             adapter = adapterHome
-            val gridLayoutManager = GridLayoutManager(context, 3)
+            val gridLayoutManager = GridLayoutManager(context, maxNumberGridLayout(context))
             addOnScrollListener(object : PaginationScroll(gridLayoutManager) {
                 override fun loadMoreItems() {
                     viewModel.fetchList(page++)
