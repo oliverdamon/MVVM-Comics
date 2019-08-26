@@ -1,4 +1,4 @@
-# Projeto Download Comics
+# Projeto Comics Download
 
 App para facilitar download de comics
 
@@ -14,3 +14,7 @@ App para facilitar download de comics
 - ViewModel
 - Koin
 - Glide
+
+# Download
+Baixe o aplicativo na página [release](https://github.com/oliverdamon/MVVM-Comics/releases).
+
