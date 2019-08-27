@@ -1,9 +1,12 @@
 package com.example.mangavinek.detail.repository
 
+import androidx.lifecycle.LiveData
 import com.example.mangavinek.data.model.detail.entity.*
+import com.example.mangavinek.data.model.favorite.entity.Favorite
+import com.example.mangavinek.data.source.local.FavoriteDao
 import com.example.mangavinek.data.source.remote.ApiServiceSoup
 
-class DetailRepository(private val apiServiceSoup: ApiServiceSoup) {
+class DetailRepository(private val apiServiceSoup: ApiServiceSoup, private val favoriteDao: FavoriteDao) {
 
     fun getDetail(url: String): DetailResponse? = apiServiceSoup.getDetail(url).getItemDetail()
 
@@ -42,5 +45,17 @@ class DetailRepository(private val apiServiceSoup: ApiServiceSoup) {
         mutableList.sortWith(compareBy(StatusChapter::number))
 
         return mutableList
+    }
+
+    fun buscaPorId(title: String): Int {
+        return favoriteDao.verifyItem(title)
+    }
+
+    fun insertComic(favorite: Favorite){
+        favoriteDao.insertComic(favorite)
+    }
+
+    fun removeComic(title: String){
+        favoriteDao.removeComic(title)
     }
 }

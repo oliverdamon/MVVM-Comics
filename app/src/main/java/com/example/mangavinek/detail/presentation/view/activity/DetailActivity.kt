@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.StyleSpan
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +22,7 @@ import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.data.model.detail.entity.DetailResponse
 import com.example.mangavinek.data.model.detail.entity.StatusChapter
+import com.example.mangavinek.data.model.favorite.entity.Favorite
 import com.example.mangavinek.detail.presentation.view.adapter.StatusChapterAdapter
 import com.example.mangavinek.detail.presentation.view.fragment.DetailChapterFragment
 import com.example.mangavinek.detail.presentation.viewmodel.DetailViewModel
@@ -32,6 +35,11 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
 
     private val viewModel by viewModel<DetailViewModel>()
 
+    private var title: String = ""
+    private var imageUrl: String = ""
+    private var url: String = ""
+    private var favorite: Favorite? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
@@ -39,7 +47,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
     }
 
     private fun loadData() {
-        val url: String = intent.getStringExtra("url")
+        url = intent.getStringExtra("url")
         viewModel.fetchDetail(url)
         viewModel.getDetail.observeResource(this,
             onSuccess = {
@@ -52,6 +60,17 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
             onLoading = {
                 showLoading(it)
             })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        if (id == R.id.item_favorite) {
+           favorite?.let { favorite ->
+               viewModel.insertAndRemoveComic(favorite, title)
+           }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun populateDetail(detailResponse: DetailResponse?) {
@@ -78,7 +97,20 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
 
             initRecycler(it)
             initFragment(it.link)
+            insertInfoDatabase(it.title, urlImage)
         }
+    }
+
+    private fun insertInfoDatabase(title: String, urlImage: String){
+        this.title = title
+        this.imageUrl = urlImage
+
+        this.favorite = Favorite(title = title, image = urlImage, link = url)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_favorite, menu)
+        return true
     }
 
     private fun showSuccess() {

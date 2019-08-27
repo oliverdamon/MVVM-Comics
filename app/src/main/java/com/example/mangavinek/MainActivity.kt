@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.mangavinek.catalog.presentation.view.activity.SearchActivity
+import com.example.mangavinek.favorite.presentation.view.fragment.FavoriteFragment
 import com.example.mangavinek.home.presentation.view.fragment.HomeFragment
 import com.example.mangavinek.publishing.presentation.view.fragment.PublishingFragment
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.addFragment(HomeFragment(), HomeFragment.TAG)
                 }
                 R.id.ic_hqs -> {
-                    supportFragmentManager.addFragment(PublishingFragment(), PublishingFragment.TAG)
+                    supportFragmentManager.addFragment(FavoriteFragment(), FavoriteFragment.TAG)
                 }
             }
             return@setOnNavigationItemSelectedListener true
