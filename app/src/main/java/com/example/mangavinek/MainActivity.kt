@@ -34,6 +34,9 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.addFragment(HomeFragment(), HomeFragment.TAG)
                 }
                 R.id.ic_hqs -> {
+                    supportFragmentManager.addFragment(PublishingFragment(), PublishingFragment.TAG)
+                }
+                R.id.ic_favorite -> {
                     supportFragmentManager.addFragment(FavoriteFragment(), FavoriteFragment.TAG)
                 }
             }
