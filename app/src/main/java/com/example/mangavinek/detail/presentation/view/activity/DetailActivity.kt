@@ -107,10 +107,8 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
     private fun addIconCheckAndUncheckedComic() {
         showMenuFavorite()
 
-        changeIconButtonFavorite(
-            if (checkComicDataBase()) R.drawable.ic_favorite_24dp
-            else R.drawable.ic_favorite_border_24dp
-        )
+        changeIconButtonFavorite(if (checkComicDataBase()) R.drawable.ic_favorite_24dp
+        else R.drawable.ic_favorite_border_24dp)
     }
 
     private fun populateDetail(detailResponse: DetailResponse?) {
