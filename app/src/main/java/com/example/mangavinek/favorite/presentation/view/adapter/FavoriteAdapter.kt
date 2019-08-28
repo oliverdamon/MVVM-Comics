@@ -29,11 +29,9 @@ class FavoriteAdapter(private var listItem: ArrayList<Favorite>,
         holder.bindView(dataItem)
     }
 
-
-
-    fun clear(datas: ArrayList<Favorite>) {
-        listItem.clear()
-        listItem.addAll(datas)
+    fun atualiza(noticias: List<Favorite>) {
+        this.listItem.clear()
+        this.listItem.addAll(noticias)
         notifyDataSetChanged()
     }
 

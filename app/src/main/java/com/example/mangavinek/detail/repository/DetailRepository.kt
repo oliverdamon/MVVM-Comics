@@ -1,6 +1,5 @@
 package com.example.mangavinek.detail.repository
 
-import androidx.lifecycle.LiveData
 import com.example.mangavinek.data.model.detail.entity.*
 import com.example.mangavinek.data.model.favorite.entity.Favorite
 import com.example.mangavinek.data.source.local.FavoriteDao
@@ -47,8 +46,8 @@ class DetailRepository(private val apiServiceSoup: ApiServiceSoup, private val f
         return mutableList
     }
 
-    fun buscaPorId(title: String): Int {
-        return favoriteDao.verifyItem(title)
+    fun searchForTitle(title: String): Int {
+        return favoriteDao.searchForTitle(title)
     }
 
     fun insertComic(favorite: Favorite){

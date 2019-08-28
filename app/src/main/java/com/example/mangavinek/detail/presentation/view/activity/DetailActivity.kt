@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
@@ -39,10 +40,13 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
     private var imageUrl: String = ""
     private var url: String = ""
     private var favorite: Favorite? = null
+    private var menu: Menu? = null
+    private var menuItemFavorite: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+
         loadData()
     }
 
@@ -62,15 +66,49 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
             })
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        this.menu = menu
+        menuInflater.inflate(R.menu.menu_favorite, menu)
+        menuItemFavorite = menu.findItem(R.id.item_favorite)
 
-        if (id == R.id.item_favorite) {
-           favorite?.let { favorite ->
-               viewModel.insertAndRemoveComic(favorite, title)
-           }
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        when (item?.itemId) {
+            R.id.item_favorite -> {
+                favorite?.let { favorite ->
+                    if (checkComicDataBase()) {
+                        viewModel.removeComic(title)
+                    } else {
+                        viewModel.insertComic(favorite)
+                    }
+                    addIconCheckAndUncheckedComic()
+                }
+            }
         }
+
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun changeIconButtonFavorite(@DrawableRes iconDrawable: Int) {
+        menuItemFavorite?.setIcon(iconDrawable)
+    }
+
+    private fun checkComicDataBase(): Boolean {
+        return viewModel.searchTitle(title) > 0
+    }
+
+    private fun showMenuFavorite() {
+        menuItemFavorite?.isVisible = true
+    }
+
+    private fun addIconCheckAndUncheckedComic() {
+        showMenuFavorite()
+
+        changeIconButtonFavorite(if (checkComicDataBase()) R.drawable.ic_favorite_24dp
+        else R.drawable.ic_favorite_border_24dp)
     }
 
     private fun populateDetail(detailResponse: DetailResponse?) {
@@ -98,19 +136,16 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
             initRecycler(it)
             initFragment(it.link)
             insertInfoDatabase(it.title, urlImage)
+
+            addIconCheckAndUncheckedComic()
         }
     }
 
-    private fun insertInfoDatabase(title: String, urlImage: String){
+    private fun insertInfoDatabase(title: String, urlImage: String) {
         this.title = title
         this.imageUrl = urlImage
 
         this.favorite = Favorite(title = title, image = urlImage, link = url)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_favorite, menu)
-        return true
     }
 
     private fun showSuccess() {
@@ -142,7 +177,12 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
 
     private fun getStringBold(textComplete: String, textSpecific: String): SpannableString {
         val spannableString = SpannableString(textComplete)
-        spannableString.setSpan(StyleSpan(Typeface.BOLD), 0, textSpecific.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableString.setSpan(
+            StyleSpan(Typeface.BOLD),
+            0,
+            textSpecific.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         return spannableString
     }
 

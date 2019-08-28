@@ -1,6 +1,5 @@
 package com.example.mangavinek.detail.presentation.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mangavinek.core.base.BaseViewModel
@@ -53,14 +52,14 @@ class DetailViewModel(private val repository: DetailRepository) : BaseViewModel(
         mergeStatusList.value = repository.mergeStatusList(detailResponse)
     }
 
-    fun insertAndRemoveComic(favorite: Favorite, title: String){
-        if (searchTitle(title) > 0) {
-            repository.removeComic(title)
-        } else {
-            repository.insertComic(favorite)
-        }
+    fun insertComic(favorite: Favorite){
+        repository.insertComic(favorite)
     }
 
-    fun searchTitle(title: String) = repository.buscaPorId(title)
+    fun removeComic(title: String){
+        repository.removeComic(title)
+    }
+
+    fun searchTitle(title: String) = repository.searchForTitle(title)
 
 }

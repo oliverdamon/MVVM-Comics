@@ -16,7 +16,7 @@ interface FavoriteDao {
     fun getComic(): LiveData<List<Favorite>>
 
     @Query("SELECT * FROM favorite WHERE title = :title")
-    fun verifyItem(title: String): Int
+    fun searchForTitle(title: String): Int
 
     @Query("DELETE FROM favorite WHERE title = :title")
     fun removeComic(title: String)

@@ -4,6 +4,7 @@
     <item
         android:id="@+id/item_favorite"
         android:icon="@drawable/ic_favorite_24dp"
+            android:visible="false"
         app:showAsAction="always"
         android:title="Favorite" />
 </menu>
