@@ -30,6 +30,7 @@ import com.example.mangavinek.detail.presentation.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.layout_detail.*
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailActivity : AppCompatActivity(), AnkoLogger {
@@ -85,6 +86,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
                         viewModel.insertComic(favorite)
                     }
                     addIconCheckAndUncheckedComic()
+                    toast(if (checkComicDataBase()) "Favoritado." else "Removido.")
                 }
             }
         }

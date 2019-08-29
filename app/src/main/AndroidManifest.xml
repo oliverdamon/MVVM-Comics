@@ -12,6 +12,8 @@
             android:usesCleartextTraffic="true"
             android:name=".AppApplication">
         <activity android:name=".MainActivity"
+                android:configChanges="screenSize|orientation"/>
+        <activity android:name=".SplashActivity" android:theme="@style/SplashTheme"
                   android:configChanges="screenSize|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
