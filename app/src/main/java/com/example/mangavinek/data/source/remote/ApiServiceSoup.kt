@@ -18,7 +18,8 @@ object ApiServiceSoup {
     }
 
     fun getListCatalog(url: String): Elements {
-        return JSoupService.getApiClient(url).select("div div div table tbody tr td table.tborder").loggingJSoupElement()
+        return JSoupService.getApiClient(url).select("div div div table tbody tr td table.tborder")
+            .loggingJSoupElement()
     }
 
     fun getCatalogLastPagination(url: String): Elements {
