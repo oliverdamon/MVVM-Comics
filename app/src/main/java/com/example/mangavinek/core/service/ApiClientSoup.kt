@@ -1,7 +1,7 @@
 package com.example.mangavinek.core.service
 
 import com.example.mangavinek.BuildConfig
-import com.example.mangavinek.core.helper.loggingJSoup
+import com.example.mangavinek.core.helper.loggingInterceptorJSoup
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -18,7 +18,7 @@ object JSoupService {
             .data("loginsubmit", "Entrar")
             .execute()
 
-        response.loggingJSoup()
+        response.loggingInterceptorJSoup()
 
         return Jsoup.connect(url)
             .cookies(response.cookies())
