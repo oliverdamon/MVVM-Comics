@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import org.jetbrains.anko.startActivity
-import java.lang.Exception
+import kotlin.Exception
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
