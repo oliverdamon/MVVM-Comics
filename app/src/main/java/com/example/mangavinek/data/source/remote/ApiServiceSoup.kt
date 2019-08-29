@@ -6,7 +6,8 @@ import org.jsoup.select.Elements
 
 object ApiServiceSoup {
     fun getListHot(url: String): Elements {
-        return JSoupService.getApiClient(url).select("td table.tborder").loggingInterceptorJSoupElement()
+        return JSoupService.getApiClient(url).select("td table.tborder")
+            .loggingInterceptorJSoupElement()
     }
 
     fun getDetail(url: String): Elements {
@@ -23,6 +24,7 @@ object ApiServiceSoup {
     }
 
     fun getCatalogLastPagination(url: String): Elements {
-        return JSoupService.getApiClient(url).select("a.pagination_last").loggingInterceptorJSoupElement()
+        return JSoupService.getApiClient(url).select("a.pagination_last")
+            .loggingInterceptorJSoupElement()
     }
 }
