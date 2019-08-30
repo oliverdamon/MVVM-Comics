@@ -1,16 +1,15 @@
 package com.example.mangavinek.home.presentation.view.fragment
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
 import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.helper.PaginationScroll
+import com.example.mangavinek.core.helper.SplashDialog
 import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.core.util.maxNumberGridLayout
 import com.example.mangavinek.data.model.home.entity.HomeResponse
@@ -38,18 +37,17 @@ class HomeFragment : Fragment(), AnkoLogger {
         }
     }
 
+    private val splashDialog: SplashDialog by lazy {
+        SplashDialog(context!!)
+    }
+
     private val viewModel by viewModel<HomeViewModel>()
 
     private var itemList = arrayListOf<HomeResponse>()
     private var releasedLoad: Boolean = true
     private var page: Int = 2
-    private var dialogSplash: Dialog? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -69,17 +67,10 @@ class HomeFragment : Fragment(), AnkoLogger {
             }
         }
 
-        showAndHideSplashScreen()
+        splashDialog.initSplash()
+        splashDialog.showSplashScreen()
         loadData()
         initUi()
-    }
-
-    private fun showAndHideSplashScreen() {
-        dialogSplash?.getWindow()?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.MATCH_PARENT);
-        dialogSplash = Dialog(context!!, R.style.SplashFullScreen)
-        dialogSplash?.setContentView(R.layout.layout_splash)
-        dialogSplash?.show()
     }
 
     private fun loadData() {
@@ -129,7 +120,7 @@ class HomeFragment : Fragment(), AnkoLogger {
         recycler_view.visibility = View.VISIBLE
         progress_bottom.visibility = View.GONE
         releasedLoad = true
-        dialogSplash?.dismiss()
+        splashDialog.hideSplashScreen()
     }
 
     private fun showLoading(isVisible: Boolean) {
