@@ -12,8 +12,10 @@ App para facilitar download de comics
 - LiveData
 - Lifecycle
 - ViewModel
+- Room
 - Koin
 - Glide
+- Lottie
 
 # Download
 Baixe o aplicativo na página [release](https://github.com/oliverdamon/MVVM-Comics/releases).
