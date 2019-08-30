@@ -10,7 +10,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.mangavinek"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -48,6 +48,7 @@ dependencies {
     def view_model_scope_version = "2.2.0-alpha03"
     def koin_version = "2.0.1"
     def timber_version = "4.7.1"
+    def lottie_version = "3.0.7"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -83,4 +84,6 @@ dependencies {
 
     implementation "android.arch.persistence.room:runtime:$room_version"
     kapt "android.arch.persistence.room:compiler:$room_version"
+
+    implementation "com.airbnb.android:lottie:$lottie_version"
 }

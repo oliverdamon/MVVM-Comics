@@ -17,11 +17,12 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed({
             try {
                 startActivity<MainActivity>()
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
                 finish()
             }
-        }, 2000)
+        }, 4000)
     }
 }
