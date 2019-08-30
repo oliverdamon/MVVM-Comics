@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
@@ -15,6 +16,16 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/colorPrimary</item>
 
+    </style>
+
+    <style name="SplashFullScreen" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/SplashDialogAnimation</item>
+    </style>
+
+    <style name="SplashDialogAnimation">
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 
 </resources>

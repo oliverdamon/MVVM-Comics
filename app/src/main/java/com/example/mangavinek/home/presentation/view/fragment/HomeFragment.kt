@@ -1,9 +1,11 @@
 package com.example.mangavinek.home.presentation.view.fragment
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
@@ -41,8 +43,13 @@ class HomeFragment : Fragment(), AnkoLogger {
     private var itemList = arrayListOf<HomeResponse>()
     private var releasedLoad: Boolean = true
     private var page: Int = 2
+    private var dialogSplash: Dialog? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -62,8 +69,17 @@ class HomeFragment : Fragment(), AnkoLogger {
             }
         }
 
+        showAndHideSplashScreen()
         loadData()
         initUi()
+    }
+
+    private fun showAndHideSplashScreen() {
+        dialogSplash?.getWindow()?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT);
+        dialogSplash = Dialog(context!!, R.style.SplashFullScreen)
+        dialogSplash?.setContentView(R.layout.layout_splash)
+        dialogSplash?.show()
     }
 
     private fun loadData() {
@@ -113,6 +129,7 @@ class HomeFragment : Fragment(), AnkoLogger {
         recycler_view.visibility = View.VISIBLE
         progress_bottom.visibility = View.GONE
         releasedLoad = true
+        dialogSplash?.dismiss()
     }
 
     private fun showLoading(isVisible: Boolean) {

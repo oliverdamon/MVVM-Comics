@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.mangavinek">
+        package="com.example.mangavinek">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
             android:allowBackup="true"
@@ -12,9 +12,7 @@
             android:usesCleartextTraffic="true"
             android:name=".AppApplication">
         <activity android:name=".MainActivity"
-                android:configChanges="screenSize|orientation"/>
-        <activity android:name=".SplashActivity" android:theme="@style/SplashTheme"
-                  android:configChanges="screenSize|orientation">
+                android:configChanges="screenSize|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -22,11 +20,11 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.mangavinek.detail.presentation.view.activity.DetailActivity"
-                  android:configChanges="screenSize|orientation"/>
+                android:configChanges="screenSize|orientation"/>
         <activity android:name=".catalog.presentation.view.activity.CatalogActivity"
-                  android:configChanges="screenSize|orientation"/>
+                android:configChanges="screenSize|orientation"/>
         <activity android:name=".catalog.presentation.view.activity.SearchActivity"
-                  android:configChanges="screenSize|orientation"/>
+                android:configChanges="screenSize|orientation"/>
     </application>
 
 </manifest>
