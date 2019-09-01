@@ -30,8 +30,9 @@ class SearchActivity : AppCompatActivity() {
 
     private val adapterItem: CatalogAdapter by lazy {
         CatalogAdapter(itemList) {
-            startActivity<DetailActivity>("url" to BASE_URL.plus(it.link))
-            releasedLoad = true
+            if (releasedLoad) {
+                startActivity<DetailActivity>("url" to BASE_URL.plus(it.link))
+            }
         }
     }
 

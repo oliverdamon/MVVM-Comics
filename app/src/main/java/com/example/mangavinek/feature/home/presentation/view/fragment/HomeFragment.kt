@@ -35,8 +35,9 @@ class HomeFragment : Fragment(), AnkoLogger {
 
     private val adapterHome: HomeAdapter by lazy {
         HomeAdapter(itemList) {
-            context!!.startActivity<DetailActivity>("url" to BASE_URL.plus(it.link))
-            releasedLoad = true
+            if (releasedLoad) {
+                context!!.startActivity<DetailActivity>("url" to BASE_URL.plus(it.link))
+            }
         }
     }
 
