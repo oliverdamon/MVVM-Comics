@@ -7,10 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.example.mangavinek.catalog.presentation.view.activity.SearchActivity
-import com.example.mangavinek.favorite.presentation.view.fragment.FavoriteFragment
-import com.example.mangavinek.home.presentation.view.fragment.HomeFragment
-import com.example.mangavinek.publishing.presentation.view.fragment.PublishingFragment
+import com.example.mangavinek.feature.catalog.presentation.view.activity.SearchActivity
+import com.example.mangavinek.feature.favorite.presentation.view.fragment.FavoriteFragment
+import com.example.mangavinek.feature.home.presentation.view.fragment.HomeFragment
+import com.example.mangavinek.feature.publishing.presentation.view.fragment.PublishingFragment
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
@@ -80,8 +80,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun finishApp() {
-        Snackbar.make(constraint_main, "Sair do app?", Snackbar.LENGTH_LONG)
-            .setAction("Sim") {
+        Snackbar.make(constraint_main, R.string.title_snack_bar, Snackbar.LENGTH_LONG)
+            .setAction(R.string.subtitle_confirmation_snack_bar) {
                 System.exit(0)
             }.show()
     }

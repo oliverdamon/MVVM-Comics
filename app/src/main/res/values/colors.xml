@@ -8,7 +8,7 @@
     <color name="black_transparency">#70212121</color>
     <color name="background_gradient">#F2131313</color>
     <color name="white">#FFFFFF</color>
-    <color name="dark_grey">#FFAAAAAA</color>
+    <color name="dark_grey">#AAAAAA</color>
     <color name="background_grey">#FF424242</color>
 
     <color name="available_color">#58c10c</color>

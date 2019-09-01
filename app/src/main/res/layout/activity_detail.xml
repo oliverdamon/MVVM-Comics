@@ -4,13 +4,20 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:background="#303030">
+              android:background="#303030"
+              android:orientation="vertical">
 
-    <include layout="@layout/loading_screen"
+    <include android:id="@+id/include_layout_loading"
+             layout="@layout/layout_screen_loading"
              android:visibility="visible"
-             android:id="@+id/layout_loading"
-             tools:visibility="gone"/>
+             tools:visibility="gone">
+    </include>
+
+    <include
+            android:id="@+id/include_layout_error"
+            layout="@layout/layout_screen_error"
+            android:visibility="gone">
+    </include>
 
     <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_view"
@@ -22,11 +29,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        <include layout="@layout/layout_detail"
-                 android:visibility="gone"
+        <include android:id="@+id/layout_detail"
+                 layout="@layout/layout_detail"
                  android:layout_width="match_parent"
                  android:layout_height="match_parent"
-                 android:id="@+id/layout_detail"
+                 android:visibility="visible"
                  tools:visibility="visible"/>
 
     </androidx.core.widget.NestedScrollView>

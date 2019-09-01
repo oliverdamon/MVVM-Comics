@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">Comics Download</string>
+
+    <!-- MainActivity -->
+    <string name="title_snack_bar">Sair do app?</string>
+    <string name="subtitle_confirmation_snack_bar">Sim</string>
+
+    <!-- DetailActivity -->
+    <string name="action_button_favorite">Favoritado.</string>
+    <string name="action_button_removed">Removido.</string>
+    <string name="info_title_original">Nome original: %s</string>
+    <string name="info_publishing">Editora: %s</string>
+    <string name="info_publication">Publicação: %s</string>
+    <string name="info_year">Volume: %s</string>
+
+    <!-- SearchActivity -->
+    <string name="type_message_not_comic">Esse título não existe.</string>
+    <string name="type_message_type_it">Digite um título.</string>
+
+    <!-- FavoriteFragment -->
+    <string name="type_message_favorite_empty">Favorite um título.</string>
+
+    <!-- All App -->
+    <string name="message_status_erro_title">Desculpe, algum erro aconteceu.</string>
+    <string name="message_status_erro_subtitle">Pressione o botão abaixo para\ntentar novamente.</string>
+
 </resources>

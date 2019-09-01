@@ -24,7 +24,13 @@ data class DetailChapterResponse(var element: Element) {
     val linkChapter = element.select("a").attr("href").toString()
 }
 
-data class StatusChapter(val status: String, val number: String)
+data class StatusChapter(val status: String, val number: String) {
+    companion object {
+        const val AVALAIBLE = "AVAILABLE"
+        const val TRANSLATED = "TRANSLATED"
+        const val UNAVAILABLE = "UNAVAILABLE"
+    }
+}
 
 fun Elements.getItems(): MutableList<DetailChapterResponse> {
     val transformedElements = mutableListOf<DetailChapterResponse>()
