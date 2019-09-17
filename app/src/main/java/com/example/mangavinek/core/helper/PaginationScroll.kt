@@ -16,8 +16,8 @@ abstract class PaginationScroll(private val layoutManager: LinearLayoutManager) 
                     loadMoreItems()
                 }
             }
+            hideMoreItems()
         }
-        hideMoreItems()
     }
 
     abstract fun loadMoreItems()

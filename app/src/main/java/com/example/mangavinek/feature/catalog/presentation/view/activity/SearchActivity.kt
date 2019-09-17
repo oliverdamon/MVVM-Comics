@@ -30,7 +30,7 @@ class SearchActivity : AppCompatActivity() {
 
     private val adapterItem: CatalogAdapter by lazy {
         CatalogAdapter(itemList) {
-            if (releasedLoad) {
+            if (viewModel.releasedLoad) {
                 startActivity<DetailActivity>("url" to BASE_URL.plus(it.link))
             }
         }
@@ -39,8 +39,6 @@ class SearchActivity : AppCompatActivity() {
     private val viewModel by viewModel<CatalogViewModel>()
 
     private var itemList = arrayListOf<CatalogResponse>()
-    private var releasedLoad: Boolean = true
-    private var page: Int = 2
     private var lastPage: Int = 0
     private var url: String = ""
 
@@ -71,7 +69,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun fetchViewModel(url: String) {
-        page = 2
+        viewModel.currentPage = 2
         lastPage = 0
         adapterItem.clear(itemList)
         viewModel.fetchList(url)
@@ -88,15 +86,14 @@ class SearchActivity : AppCompatActivity() {
             val gridLayoutManager = GridLayoutManager(context, maxNumberGridLayout(context))
             addOnScrollListener(object : PaginationScroll(gridLayoutManager) {
                 override fun loadMoreItems() {
-                    if (page <= lastPage) {
-                        viewModel.fetchList(url, page++)
+                    if (viewModel.currentPage <= lastPage) {
+                        viewModel.nextPage()
                         progress_bottom.visibility = View.VISIBLE
-                        releasedLoad = false
                     }
                 }
 
                 override fun isLoading(): Boolean {
-                    return releasedLoad
+                    return viewModel.releasedLoad
                 }
 
                 override fun hideMoreItems() {
@@ -151,7 +148,7 @@ class SearchActivity : AppCompatActivity() {
         progress_bottom.visibility = View.GONE
         include_layout_error.visibility = View.GONE
         text_type.visibility = View.GONE
-        releasedLoad = true
+        viewModel.releasedLoad = true
 
         if (itemList.isEmpty()) {
             text_type.visibility = View.VISIBLE
@@ -171,12 +168,11 @@ class SearchActivity : AppCompatActivity() {
 
         image_refresh_default.setOnClickListener {
             ObjectAnimator.ofFloat(image_refresh_default, View.ROTATION, 0f, 360f).setDuration(300).start()
-            if (page > 2){
-                viewModel.fetchList(url, page-1)
+            if (viewModel.currentPage > 2){
+                viewModel.backPreviousPage()
             } else {
-                page = 2
                 adapterItem.clear(itemList)
-                viewModel.fetchList(url)
+                viewModel.refreshViewModel()
             }
         }
     }

@@ -29,7 +29,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
 
     private val adapterItem: CatalogAdapter by lazy {
         CatalogAdapter(itemList) {
-            if (releasedLoad) {
+            if (viewModel.releasedLoad) {
                 startActivity<DetailActivity>("url" to BASE_URL.plus(it.link))
             }
         }
@@ -38,9 +38,8 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
     private val viewModel by viewModel<CatalogViewModel>()
 
     private var itemList = arrayListOf<CatalogResponse>()
-    private var releasedLoad: Boolean = true
-    private var page: Int = 2
     private var url: String = ""
+    private var lastPage: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,12 +51,11 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
 
         swipe_refresh.setOnRefreshListener {
             GlobalScope.launch(context = Dispatchers.Main) {
-                if (releasedLoad) {
+                if (viewModel.releasedLoad) {
                     delay(1000)
-                    page = 2
                     include_layout_error.visibility = View.GONE
                     adapterItem.clear(itemList)
-                    viewModel.fetchList(url)
+                    viewModel.refreshViewModel()
                 }
                 swipe_refresh.isRefreshing = false
             }
@@ -80,13 +78,10 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
             onLoading = {
                 showLoading(it)
             })
-    }
 
-    private fun lastPage(): Int {
-        var page = 0
-        viewModel.getLastPagination.observe(this, Observer { page = it })
-
-        return page
+        viewModel.getLastPagination.observe(this, Observer {
+            lastPage = it
+        })
     }
 
     private fun populate(listCatalogResponse: List<CatalogResponse>) {
@@ -100,15 +95,14 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
             val gridLayoutManager = GridLayoutManager(context, maxNumberGridLayout(context))
             addOnScrollListener(object : PaginationScroll(gridLayoutManager) {
                 override fun loadMoreItems() {
-                    if (page <= lastPage()) {
-                        viewModel.fetchList(url, page++)
+                    if (viewModel.currentPage <= lastPage) {
+                        viewModel.nextPage()
                         progress_bottom.visibility = View.VISIBLE
-                        releasedLoad = false
                     }
                 }
 
                 override fun isLoading(): Boolean {
-                    return releasedLoad
+                    return viewModel.releasedLoad
                 }
 
                 override fun hideMoreItems() {
@@ -128,7 +122,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
         recycler_catalog.visibility = View.VISIBLE
         progress_bottom.visibility = View.GONE
         include_layout_error.visibility = View.GONE
-        releasedLoad = true
+        viewModel.releasedLoad = true
     }
 
     private fun showLoading(isVisible: Boolean) {
@@ -142,12 +136,11 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
 
         image_refresh_default.setOnClickListener {
             ObjectAnimator.ofFloat(image_refresh_default, View.ROTATION, 0f, 360f).setDuration(300).start()
-            if (page > 2){
-                viewModel.fetchList(url, page-1)
+            if (viewModel.currentPage > 2){
+                viewModel.backPreviousPage()
             } else {
-                page = 2
                 adapterItem.clear(itemList)
-                viewModel.fetchList(url)
+                viewModel.refreshViewModel()
             }
         }
     }

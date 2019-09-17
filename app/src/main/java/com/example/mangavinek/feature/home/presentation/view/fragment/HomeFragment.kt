@@ -35,7 +35,7 @@ class HomeFragment : Fragment(), AnkoLogger {
 
     private val adapterHome: HomeAdapter by lazy {
         HomeAdapter(itemList) {
-            if (releasedLoad) {
+            if (viewModel.releasedLoad) {
                 context!!.startActivity<DetailActivity>("url" to BASE_URL.plus(it.link))
             }
         }
@@ -48,8 +48,6 @@ class HomeFragment : Fragment(), AnkoLogger {
     private val viewModel by viewModel<HomeViewModel>()
 
     private var itemList = arrayListOf<HomeResponse>()
-    private var releasedLoad: Boolean = true
-    private var page: Int = 2
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
@@ -60,12 +58,11 @@ class HomeFragment : Fragment(), AnkoLogger {
 
         swipe_refresh.setOnRefreshListener {
             GlobalScope.launch(context = Dispatchers.Main) {
-                if (releasedLoad) {
+                if (viewModel.releasedLoad) {
                     delay(1000)
-                    page = 2
                     include_layout_error.visibility = View.GONE
                     adapterHome.clear(itemList)
-                    viewModel.fetchList()
+                    viewModel.refreshViewModel()
                 }
                 swipe_refresh.isRefreshing = false
             }
@@ -103,13 +100,12 @@ class HomeFragment : Fragment(), AnkoLogger {
             val gridLayoutManager = GridLayoutManager(context, maxNumberGridLayout(context))
             addOnScrollListener(object : PaginationScroll(gridLayoutManager) {
                 override fun loadMoreItems() {
-                    viewModel.fetchList(page++)
+                    viewModel.nextPage()
                     progress_bottom.visibility = View.VISIBLE
-                    releasedLoad = false
                 }
 
                 override fun isLoading(): Boolean {
-                    return releasedLoad
+                    return viewModel.releasedLoad
                 }
 
                 override fun hideMoreItems() {
@@ -124,7 +120,7 @@ class HomeFragment : Fragment(), AnkoLogger {
         recycler_view.visibility = View.VISIBLE
         progress_bottom.visibility = View.GONE
         include_layout_error.visibility = View.GONE
-        releasedLoad = true
+        viewModel.releasedLoad = true
         splashDialog.hideSplashScreen()
     }
 
@@ -138,14 +134,16 @@ class HomeFragment : Fragment(), AnkoLogger {
         recycler_view.visibility = View.GONE
         splashDialog.hideSplashScreen()
 
+        val currentPage = viewModel.currentPage
+
         image_refresh_default.setOnClickListener {
             ObjectAnimator.ofFloat(image_refresh_default, View.ROTATION, 0f, 360f).setDuration(300).start()
-            if (page > 2){
-                viewModel.fetchList(page-1)
+
+            if (currentPage > 2){
+                viewModel.backPreviousPage()
             } else {
-                page = 2
                 adapterHome.clear(itemList)
-                viewModel.fetchList()
+                viewModel.refreshViewModel()
             }
         }
 
