@@ -6,7 +6,7 @@ import com.example.mangavinek.feature.catalog.repository.CatalogRepository
 import com.example.mangavinek.core.base.BaseViewModel
 import com.example.mangavinek.core.helper.PaginationConfig
 import com.example.mangavinek.core.helper.Resource
-import com.example.mangavinek.data.model.catalog.entity.CatalogResponse
+import com.example.mangavinek.feature.catalog.model.domain.CatalogDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,13 +15,13 @@ import timber.log.Timber
 
 class CatalogViewModel(private val repository: CatalogRepository) : BaseViewModel(), AnkoLogger, PaginationConfig{
 
-    val getListCatalog = MutableLiveData<Resource<MutableList<CatalogResponse>>>()
+    val getListCatalog = MutableLiveData<Resource<List<CatalogDomain>>>()
     var getLastPagination = MutableLiveData<Int>()
     var currentPage = 2
     var releasedLoad: Boolean = true
     var url: String = ""
 
-    fun fetchList(url: String, page: Int = 1) {
+    fun fetchListCatalog(url: String, page: Int = 1) {
         this.url = url
 
         viewModelScope.launch {
@@ -51,16 +51,16 @@ class CatalogViewModel(private val repository: CatalogRepository) : BaseViewMode
     }
 
     override fun nextPage() {
-        fetchList(url, currentPage++)
+        fetchListCatalog(url, currentPage++)
         releasedLoad = false
     }
 
     override fun backPreviousPage() {
-        fetchList(url,currentPage-1)
+        fetchListCatalog(url,currentPage-1)
     }
 
     override fun refreshViewModel() {
         currentPage = 2
-        fetchList(url)
+        fetchListCatalog(url)
     }
 }

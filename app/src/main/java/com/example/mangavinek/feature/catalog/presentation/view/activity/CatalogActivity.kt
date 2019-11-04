@@ -11,7 +11,7 @@ import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.helper.PaginationScroll
 import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.core.util.maxNumberGridLayout
-import com.example.mangavinek.data.model.catalog.entity.CatalogResponse
+import com.example.mangavinek.feature.catalog.model.domain.CatalogDomain
 import com.example.mangavinek.feature.catalog.presentation.view.adapter.CatalogAdapter
 import com.example.mangavinek.feature.catalog.presentation.viewmodel.CatalogViewModel
 import com.example.mangavinek.feature.detail.presentation.view.activity.DetailActivity
@@ -27,17 +27,17 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CatalogActivity : AppCompatActivity(), AnkoLogger {
 
-    private val adapterItem: CatalogAdapter by lazy {
-        CatalogAdapter(itemList) {
+    private val adapterCatalog: CatalogAdapter by lazy {
+        CatalogAdapter(listCatalogDomain) {
             if (viewModel.releasedLoad) {
-                startActivity<DetailActivity>("url" to BASE_URL.plus(it.link))
+                startActivity<DetailActivity>("url" to BASE_URL.plus(it.url))
             }
         }
     }
 
     private val viewModel by viewModel<CatalogViewModel>()
 
-    private var itemList = arrayListOf<CatalogResponse>()
+    private var listCatalogDomain = arrayListOf<CatalogDomain>()
     private var url: String = ""
     private var lastPage: Int = 0
 
@@ -54,7 +54,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
                 if (viewModel.releasedLoad) {
                     delay(1000)
                     include_layout_error.visibility = View.GONE
-                    adapterItem.clear(itemList)
+                    adapterCatalog.clear(listCatalogDomain)
                     viewModel.refreshViewModel()
                 }
                 swipe_refresh.isRefreshing = false
@@ -62,11 +62,11 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
         }
 
         loadData()
-        initUi()
+        initUI()
     }
 
     private fun loadData() {
-        viewModel.fetchList(url)
+        viewModel.fetchListCatalog(url)
         viewModel.getListCatalog.observeResource(this,
             onSuccess = {
                 populate(it)
@@ -84,14 +84,14 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
         })
     }
 
-    private fun populate(listCatalogResponse: List<CatalogResponse>) {
-        itemList.addAll(listCatalogResponse)
-        adapterItem.notifyItemChanged(itemList.size - 15, itemList.size)
+    private fun populate(listCatalogDomain: List<CatalogDomain>) {
+        this.listCatalogDomain.addAll(listCatalogDomain)
+        adapterCatalog.notifyItemChanged(this.listCatalogDomain.size - 15, this.listCatalogDomain.size)
     }
 
-    private fun initUi() {
+    private fun initUI() {
         with(recycler_catalog) {
-            adapter = adapterItem
+            adapter = adapterCatalog
             val gridLayoutManager = GridLayoutManager(context, maxNumberGridLayout(context))
             addOnScrollListener(object : PaginationScroll(gridLayoutManager) {
                 override fun loadMoreItems() {
@@ -139,7 +139,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
             if (viewModel.currentPage > 2){
                 viewModel.backPreviousPage()
             } else {
-                adapterItem.clear(itemList)
+                adapterCatalog.clear(listCatalogDomain)
                 viewModel.refreshViewModel()
             }
         }

@@ -4,19 +4,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mangavinek.core.base.BaseViewModel
 import com.example.mangavinek.core.helper.Resource
-import com.example.mangavinek.data.model.detail.entity.DetailChapterResponse
-import com.example.mangavinek.data.model.detail.entity.DetailResponse
-import com.example.mangavinek.data.model.detail.entity.StatusChapter
-import com.example.mangavinek.data.model.favorite.entity.Favorite
+import com.example.mangavinek.data.entity.favorite.FavoriteDB
+import com.example.mangavinek.feature.detail.model.domain.DetailChapterDomain
+import com.example.mangavinek.feature.detail.model.domain.DetailDomain
+import com.example.mangavinek.feature.detail.model.domain.StatusChapterDomain
 import com.example.mangavinek.feature.detail.repository.DetailRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DetailViewModel(private val repository: DetailRepository) : BaseViewModel() {
-    val getDetail = MutableLiveData<Resource<DetailResponse>>()
-    val getListDetailChapter = MutableLiveData<Resource<MutableList<DetailChapterResponse>>>()
-    val mergeStatusList = MutableLiveData<MutableList<StatusChapter>>()
+    val getDetail = MutableLiveData<Resource<DetailDomain>>()
+    val getListDetailChapter = MutableLiveData<Resource<List<DetailChapterDomain>>>()
+    val getListDetailStatusChapter = MutableLiveData<MutableList<StatusChapterDomain>>()
 
     fun fetchDetail(url: String) {
         viewModelScope.launch {
@@ -24,6 +24,7 @@ class DetailViewModel(private val repository: DetailRepository) : BaseViewModel(
             try {
                 withContext(Dispatchers.IO) {
                     getDetail.success(repository.getDetail(url)?.let { it })
+                    getListDetailStatusChapter.postValue(repository.getListDetailStatusChapter())
                 }
             } catch (e: Exception) {
                 getDetail.error(e)
@@ -33,12 +34,12 @@ class DetailViewModel(private val repository: DetailRepository) : BaseViewModel(
         }
     }
 
-    fun fetchList(url: String) {
+    fun fetchListDetailChapter(url: String) {
         viewModelScope.launch {
             getListDetailChapter.loading(true)
             try {
                 withContext(Dispatchers.IO) {
-                    getListDetailChapter.success(repository.getDetailChapter(url)?.let { it })
+                    getListDetailChapter.success(repository.getListDetailChapter(url)?.let { it })
                 }
             } catch (e: Exception) {
                 getListDetailChapter.error(e)
@@ -48,12 +49,8 @@ class DetailViewModel(private val repository: DetailRepository) : BaseViewModel(
         }
     }
 
-    fun fetchListStatus(detailResponse: DetailResponse) {
-        mergeStatusList.value = repository.mergeStatusList(detailResponse)
-    }
-
-    fun insertComic(favorite: Favorite){
-        repository.insertComic(favorite)
+    fun insertComic(favoriteDB: FavoriteDB){
+        repository.insertComic(favoriteDB)
     }
 
     fun removeComic(title: String){

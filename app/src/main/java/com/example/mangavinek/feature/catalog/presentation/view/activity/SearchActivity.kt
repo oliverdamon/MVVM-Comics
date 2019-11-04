@@ -17,7 +17,7 @@ import com.example.mangavinek.core.constant.BASE_URL_SEARCH
 import com.example.mangavinek.core.helper.PaginationScroll
 import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.core.util.maxNumberGridLayout
-import com.example.mangavinek.data.model.catalog.entity.CatalogResponse
+import com.example.mangavinek.feature.catalog.model.domain.CatalogDomain
 import com.example.mangavinek.feature.catalog.presentation.view.adapter.CatalogAdapter
 import com.example.mangavinek.feature.catalog.presentation.viewmodel.CatalogViewModel
 import com.example.mangavinek.feature.detail.presentation.view.activity.DetailActivity
@@ -29,16 +29,16 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchActivity : AppCompatActivity() {
 
     private val adapterItem: CatalogAdapter by lazy {
-        CatalogAdapter(itemList) {
+        CatalogAdapter(listCatalogDomain) {
             if (viewModel.releasedLoad) {
-                startActivity<DetailActivity>("url" to BASE_URL.plus(it.link))
+                startActivity<DetailActivity>("url" to BASE_URL.plus(it.url))
             }
         }
     }
 
     private val viewModel by viewModel<CatalogViewModel>()
 
-    private var itemList = arrayListOf<CatalogResponse>()
+    private var listCatalogDomain = arrayListOf<CatalogDomain>()
     private var lastPage: Int = 0
     private var url: String = ""
 
@@ -47,7 +47,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         loadData()
-        initUi()
+        initUI()
     }
 
     private fun loadData() {
@@ -71,16 +71,16 @@ class SearchActivity : AppCompatActivity() {
     private fun fetchViewModel(url: String) {
         viewModel.currentPage = 2
         lastPage = 0
-        adapterItem.clear(itemList)
-        viewModel.fetchList(url)
+        adapterItem.clear(listCatalogDomain)
+        viewModel.fetchListCatalog(url)
     }
 
-    private fun populate(listCatalogResponse: List<CatalogResponse>) {
-        itemList.addAll(listCatalogResponse)
-        adapterItem.notifyItemChanged(itemList.size - 15, itemList.size)
+    private fun populate(listCatalogDomain: List<CatalogDomain>) {
+        this.listCatalogDomain.addAll(listCatalogDomain)
+        adapterItem.notifyItemChanged(this.listCatalogDomain.size - 15, this.listCatalogDomain.size)
     }
 
-    private fun initUi() {
+    private fun initUI() {
         with(recycler_search) {
             adapter = adapterItem
             val gridLayoutManager = GridLayoutManager(context, maxNumberGridLayout(context))
@@ -150,7 +150,7 @@ class SearchActivity : AppCompatActivity() {
         text_type.visibility = View.GONE
         viewModel.releasedLoad = true
 
-        if (itemList.isEmpty()) {
+        if (listCatalogDomain.isEmpty()) {
             text_type.visibility = View.VISIBLE
             text_type.text = getString(R.string.type_message_not_comic)
         }
@@ -171,7 +171,7 @@ class SearchActivity : AppCompatActivity() {
             if (viewModel.currentPage > 2){
                 viewModel.backPreviousPage()
             } else {
-                adapterItem.clear(itemList)
+                adapterItem.clear(listCatalogDomain)
                 viewModel.refreshViewModel()
             }
         }

@@ -8,7 +8,6 @@ fun Connection.Response.loggingInterceptorJSoup() {
     Timber.i("SOUP - Status Code: ${this.statusCode()}")
     Timber.i("SOUP - Status Message: ${this.statusMessage()}")
     Timber.i("SOUP - Content Type: ${this.contentType()}")
-    Timber.i("SOUP - Parse: ${this.parse()}")
 }
 
 fun Elements.loggingInterceptorJSoupElement(): Elements {

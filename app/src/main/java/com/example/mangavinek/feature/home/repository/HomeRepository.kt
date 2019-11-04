@@ -1,13 +1,15 @@
 package com.example.mangavinek.feature.home.repository
 
+import com.example.mangavinek.data.entity.home.NewChapterResponse
 import com.example.mangavinek.data.source.remote.ApiServiceSoup
-import com.example.mangavinek.data.model.home.entity.HomeResponse
-import com.example.mangavinek.data.model.home.entity.getItems
+import com.example.mangavinek.feature.home.model.domain.NewChapterDomain
+import com.example.mangavinek.feature.home.model.mapper.HomeMapper
 
 class HomeRepository(private val apiServiceSoup: ApiServiceSoup) {
 
-    fun getList(url: String): MutableList<HomeResponse>? {
-        val response = apiServiceSoup.getListHot(url)
-        return response.getItems()
+    fun getListNewChapterDomain(url: String): List<NewChapterDomain> {
+        val listHomeResponse = NewChapterResponse().addElements(apiServiceSoup.getListHot(url))
+        return HomeMapper.transformEntityToDomain(listHomeResponse)
     }
 }
+

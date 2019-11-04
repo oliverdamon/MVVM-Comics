@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mangavinek.R
-import com.example.mangavinek.data.model.detail.entity.StatusChapter
+import com.example.mangavinek.feature.detail.model.domain.StatusChapterDomain
 import kotlinx.android.synthetic.main.row_chapter_status.view.*
 
-class StatusChapterAdapter(private var listItem: List<StatusChapter>) :
+class StatusChapterAdapter(private var listStatusChapterDomain: List<StatusChapterDomain>) :
     RecyclerView.Adapter<StatusChapterAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ItemViewHolder {
@@ -17,25 +17,25 @@ class StatusChapterAdapter(private var listItem: List<StatusChapter>) :
         return ItemViewHolder(view)
     }
 
-    override fun getItemCount(): Int = listItem.size
+    override fun getItemCount(): Int = listStatusChapterDomain.size
 
     override fun onBindViewHolder(holder: ItemViewHolder, p1: Int) {
 
-        val dataItem = listItem[p1]
+        val dataItem = listStatusChapterDomain[p1]
         holder.bindView(dataItem)
     }
 
     class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         private val title = view.text_number_chapter
 
-        fun bindView(statusChapter: StatusChapter) = with(view) {
-            when (statusChapter.status) {
-                StatusChapter.AVALAIBLE -> title.setBackgroundColor(ContextCompat.getColor(context, R.color.available_color))
-                StatusChapter.TRANSLATED -> title.setBackgroundColor(ContextCompat.getColor(context, R.color.translated_color))
-                StatusChapter.UNAVAILABLE -> title.setBackgroundColor(ContextCompat.getColor(context, R.color.unavailable_color))
+        fun bindView(statusChapterDomain: StatusChapterDomain) = with(view) {
+            when (statusChapterDomain.status) {
+                StatusChapterDomain.AVALAIBLE -> title.setBackgroundColor(ContextCompat.getColor(context, R.color.available_color))
+                StatusChapterDomain.TRANSLATED -> title.setBackgroundColor(ContextCompat.getColor(context, R.color.translated_color))
+                StatusChapterDomain.UNAVAILABLE -> title.setBackgroundColor(ContextCompat.getColor(context, R.color.unavailable_color))
             }
 
-            title.text = statusChapter.number
+            title.text = statusChapterDomain.number
         }
     }
 }

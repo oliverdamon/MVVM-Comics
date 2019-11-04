@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
 import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.core.util.maxNumberGridLayout
-import com.example.mangavinek.data.model.detail.entity.DetailChapterResponse
+import com.example.mangavinek.feature.detail.model.domain.DetailChapterDomain
 import com.example.mangavinek.feature.detail.presentation.view.adapter.ChapterAdapter
 import com.example.mangavinek.feature.detail.presentation.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.fragment_detail_chapter.*
@@ -25,11 +25,11 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
     private val viewModel by viewModel<DetailViewModel>()
 
     private val adapterChapter: ChapterAdapter by lazy {
-        ChapterAdapter(itemList) {
-            context!!.browse(it.linkChapter)
+        ChapterAdapter(listDetailChapterDomain) {
+            context!!.browse(it.url)
         }
     }
-    private var itemList = arrayListOf<DetailChapterResponse>()
+    private var listDetailChapterDomain = arrayListOf<DetailChapterDomain>()
     private var url: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,7 +44,7 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
         url = arguments?.getString("urlChapter").toString()
 
         url.let {
-            viewModel.fetchList(it)
+            viewModel.fetchListDetailChapter(it)
         }
         viewModel.getListDetailChapter.observeResource(this,
             onSuccess = {
@@ -59,9 +59,9 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
             })
     }
 
-    private fun populate(listDetailChapterResponse: List<DetailChapterResponse>) {
-        itemList.clear()
-        itemList.addAll(listDetailChapterResponse)
+    private fun populate(listDetailChapterDomain: List<DetailChapterDomain>) {
+        this.listDetailChapterDomain.clear()
+        this.listDetailChapterDomain.addAll(listDetailChapterDomain)
         adapterChapter.notifyDataSetChanged()
     }
 
@@ -80,8 +80,8 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
 
         image_refresh_default.setOnClickListener {
             ObjectAnimator.ofFloat(image_refresh_default, View.ROTATION, 0f, 360f).setDuration(300).start()
-            itemList.clear()
-            viewModel.fetchList(url)
+            listDetailChapterDomain.clear()
+            viewModel.fetchListDetailChapter(url)
         }
     }
 

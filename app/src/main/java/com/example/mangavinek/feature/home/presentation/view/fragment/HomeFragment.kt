@@ -13,8 +13,8 @@ import com.example.mangavinek.core.helper.PaginationScroll
 import com.example.mangavinek.core.helper.SplashDialog
 import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.core.util.maxNumberGridLayout
-import com.example.mangavinek.data.model.home.entity.HomeResponse
 import com.example.mangavinek.feature.detail.presentation.view.activity.DetailActivity
+import com.example.mangavinek.feature.home.model.domain.NewChapterDomain
 import com.example.mangavinek.feature.home.presentation.view.adapter.HomeAdapter
 import com.example.mangavinek.feature.home.presentation.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -34,9 +34,9 @@ class HomeFragment : Fragment(), AnkoLogger {
     }
 
     private val adapterHome: HomeAdapter by lazy {
-        HomeAdapter(itemList) {
+        HomeAdapter(listNewChapterDomain) {
             if (viewModel.releasedLoad) {
-                context!!.startActivity<DetailActivity>("url" to BASE_URL.plus(it.link))
+                context!!.startActivity<DetailActivity>("url" to BASE_URL.plus(it.url))
             }
         }
     }
@@ -47,7 +47,7 @@ class HomeFragment : Fragment(), AnkoLogger {
 
     private val viewModel by viewModel<HomeViewModel>()
 
-    private var itemList = arrayListOf<HomeResponse>()
+    private var listNewChapterDomain = arrayListOf<NewChapterDomain>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
@@ -61,7 +61,7 @@ class HomeFragment : Fragment(), AnkoLogger {
                 if (viewModel.releasedLoad) {
                     delay(1000)
                     include_layout_error.visibility = View.GONE
-                    adapterHome.clear(itemList)
+                    adapterHome.clear(listNewChapterDomain)
                     viewModel.refreshViewModel()
                 }
                 swipe_refresh.isRefreshing = false
@@ -71,12 +71,12 @@ class HomeFragment : Fragment(), AnkoLogger {
         splashDialog.initSplash()
         splashDialog.showSplashScreen()
         loadData()
-        initUi()
+        initUI()
     }
 
     private fun loadData() {
-        viewModel.fetchList()
-        viewModel.getList.observeResource(this,
+        viewModel.fetchListNewChapterDomain()
+        viewModel.getListNewChapterDomain.observeResource(this,
             onSuccess = {
                 populate(it)
                 showSuccess()
@@ -89,12 +89,12 @@ class HomeFragment : Fragment(), AnkoLogger {
             })
     }
 
-    private fun populate(listHomeResponse: List<HomeResponse>) {
-        itemList.addAll(listHomeResponse)
-        adapterHome.notifyItemChanged(itemList.size - 20, itemList.size)
+    private fun populate(listNewChapterDomain: List<NewChapterDomain>) {
+        this.listNewChapterDomain.addAll(listNewChapterDomain)
+        adapterHome.notifyItemChanged(this.listNewChapterDomain.size - 20, this.listNewChapterDomain.size)
     }
 
-    private fun initUi() {
+    private fun initUI() {
         with(recycler_view) {
             adapter = adapterHome
             val gridLayoutManager = GridLayoutManager(context, maxNumberGridLayout(context))
@@ -142,7 +142,7 @@ class HomeFragment : Fragment(), AnkoLogger {
             if (currentPage > 2){
                 viewModel.backPreviousPage()
             } else {
-                adapterHome.clear(itemList)
+                adapterHome.clear(listNewChapterDomain)
                 viewModel.refreshViewModel()
             }
         }

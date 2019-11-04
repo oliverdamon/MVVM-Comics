@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.mangavinek.data.model.favorite.entity.Favorite
+import com.example.mangavinek.data.entity.favorite.FavoriteDB
 
-@Database(entities = [Favorite::class], version = 5)
+@Database(entities = [FavoriteDB::class], version = 5)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun favoriteDao(): FavoriteDao
 

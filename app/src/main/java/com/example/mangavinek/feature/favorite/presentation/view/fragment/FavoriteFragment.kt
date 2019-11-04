@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
 import com.example.mangavinek.core.util.maxNumberGridLayout
-import com.example.mangavinek.data.model.favorite.entity.Favorite
+import com.example.mangavinek.data.entity.favorite.FavoriteDB
 import com.example.mangavinek.feature.detail.presentation.view.activity.DetailActivity
 import com.example.mangavinek.feature.favorite.presentation.view.adapter.FavoriteAdapter
 import com.example.mangavinek.feature.favorite.presentation.viewmodel.FavoriteViewModel
@@ -32,7 +32,7 @@ class FavoriteFragment : Fragment(), AnkoLogger {
 
     private val viewModel by viewModel<FavoriteViewModel>()
 
-    private var itemList = arrayListOf<Favorite>()
+    private var itemList = arrayListOf<FavoriteDB>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_favorite, container, false)

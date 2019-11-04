@@ -1,57 +1,41 @@
 package com.example.mangavinek.feature.detail.repository
 
-import com.example.mangavinek.data.model.detail.entity.*
-import com.example.mangavinek.data.model.favorite.entity.Favorite
+import com.example.mangavinek.data.entity.detail.*
+import com.example.mangavinek.data.entity.favorite.FavoriteDB
 import com.example.mangavinek.data.source.local.FavoriteDao
 import com.example.mangavinek.data.source.remote.ApiServiceSoup
+import com.example.mangavinek.feature.detail.model.domain.DetailChapterDomain
+import com.example.mangavinek.feature.detail.model.domain.DetailDomain
+import com.example.mangavinek.feature.detail.model.domain.StatusChapterDomain
+import com.example.mangavinek.feature.detail.model.mapper.DetailChapterMapper
+import com.example.mangavinek.feature.detail.model.mapper.DetailMapper
 
 class DetailRepository(private val apiServiceSoup: ApiServiceSoup, private val favoriteDao: FavoriteDao) {
 
-    fun getDetail(url: String): DetailResponse? = apiServiceSoup.getDetail(url).getItemDetail()
+    private lateinit var detailResponse: DetailResponse
 
-    fun getDetailChapter(url: String): MutableList<DetailChapterResponse>? {
-        val response = apiServiceSoup.getDetailChapter(url)
-        return response.getItems()
+    fun getDetail(url: String): DetailDomain?{
+        detailResponse = DetailResponse().addElements(apiServiceSoup.getDetail(url))
+        return DetailMapper.transformEntityToDomain(detailResponse)
     }
 
-    fun mergeStatusList(detailResponse: DetailResponse): MutableList<StatusChapter> {
-        val partsAvailable = detailResponse.issueAvailable.split(" ".toRegex())
-        val partsTranslated = detailResponse.issueTranslated.split(" ".toRegex())
-        val partsUnavailable = detailResponse.issueUnavailable.split(" ".toRegex())
-        val mutableList = mutableListOf<StatusChapter>()
+    fun getListDetailChapter(url: String): List<DetailChapterDomain>? {
+        val detailChapterResponse = DetailChapterResponse()
+            .addElements(apiServiceSoup.getDetailChapter(url))
 
-        partsAvailable.forEach {
-            if (it.isNotEmpty()) {
-                val statusChapter = StatusChapter(StatusChapter.AVALAIBLE, it)
-                mutableList.add(statusChapter)
-            }
-        }
+        return DetailChapterMapper.transformEntityToDomain(detailChapterResponse)
+    }
 
-        partsTranslated.forEach {
-            if (it.isNotEmpty()) {
-                val statusChapter = StatusChapter(StatusChapter.TRANSLATED, it)
-                mutableList.add(statusChapter)
-            }
-        }
-
-        partsUnavailable.forEach {
-            if (it.isNotEmpty()) {
-                val statusChapter = StatusChapter(StatusChapter.UNAVAILABLE, it)
-                mutableList.add(statusChapter)
-            }
-        }
-
-        mutableList.sortWith(compareBy(StatusChapter::number))
-
-        return mutableList
+    fun getListDetailStatusChapter(): MutableList<StatusChapterDomain> {
+        return DetailMapper.transformCommonStatusToCustomStatus(detailResponse)
     }
 
     fun searchForTitle(title: String): Int {
         return favoriteDao.searchForTitle(title)
     }
 
-    fun insertComic(favorite: Favorite){
-        favoriteDao.insertComic(favorite)
+    fun insertComic(favoriteDB: FavoriteDB){
+        favoriteDao.insertComic(favoriteDB)
     }
 
     fun removeComic(title: String){

@@ -23,9 +23,9 @@ import com.bumptech.glide.Glide
 import com.example.mangavinek.R
 import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.helper.observeResource
-import com.example.mangavinek.data.model.detail.entity.DetailResponse
-import com.example.mangavinek.data.model.detail.entity.StatusChapter
-import com.example.mangavinek.data.model.favorite.entity.Favorite
+import com.example.mangavinek.data.entity.favorite.FavoriteDB
+import com.example.mangavinek.feature.detail.model.domain.DetailDomain
+import com.example.mangavinek.feature.detail.model.domain.StatusChapterDomain
 import com.example.mangavinek.feature.detail.presentation.view.adapter.StatusChapterAdapter
 import com.example.mangavinek.feature.detail.presentation.view.fragment.DetailChapterFragment
 import com.example.mangavinek.feature.detail.presentation.viewmodel.DetailViewModel
@@ -44,9 +44,14 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
     private var title: String = ""
     private var imageUrl: String = ""
     private var url: String = ""
-    private var favorite: Favorite? = null
+    private var favoriteDB: FavoriteDB? = null
     private var menu: Menu? = null
     private var menuItemFavorite: MenuItem? = null
+    var listStatusChapterDomain = arrayListOf<StatusChapterDomain>()
+
+    val adapterStatusChapter by lazy {
+        StatusChapterAdapter(listStatusChapterDomain)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +75,10 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
             onLoading = {
                 showLoading(it)
             })
+
+        viewModel.getListDetailStatusChapter.observe(this, Observer {
+            populateListStatusChapter(it)
+        })
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -89,7 +98,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
 
         when (item?.itemId) {
             R.id.item_favorite -> {
-                favorite?.let { favorite ->
+                favoriteDB?.let { favorite ->
                     if (checkComicDataBase()) {
                         viewModel.removeComic(title)
                     } else {
@@ -126,17 +135,17 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
         )
     }
 
-    private fun populateDetail(detailResponse: DetailResponse?) {
-        detailResponse?.let {
+    private fun populateDetail(detailDomain: DetailDomain?) {
+        detailDomain?.let {
             text_title.text = it.title
             text_title_original.text = it.titleOriginal.getStringBold(R.string.info_title_original)
 
-            text_status.text = detailResponse.status
+            text_status.text = it.status
             text_publishing.text = it.publishing.getStringBold(R.string.info_publishing)
             text_publication.text = it.publication.getStringBold(R.string.info_publication)
             text_year.text = it.year.getStringBold(R.string.info_year)
             text_sinopse.text = it.sinopse
-            val urlImage = BASE_URL.plus(it.image)
+            val urlImage = BASE_URL.plus(it.imageCover)
 
             Glide.with(this@DetailActivity)
                 .load(urlImage)
@@ -146,7 +155,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
                 .load(urlImage)
                 .into(image_cover_complet)
 
-            initRecycler(it)
+            initRecycler()
             initFragment(it.link)
             insertInfoDatabase(it.title, urlImage)
 
@@ -158,7 +167,11 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
         this.title = title
         this.imageUrl = urlImage
 
-        this.favorite = Favorite(title = title, image = urlImage, link = url)
+        this.favoriteDB = FavoriteDB(
+            title = title,
+            image = urlImage,
+            link = url
+        )
     }
 
     private fun showSuccess() {
@@ -180,16 +193,14 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
         }
     }
 
-    private fun mergeStatusList(): List<StatusChapter> {
-        var list = listOf<StatusChapter>()
-        viewModel.mergeStatusList.observe(this, Observer { list = it })
-        return list
+    private fun populateListStatusChapter(listStatusChapterDomain: MutableList<StatusChapterDomain>){
+        this.listStatusChapterDomain.addAll(listStatusChapterDomain)
+        adapterStatusChapter.notifyDataSetChanged()
     }
 
-    private fun initRecycler(detailResponse: DetailResponse) {
-        viewModel.fetchListStatus(detailResponse)
+    private fun initRecycler() {
         with(recycler_chapter_status) {
-            adapter = StatusChapterAdapter(mergeStatusList())
+            adapter = adapterStatusChapter
             isNestedScrollingEnabled = false
             isFocusable = false
             val gridLayoutManager = GridLayoutManager(this@DetailActivity, 4)
