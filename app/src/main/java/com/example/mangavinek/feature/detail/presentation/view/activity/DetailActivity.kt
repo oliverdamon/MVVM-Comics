@@ -36,10 +36,13 @@ import kotlinx.android.synthetic.main.layout_screen_error.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class DetailActivity : AppCompatActivity(), AnkoLogger {
 
-    private val viewModel by viewModel<DetailViewModel>()
+    private val viewModel by viewModel<DetailViewModel>{
+        parametersOf(url)
+    }
 
     private var title: String = ""
     private var imageUrl: String = ""
@@ -63,7 +66,6 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
 
     private fun loadData() {
         url = intent.getStringExtra("url")
-        viewModel.fetchDetail(url)
         viewModel.getDetail.observeResource(this,
             onSuccess = {
                 populateDetail(it)
@@ -73,7 +75,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
                 showError()
             },
             onLoading = {
-                showLoading(it)
+                showLoading()
             })
 
         viewModel.getListDetailStatusChapter.observe(this, Observer {
@@ -156,7 +158,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
                 .into(image_cover_complet)
 
             initRecycler()
-            initFragment(it.link)
+            initFragment(it.url)
             insertInfoDatabase(it.title, urlImage)
 
             addIconCheckAndUncheckedComic()
@@ -176,15 +178,17 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
 
     private fun showSuccess() {
         layout_detail.visibility = View.VISIBLE
+        include_layout_loading.visibility = View.GONE
         include_layout_error.visibility = View.GONE
     }
 
-    private fun showLoading(isVisible: Boolean) {
-        include_layout_loading.visibility = if (isVisible) View.VISIBLE else View.GONE
+    private fun showLoading() {
+        include_layout_loading.visibility = View.VISIBLE
     }
 
     private fun showError() {
         include_layout_error.visibility = View.VISIBLE
+        include_layout_loading.visibility = View.GONE
         layout_detail.visibility = View.GONE
 
         image_refresh_default.setOnClickListener {

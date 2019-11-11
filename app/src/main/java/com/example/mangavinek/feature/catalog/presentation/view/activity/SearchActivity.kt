@@ -19,7 +19,7 @@ import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.core.util.maxNumberGridLayout
 import com.example.mangavinek.feature.catalog.model.domain.CatalogDomain
 import com.example.mangavinek.feature.catalog.presentation.view.adapter.CatalogAdapter
-import com.example.mangavinek.feature.catalog.presentation.viewmodel.CatalogViewModel
+import com.example.mangavinek.feature.catalog.presentation.viewmodel.SearchViewModel
 import com.example.mangavinek.feature.detail.presentation.view.activity.DetailActivity
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.layout_screen_error.*
@@ -36,7 +36,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private val viewModel by viewModel<CatalogViewModel>()
+    private val viewModel by viewModel<SearchViewModel>()
 
     private var listCatalogDomain = arrayListOf<CatalogDomain>()
     private var lastPage: Int = 0
@@ -51,7 +51,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        viewModel.getListCatalog.observeResource(this,
+        viewModel.getListSearch.observeResource(this,
             onSuccess = {
                 populate(it)
                 showSuccess()
@@ -60,7 +60,7 @@ class SearchActivity : AppCompatActivity() {
                 showError()
             },
             onLoading = {
-                showLoading(it)
+                showLoading()
             })
 
         viewModel.getLastPagination.observe(this, Observer {
@@ -72,7 +72,7 @@ class SearchActivity : AppCompatActivity() {
         viewModel.currentPage = 2
         lastPage = 0
         adapterItem.clear(listCatalogDomain)
-        viewModel.fetchListCatalog(url)
+        viewModel.fetchListSearch(url)
     }
 
     private fun populate(listCatalogDomain: List<CatalogDomain>) {
@@ -145,8 +145,9 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showSuccess() {
         recycler_search.visibility = View.VISIBLE
-        progress_bottom.visibility = View.GONE
+        include_layout_loading.visibility = View.GONE
         include_layout_error.visibility = View.GONE
+        progress_bottom.visibility = View.GONE
         text_type.visibility = View.GONE
         viewModel.releasedLoad = true
 
@@ -156,15 +157,16 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun showLoading(isVisible: Boolean) {
-        include_layout_loading.visibility = if (isVisible) View.VISIBLE else View.GONE
+    private fun showLoading() {
+        include_layout_loading.visibility = View.VISIBLE
     }
 
     private fun showError() {
         include_layout_error.visibility = View.VISIBLE
-        text_type.visibility = View.GONE
+        include_layout_loading.visibility = View.GONE
         progress_bottom.visibility = View.GONE
         recycler_search.visibility = View.GONE
+        text_type.visibility = View.GONE
 
         image_refresh_default.setOnClickListener {
             ObjectAnimator.ofFloat(image_refresh_default, View.ROTATION, 0f, 360f).setDuration(300).start()

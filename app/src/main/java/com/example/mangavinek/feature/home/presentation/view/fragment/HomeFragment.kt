@@ -70,13 +70,16 @@ class HomeFragment : Fragment(), AnkoLogger {
 
         splashDialog.initSplash()
         splashDialog.showSplashScreen()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         loadData()
         initUI()
     }
 
     private fun loadData() {
-        viewModel.fetchListNewChapterDomain()
-        viewModel.getListNewChapterDomain.observeResource(this,
+        viewModel.getListNewChapter.observeResource(viewLifecycleOwner,
             onSuccess = {
                 populate(it)
                 showSuccess()
@@ -85,7 +88,7 @@ class HomeFragment : Fragment(), AnkoLogger {
                 showError()
             },
             onLoading = {
-                showLoading(it)
+                showLoading()
             })
     }
 
@@ -119,17 +122,19 @@ class HomeFragment : Fragment(), AnkoLogger {
     private fun showSuccess() {
         recycler_view.visibility = View.VISIBLE
         progress_bottom.visibility = View.GONE
+        include_layout_loading.visibility = View.GONE
         include_layout_error.visibility = View.GONE
         viewModel.releasedLoad = true
         splashDialog.hideSplashScreen()
     }
 
-    private fun showLoading(isVisible: Boolean) {
-        include_layout_loading.visibility = if (isVisible) View.VISIBLE else View.GONE
+    private fun showLoading() {
+        include_layout_loading.visibility = View.VISIBLE
     }
 
     private fun showError() {
         include_layout_error.visibility = View.VISIBLE
+        include_layout_loading.visibility = View.GONE
         progress_bottom.visibility = View.GONE
         recycler_view.visibility = View.GONE
         splashDialog.hideSplashScreen()

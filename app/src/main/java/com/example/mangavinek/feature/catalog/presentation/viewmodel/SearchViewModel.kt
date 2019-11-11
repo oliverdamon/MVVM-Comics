@@ -14,33 +14,33 @@ import kotlinx.coroutines.withContext
 import org.jetbrains.anko.AnkoLogger
 import timber.log.Timber
 
-class CatalogViewModel(var url: String, private val repository: CatalogRepository) : BaseViewModel(), AnkoLogger, PaginationConfig{
+class SearchViewModel(private val repository: CatalogRepository) : BaseViewModel(), AnkoLogger, PaginationConfig{
 
-    private val mutableLiveDataListCatalog = MutableLiveData<Resource<List<CatalogDomain>>>()
+    private val mutableLiveDataListSearch = MutableLiveData<Resource<List<CatalogDomain>>>()
     private var mutableLiveDataLastPagination = MutableLiveData<Int>()
+    var url: String = ""
     var currentPage = 2
     var releasedLoad: Boolean = true
 
-    val getListCatalog: LiveData<Resource<List<CatalogDomain>>> by lazy {
-        fetchListCatalog(url)
-        return@lazy mutableLiveDataListCatalog
+    val getListSearch: LiveData<Resource<List<CatalogDomain>>> by lazy {
+        return@lazy mutableLiveDataListSearch
     }
 
     val getLastPagination: LiveData<Int> by lazy {
         return@lazy mutableLiveDataLastPagination
     }
 
-    fun fetchListCatalog(url: String, page: Int = 1) {
+    fun fetchListSearch(url: String, page: Int = 1) {
         this.url = url
 
         viewModelScope.launch {
-            mutableLiveDataListCatalog.loading()
+            mutableLiveDataListSearch.loading()
             try {
                 withContext(Dispatchers.IO) {
-                    mutableLiveDataListCatalog.success(repository.getListCatalog(url.plus(page))?.let { it })
+                    mutableLiveDataListSearch.success(repository.getListCatalog(url.plus(page))?.let { it })
                 }
             } catch (e: Exception) {
-                mutableLiveDataListCatalog.error(e)
+                mutableLiveDataListSearch.error(e)
             }
 
             fetchLastPagination(url)
@@ -59,16 +59,16 @@ class CatalogViewModel(var url: String, private val repository: CatalogRepositor
     }
 
     override fun nextPage() {
-        fetchListCatalog(url, currentPage++)
+        fetchListSearch(url, currentPage++)
         releasedLoad = false
     }
 
     override fun backPreviousPage() {
-        fetchListCatalog(url,currentPage-1)
+        fetchListSearch(url,currentPage-1)
     }
 
     override fun refreshViewModel() {
         currentPage = 2
-        fetchListCatalog(url)
+        fetchListSearch(url)
     }
 }

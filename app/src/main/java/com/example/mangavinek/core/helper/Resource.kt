@@ -5,21 +5,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import java.lang.Exception
 
-data class Resource<out T>(val status: Status, val data: T?, val boolean: Boolean?, val exception: Exception?) {
+data class Resource<out T>(val status: Status, val data: T?, val exception: Exception?) {
 
     enum class Status { SUCCESS, ERROR, LOADING }
 
     companion object {
         fun <T> success(data: T?): Resource<T> {
-            return Resource(Status.SUCCESS, data, null, null)
+            return Resource(Status.SUCCESS, data, null)
         }
 
         fun <T> error(exception: Exception?): Resource<T> {
-            return Resource(Status.ERROR, null, null, exception)
+            return Resource(Status.ERROR, null, exception)
         }
 
-        fun <T> loading(boolean: Boolean?): Resource<T> {
-            return Resource(Status.LOADING, null, boolean, null)
+        fun <T> loading(): Resource<T> {
+            return Resource(Status.LOADING, null, null)
         }
     }
 }
@@ -28,7 +28,7 @@ fun <T> LiveData<Resource<T>>.observeResource(
     owner: LifecycleOwner,
     onSuccess: (T) -> Unit,
     onError: (Exception) -> Unit,
-    onLoading: (Boolean) -> Unit) {
+    onLoading: () -> Unit) {
 
     observe(owner, Observer { resource ->
         when (resource.status) {
@@ -43,9 +43,7 @@ fun <T> LiveData<Resource<T>>.observeResource(
                 }
             }
             Resource.Status.LOADING -> {
-                resource.boolean?.let {
-                    onLoading.invoke(it)
-                }
+                onLoading.invoke()
             }
         }
 

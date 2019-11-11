@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class CatalogActivity : AppCompatActivity(), AnkoLogger {
 
@@ -35,7 +36,9 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
         }
     }
 
-    private val viewModel by viewModel<CatalogViewModel>()
+    private val viewModel by viewModel<CatalogViewModel>{
+        parametersOf(url)
+    }
 
     private var listCatalogDomain = arrayListOf<CatalogDomain>()
     private var url: String = ""
@@ -66,7 +69,6 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
     }
 
     private fun loadData() {
-        viewModel.fetchListCatalog(url)
         viewModel.getListCatalog.observeResource(this,
             onSuccess = {
                 populate(it)
@@ -76,7 +78,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
                 showError()
             },
             onLoading = {
-                showLoading(it)
+                showLoading()
             })
 
         viewModel.getLastPagination.observe(this, Observer {
@@ -120,19 +122,21 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
 
     private fun showSuccess() {
         recycler_catalog.visibility = View.VISIBLE
-        progress_bottom.visibility = View.GONE
+        include_layout_loading.visibility = View.GONE
         include_layout_error.visibility = View.GONE
+        progress_bottom.visibility = View.GONE
         viewModel.releasedLoad = true
     }
 
-    private fun showLoading(isVisible: Boolean) {
-        include_layout_loading.visibility = if (isVisible) View.VISIBLE else View.GONE
+    private fun showLoading() {
+        include_layout_loading.visibility = View.VISIBLE
     }
 
     private fun showError() {
         include_layout_error.visibility = View.VISIBLE
-        progress_bottom.visibility = View.GONE
+        include_layout_loading.visibility = View.GONE
         recycler_catalog.visibility = View.GONE
+        progress_bottom.visibility = View.GONE
 
         image_refresh_default.setOnClickListener {
             ObjectAnimator.ofFloat(image_refresh_default, View.ROTATION, 0f, 360f).setDuration(300).start()

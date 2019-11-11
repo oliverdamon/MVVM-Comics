@@ -42,7 +42,6 @@ dependencies {
     def glide_version = "4.9.0"
     def skin_kit_version = "1.2.0"
     def jsoup_version = "1.10.2"
-    def life_cycle_version = "1.1.1"
     def room_version = "1.1.1"
     def coroutines_version = "1.2.1"
     def view_model_scope_version = "2.2.0-alpha03"
@@ -69,9 +68,6 @@ dependencies {
     implementation "com.github.ybq:Android-SpinKit:$skin_kit_version"
 
     implementation "org.jsoup:jsoup:$jsoup_version"
-
-    implementation "android.arch.lifecycle:extensions:$life_cycle_version"
-    annotationProcessor "android.arch.lifecycle:compiler:$life_cycle_version"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$view_model_scope_version"

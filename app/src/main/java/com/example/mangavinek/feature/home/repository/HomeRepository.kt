@@ -7,7 +7,7 @@ import com.example.mangavinek.feature.home.model.mapper.HomeMapper
 
 class HomeRepository(private val apiServiceSoup: ApiServiceSoup) {
 
-    fun getListNewChapterDomain(url: String): List<NewChapterDomain> {
+    fun getListNewChapter(url: String): List<NewChapterDomain> {
         val listHomeResponse = NewChapterResponse().addElements(apiServiceSoup.getListHot(url))
         return HomeMapper.transformEntityToDomain(listHomeResponse)
     }

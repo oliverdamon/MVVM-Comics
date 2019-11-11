@@ -1,5 +1,6 @@
 package com.example.mangavinek.feature.detail.presentation.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mangavinek.core.base.BaseViewModel
@@ -13,38 +14,48 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class DetailViewModel(private val repository: DetailRepository) : BaseViewModel() {
-    val getDetail = MutableLiveData<Resource<DetailDomain>>()
-    val getListDetailChapter = MutableLiveData<Resource<List<DetailChapterDomain>>>()
-    val getListDetailStatusChapter = MutableLiveData<MutableList<StatusChapterDomain>>()
+class DetailViewModel(val url: String, private val repository: DetailRepository) : BaseViewModel() {
+    private val mutableLiveDataDetail = MutableLiveData<Resource<DetailDomain>>()
+    private val mutableLiveDataListDetailChapter = MutableLiveData<Resource<List<DetailChapterDomain>>>()
+    private val mutableLiveDataListDetailStatusChapter = MutableLiveData<MutableList<StatusChapterDomain>>()
+
+    val getDetail: LiveData<Resource<DetailDomain>> by lazy {
+        fetchDetail(url)
+        return@lazy mutableLiveDataDetail
+    }
+
+    val getListDetailStatusChapter: LiveData<MutableList<StatusChapterDomain>> by lazy {
+        return@lazy mutableLiveDataListDetailStatusChapter
+    }
+
+    val getListDetailChapter: LiveData<Resource<List<DetailChapterDomain>>> by lazy {
+        fetchListDetailChapter(url)
+        return@lazy mutableLiveDataListDetailChapter
+    }
 
     fun fetchDetail(url: String) {
         viewModelScope.launch {
-            getDetail.loading(true)
+            mutableLiveDataDetail.loading()
             try {
                 withContext(Dispatchers.IO) {
-                    getDetail.success(repository.getDetail(url)?.let { it })
-                    getListDetailStatusChapter.postValue(repository.getListDetailStatusChapter())
+                    mutableLiveDataDetail.success(repository.getDetail(url)?.let { it })
+                    mutableLiveDataListDetailStatusChapter.postValue(repository.getListDetailStatusChapter())
                 }
             } catch (e: Exception) {
-                getDetail.error(e)
-            } finally {
-                getDetail.loading(false)
+                mutableLiveDataDetail.error(e)
             }
         }
     }
 
     fun fetchListDetailChapter(url: String) {
         viewModelScope.launch {
-            getListDetailChapter.loading(true)
+            mutableLiveDataListDetailChapter.loading()
             try {
                 withContext(Dispatchers.IO) {
-                    getListDetailChapter.success(repository.getListDetailChapter(url)?.let { it })
+                    mutableLiveDataListDetailChapter.success(repository.getListDetailChapter(url)?.let { it })
                 }
             } catch (e: Exception) {
-                getListDetailChapter.error(e)
-            } finally {
-                getListDetailChapter.loading(false)
+                mutableLiveDataListDetailChapter.error(e)
             }
         }
     }

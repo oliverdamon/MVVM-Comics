@@ -5,6 +5,7 @@ import com.example.mangavinek.feature.catalog.presentation.viewmodel.CatalogView
 import com.example.mangavinek.data.source.local.AppDatabase
 import com.example.mangavinek.data.source.local.FavoriteDao
 import com.example.mangavinek.data.source.remote.ApiServiceSoup
+import com.example.mangavinek.feature.catalog.presentation.viewmodel.SearchViewModel
 import com.example.mangavinek.feature.detail.repository.DetailRepository
 import com.example.mangavinek.feature.detail.presentation.viewmodel.DetailViewModel
 import com.example.mangavinek.feature.favorite.presentation.viewmodel.FavoriteViewModel
@@ -26,9 +27,10 @@ val repositoryModule = module {
 
 val viewModelModule = module {
     viewModel<HomeViewModel> { HomeViewModel(get()) }
-    viewModel<DetailViewModel> { DetailViewModel(get()) }
+    viewModel<DetailViewModel> { (url: String) -> DetailViewModel(url, get()) }
     viewModel<PublishingViewModel> { PublishingViewModel(get()) }
-    viewModel<CatalogViewModel> { CatalogViewModel(get()) }
+    viewModel<CatalogViewModel> { (url: String) -> CatalogViewModel(url, get()) }
+    viewModel<SearchViewModel> { SearchViewModel(get()) }
     viewModel<FavoriteViewModel> { FavoriteViewModel(get()) }
 }
 

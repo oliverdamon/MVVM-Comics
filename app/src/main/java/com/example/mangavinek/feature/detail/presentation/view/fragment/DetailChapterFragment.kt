@@ -19,10 +19,13 @@ import kotlinx.android.synthetic.main.layout_screen_error.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.browse
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class DetailChapterFragment : Fragment(), AnkoLogger {
 
-    private val viewModel by viewModel<DetailViewModel>()
+    private val viewModel by viewModel<DetailViewModel>{
+        parametersOf(url)
+    }
 
     private val adapterChapter: ChapterAdapter by lazy {
         ChapterAdapter(listDetailChapterDomain) {
@@ -35,18 +38,19 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_detail_chapter, container, false)
 
-        loadData()
         initUi(view)
         return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        loadData()
     }
 
     private fun loadData() {
         url = arguments?.getString("urlChapter").toString()
 
-        url.let {
-            viewModel.fetchListDetailChapter(it)
-        }
-        viewModel.getListDetailChapter.observeResource(this,
+        viewModel.getListDetailChapter.observeResource(viewLifecycleOwner,
             onSuccess = {
                 populate(it)
                 showSuccess()
@@ -55,7 +59,7 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
                 showError()
             },
             onLoading = {
-                showLoading(it)
+                showLoading()
             })
     }
 
@@ -67,15 +71,17 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
 
     private fun showSuccess() {
         recycler_chapter.visibility = View.VISIBLE
+        include_layout_loading.visibility = View.GONE
         include_layout_error.visibility = View.GONE
     }
 
-    private fun showLoading(isVisible: Boolean) {
-        include_layout_loading.visibility = if (isVisible) View.VISIBLE else View.GONE
+    private fun showLoading() {
+        include_layout_loading.visibility = View.VISIBLE
     }
 
     private fun showError() {
         include_layout_error.visibility = View.VISIBLE
+        include_layout_loading.visibility = View.GONE
         recycler_chapter.visibility = View.GONE
 
         image_refresh_default.setOnClickListener {

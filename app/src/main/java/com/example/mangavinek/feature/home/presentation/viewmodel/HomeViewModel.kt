@@ -1,5 +1,6 @@
 package com.example.mangavinek.feature.home.presentation.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mangavinek.core.base.BaseViewModel
@@ -14,36 +15,39 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel(private val repository: HomeRepository) : BaseViewModel(), PaginationConfig {
 
-    val getListNewChapterDomain = MutableLiveData<Resource<List<NewChapterDomain>>>()
+    private val mutableLiveDataListNewChapter = MutableLiveData<Resource<List<NewChapterDomain>>>()
     var currentPage = 2
     var releasedLoad: Boolean = true
 
-    fun fetchListNewChapterDomain(currentPage: Int = 1) {
+    val getListNewChapter: LiveData<Resource<List<NewChapterDomain>>> by lazy {
+        fetchListNewChapter()
+        return@lazy mutableLiveDataListNewChapter
+    }
+
+    private fun fetchListNewChapter(currentPage: Int = 1) {
         viewModelScope.launch {
-            getListNewChapterDomain.loading(true)
+            mutableLiveDataListNewChapter.loading()
             try {
                 withContext(Dispatchers.IO) {
-                    getListNewChapterDomain.success(repository.getListNewChapterDomain(HOME_URL_PAGINATION.plus(currentPage)).let { it })
+                    mutableLiveDataListNewChapter.success(repository.getListNewChapter(HOME_URL_PAGINATION.plus(currentPage)).let { it })
                 }
             } catch (e: Exception) {
-                getListNewChapterDomain.error(e)
-            } finally {
-                getListNewChapterDomain.loading(false)
+                mutableLiveDataListNewChapter.error(e)
             }
         }
     }
 
     override fun nextPage() {
-        fetchListNewChapterDomain(currentPage++)
+        fetchListNewChapter(currentPage++)
         releasedLoad = false
     }
 
     override fun backPreviousPage() {
-        fetchListNewChapterDomain(currentPage-1)
+        fetchListNewChapter(currentPage-1)
     }
 
     override fun refreshViewModel() {
         currentPage = 2
-        fetchListNewChapterDomain()
+        fetchListNewChapter()
     }
 }
