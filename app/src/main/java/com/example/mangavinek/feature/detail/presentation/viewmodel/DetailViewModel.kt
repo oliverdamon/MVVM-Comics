@@ -61,15 +61,15 @@ class DetailViewModel(val url: String, private val repository: DetailRepository)
         }
     }
 
-    fun insertComic(favoriteDB: FavoriteDB) = viewModelScope.launch{
-        withContext(Dispatchers.IO) {
-            repository.insertComic(favoriteDB)
-        }
-    }
-
-    fun removeComic(favoriteDB: FavoriteDB) = viewModelScope.launch{
-        withContext(Dispatchers.IO) {
-            repository.removeComic(favoriteDB)
+    fun insertOrRemoveComic(insertObjectEnabled: Boolean, favoriteDB: FavoriteDB) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                if (insertObjectEnabled) {
+                    repository.removeComic(favoriteDB)
+                } else {
+                    repository.insertComic(favoriteDB)
+                }
+            }
         }
     }
 

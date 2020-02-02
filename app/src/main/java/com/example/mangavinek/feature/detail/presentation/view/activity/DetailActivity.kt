@@ -44,8 +44,6 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
         parametersOf(url)
     }
 
-    private var title: String = ""
-    private var imageUrl: String = ""
     private var url: String = ""
     private var favoriteDB: FavoriteDB? = null
     private var menu: Menu? = null
@@ -116,20 +114,19 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
         when (item?.itemId) {
             R.id.item_favorite -> {
                 favoriteDB?.let { favorite ->
-                    viewModel.findByTitle(title)
-                    if (insertObjectEnabled){
-                        viewModel.removeComic(favorite)
-                    } else {
-                        viewModel.insertComic(favorite)
-                    }
-
-                    toast(getString(if (insertObjectEnabled) R.string.action_button_removed
-                    else R.string.action_button_favorite))
+                    favoriteComic(favorite)
                 }
             }
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun favoriteComic(favoriteDB: FavoriteDB){
+        viewModel.insertOrRemoveComic(insertObjectEnabled, favoriteDB)
+
+        toast(getString(if (insertObjectEnabled) R.string.action_button_removed
+        else R.string.action_button_favorite))
     }
 
     private fun changeIconButtonFavorite(@DrawableRes iconDrawable: Int) {
@@ -173,13 +170,10 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
             initFragment(it.url)
             insertInfoDatabase(it.title, urlImage)
             findByTitle(it.title)
-            this.title = it.title
         }
     }
 
     private fun insertInfoDatabase(title: String, urlImage: String) {
-        this.imageUrl = urlImage
-
         this.favoriteDB = FavoriteDB(
             title = title,
             image = urlImage,
