@@ -1,13 +1,12 @@
 package com.example.mangavinek.data.entity.favorite
 
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "favorite", indices = [Index(value = ["title", "image", "link"], unique = true)])
+@Entity(tableName = "favorite")
 data class FavoriteDB(
         @PrimaryKey(autoGenerate = true)
-        val id: Int = 0,
-        val title: String,
-        val image: String,
-        val link: String)
+        var id: Int = 0,
+        var title: String = "",
+        var image: String = "",
+        var link: String = "")

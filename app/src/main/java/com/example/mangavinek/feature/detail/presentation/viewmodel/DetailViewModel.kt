@@ -18,6 +18,7 @@ class DetailViewModel(val url: String, private val repository: DetailRepository)
     private val mutableLiveDataDetail = MutableLiveData<Resource<DetailDomain>>()
     private val mutableLiveDataListDetailChapter = MutableLiveData<Resource<List<DetailChapterDomain>>>()
     private val mutableLiveDataListDetailStatusChapter = MutableLiveData<MutableList<StatusChapterDomain>>()
+    var liveDataGetFavorite: LiveData<FavoriteDB?>? = null
 
     val getDetail: LiveData<Resource<DetailDomain>> by lazy {
         fetchDetail(url)
@@ -60,14 +61,19 @@ class DetailViewModel(val url: String, private val repository: DetailRepository)
         }
     }
 
-    fun insertComic(favoriteDB: FavoriteDB){
-        repository.insertComic(favoriteDB)
+    fun insertComic(favoriteDB: FavoriteDB) = viewModelScope.launch{
+        withContext(Dispatchers.IO) {
+            repository.insertComic(favoriteDB)
+        }
     }
 
-    fun removeComic(title: String){
-        repository.removeComic(title)
+    fun removeComic(favoriteDB: FavoriteDB) = viewModelScope.launch{
+        withContext(Dispatchers.IO) {
+            repository.removeComic(favoriteDB)
+        }
     }
 
-    fun searchTitle(title: String) = repository.searchForTitle(title)
-
+    fun findByTitle(title: String) {
+        liveDataGetFavorite = repository.findByTitle(title)
+    }
 }

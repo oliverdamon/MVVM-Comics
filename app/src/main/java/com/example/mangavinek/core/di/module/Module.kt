@@ -39,6 +39,6 @@ val apiServiceClientModule = module {
 }
 
 val databaseModule = module {
-    single<AppDatabase> { AppDatabase.getAppDataBase(context = get()) }
+    single<AppDatabase> { AppDatabase.getInstance(context = get()) }
     single<FavoriteDao> { get<AppDatabase>().favoriteDao() }
 }

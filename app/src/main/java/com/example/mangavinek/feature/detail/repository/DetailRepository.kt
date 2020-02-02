@@ -1,5 +1,6 @@
 package com.example.mangavinek.feature.detail.repository
 
+import androidx.lifecycle.LiveData
 import com.example.mangavinek.data.entity.detail.*
 import com.example.mangavinek.data.entity.favorite.FavoriteDB
 import com.example.mangavinek.data.source.local.FavoriteDao
@@ -30,15 +31,15 @@ class DetailRepository(private val apiServiceSoup: ApiServiceSoup, private val f
         return DetailMapper.transformCommonStatusToCustomStatus(detailResponse)
     }
 
-    fun searchForTitle(title: String): Int {
-        return favoriteDao.searchForTitle(title)
+    fun findByTitle(title: String): LiveData<FavoriteDB?> {
+        return favoriteDao.findByTitle(title)
     }
 
-    fun insertComic(favoriteDB: FavoriteDB){
+    suspend fun insertComic(favoriteDB: FavoriteDB){
         favoriteDao.insertComic(favoriteDB)
     }
 
-    fun removeComic(title: String){
-        favoriteDao.removeComic(title)
+    suspend fun removeComic(favoriteDB: FavoriteDB){
+        favoriteDao.removeComic(favoriteDB.title)
     }
 }

@@ -51,8 +51,9 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
     private var menu: Menu? = null
     private var menuItemFavorite: MenuItem? = null
     var listStatusChapterDomain = arrayListOf<StatusChapterDomain>()
+    var insertObjectEnabled = false
 
-    val adapterStatusChapter by lazy {
+    private val adapterStatusChapter by lazy {
         StatusChapterAdapter(listStatusChapterDomain)
     }
 
@@ -66,6 +67,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
 
     private fun loadData() {
         url = intent.getStringExtra("url")
+
         viewModel.getDetail.observeResource(this,
             onSuccess = {
                 populateDetail(it)
@@ -80,6 +82,19 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
 
         viewModel.getListDetailStatusChapter.observe(this, Observer {
             populateListStatusChapter(it)
+        })
+    }
+
+    private fun findByTitle(title: String){
+        viewModel.findByTitle(title)
+        viewModel.liveDataGetFavorite?.observe(this, Observer {
+            if (it != null) {
+                insertObjectEnabled = true
+                addIconCheckAndUncheckedComic(true)
+            } else {
+                insertObjectEnabled = false
+                addIconCheckAndUncheckedComic(false)
+            }
         })
     }
 
@@ -101,14 +116,15 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
         when (item?.itemId) {
             R.id.item_favorite -> {
                 favoriteDB?.let { favorite ->
-                    if (checkComicDataBase()) {
-                        viewModel.removeComic(title)
+                    viewModel.findByTitle(title)
+                    if (insertObjectEnabled){
+                        viewModel.removeComic(favorite)
                     } else {
                         viewModel.insertComic(favorite)
                     }
-                    addIconCheckAndUncheckedComic()
-                    toast(getString(if (checkComicDataBase()) R.string.action_button_favorite
-                    else R.string.action_button_removed))
+
+                    toast(getString(if (insertObjectEnabled) R.string.action_button_removed
+                    else R.string.action_button_favorite))
                 }
             }
         }
@@ -120,19 +136,15 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
         menuItemFavorite?.setIcon(iconDrawable)
     }
 
-    private fun checkComicDataBase(): Boolean {
-        return viewModel.searchTitle(title) > 0
-    }
-
     private fun showMenuFavorite() {
         menuItemFavorite?.isVisible = true
     }
 
-    private fun addIconCheckAndUncheckedComic() {
+    private fun addIconCheckAndUncheckedComic(boolean: Boolean) {
         showMenuFavorite()
 
         changeIconButtonFavorite(
-            if (checkComicDataBase()) R.drawable.ic_favorite_24dp
+            if (boolean) R.drawable.ic_favorite_24dp
             else R.drawable.ic_favorite_border_24dp
         )
     }
@@ -160,13 +172,12 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
             initRecycler()
             initFragment(it.url)
             insertInfoDatabase(it.title, urlImage)
-
-            addIconCheckAndUncheckedComic()
+            findByTitle(it.title)
+            this.title = it.title
         }
     }
 
     private fun insertInfoDatabase(title: String, urlImage: String) {
-        this.title = title
         this.imageUrl = urlImage
 
         this.favoriteDB = FavoriteDB(

@@ -6,28 +6,30 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.mangavinek.data.entity.favorite.FavoriteDB
 
-@Database(entities = [FavoriteDB::class], version = 5)
-abstract class AppDatabase : RoomDatabase() {
+@Database(entities = [FavoriteDB::class], version = 1)
+abstract class AppDatabase: RoomDatabase() {
     abstract fun favoriteDao(): FavoriteDao
 
     companion object {
-        var INSTANCE: AppDatabase? = null
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
 
-        fun getAppDataBase(context: Context): AppDatabase {
-            if (INSTANCE == null){
-                synchronized(AppDatabase::class){
-                    INSTANCE =
-                        Room.databaseBuilder(context.applicationContext,
-                            AppDatabase::class.java, "myDB")
-                            .allowMainThreadQueries()
-                            .build()
-                }
+        fun getInstance(context: Context): AppDatabase {
+            val tempInstance = INSTANCE
+            if (tempInstance != null) {
+                return tempInstance
             }
-            return INSTANCE as AppDatabase
-        }
 
-        fun destroyDataBase(){
-            INSTANCE = null
+            synchronized(AppDatabase::class) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "favorite_database")
+                    .build()
+
+                INSTANCE = instance
+                return instance
+            }
         }
     }
 }
