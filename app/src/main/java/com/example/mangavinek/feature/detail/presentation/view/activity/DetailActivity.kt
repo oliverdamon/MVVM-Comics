@@ -66,7 +66,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
     private fun loadData() {
         url = intent.getStringExtra("url")
 
-        viewModel.getDetail.observeResource(this,
+        viewModel.mutableLiveDataDetail.observeResource(this,
             onSuccess = {
                 populateDetail(it)
                 showSuccess()
@@ -78,7 +78,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
                 showLoading()
             })
 
-        viewModel.getListDetailStatusChapter.observe(this, Observer {
+        viewModel.mutableLiveDataListDetailStatusChapter.observe(this, Observer {
             populateListStatusChapter(it)
         })
     }

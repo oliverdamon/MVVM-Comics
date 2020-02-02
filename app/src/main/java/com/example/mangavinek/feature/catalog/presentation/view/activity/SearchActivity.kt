@@ -51,7 +51,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        viewModel.getListSearch.observeResource(this,
+        viewModel.mutableLiveDataListSearch.observeResource(this,
             onSuccess = {
                 populate(it)
                 showSuccess()
@@ -63,7 +63,7 @@ class SearchActivity : AppCompatActivity() {
                 showLoading()
             })
 
-        viewModel.getLastPagination.observe(this, Observer {
+        viewModel.mutableLiveDataLastPagination.observe(this, Observer {
             lastPage = it
         })
     }

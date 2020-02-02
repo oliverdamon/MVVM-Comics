@@ -69,7 +69,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
     }
 
     private fun loadData() {
-        viewModel.getListCatalog.observeResource(this,
+        viewModel.mutableLiveDataListCatalog.observeResource(this,
             onSuccess = {
                 populate(it)
                 showSuccess()
@@ -81,7 +81,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
                 showLoading()
             })
 
-        viewModel.getLastPagination.observe(this, Observer {
+        viewModel.mutableLiveDataLastPagination.observe(this, Observer {
             lastPage = it
         })
     }

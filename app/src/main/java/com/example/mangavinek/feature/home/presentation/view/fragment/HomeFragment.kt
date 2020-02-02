@@ -79,7 +79,7 @@ class HomeFragment : Fragment(), AnkoLogger {
     }
 
     private fun loadData() {
-        viewModel.getListNewChapter.observeResource(viewLifecycleOwner,
+        viewModel.mutableLiveDataListNewChapter.observeResource(viewLifecycleOwner,
             onSuccess = {
                 populate(it)
                 showSuccess()

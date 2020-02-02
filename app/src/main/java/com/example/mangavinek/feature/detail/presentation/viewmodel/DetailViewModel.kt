@@ -15,23 +15,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DetailViewModel(val url: String, private val repository: DetailRepository) : BaseViewModel() {
-    private val mutableLiveDataDetail = MutableLiveData<Resource<DetailDomain>>()
-    private val mutableLiveDataListDetailChapter = MutableLiveData<Resource<List<DetailChapterDomain>>>()
-    private val mutableLiveDataListDetailStatusChapter = MutableLiveData<MutableList<StatusChapterDomain>>()
+    val mutableLiveDataDetail = MutableLiveData<Resource<DetailDomain>>()
+    val mutableLiveDataListDetailChapter = MutableLiveData<Resource<List<DetailChapterDomain>>>()
+    val mutableLiveDataListDetailStatusChapter = MutableLiveData<MutableList<StatusChapterDomain>>()
     var liveDataGetFavorite: LiveData<FavoriteDB?>? = null
 
-    val getDetail: LiveData<Resource<DetailDomain>> by lazy {
+    init {
         fetchDetail(url)
-        return@lazy mutableLiveDataDetail
-    }
-
-    val getListDetailStatusChapter: LiveData<MutableList<StatusChapterDomain>> by lazy {
-        return@lazy mutableLiveDataListDetailStatusChapter
-    }
-
-    val getListDetailChapter: LiveData<Resource<List<DetailChapterDomain>>> by lazy {
         fetchListDetailChapter(url)
-        return@lazy mutableLiveDataListDetailChapter
     }
 
     fun fetchDetail(url: String) {
