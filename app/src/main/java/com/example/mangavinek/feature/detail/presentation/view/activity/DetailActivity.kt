@@ -66,7 +66,7 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
     private fun loadData() {
         url = intent.getStringExtra("url")
 
-        viewModel.mutableLiveDataDetail.observeResource(this,
+        viewModel.getLiveDataDetail.observeResource(this,
             onSuccess = {
                 populateDetail(it)
                 showSuccess()
@@ -78,14 +78,14 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
                 showLoading()
             })
 
-        viewModel.mutableLiveDataListDetailStatusChapter.observe(this, Observer {
+        viewModel.getLiveDataListDetailStatusChapter.observe(this, Observer {
             populateListStatusChapter(it)
         })
     }
 
     private fun findByTitle(title: String){
         viewModel.findByTitle(title)
-        viewModel.liveDataGetFavorite?.observe(this, Observer {
+        viewModel.getLiveDataFavorite?.observe(this, Observer {
             if (it != null) {
                 insertObjectEnabled = true
                 addIconCheckAndUncheckedComic(true)

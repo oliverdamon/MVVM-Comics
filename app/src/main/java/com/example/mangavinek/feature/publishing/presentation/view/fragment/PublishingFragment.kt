@@ -47,8 +47,7 @@ class PublishingFragment: Fragment(){
     }
 
     private fun loadData() {
-        viewModel.fetchList()
-        viewModel.getListPublishing.observe(this, Observer {
+        viewModel.getLiveDataListPublishing.observe(this, Observer {
             itemList.addAll(it)
             adapterItem.notifyDataSetChanged()
         })

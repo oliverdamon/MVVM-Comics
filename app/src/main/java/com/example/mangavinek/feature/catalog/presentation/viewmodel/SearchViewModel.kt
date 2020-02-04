@@ -1,5 +1,6 @@
 package com.example.mangavinek.feature.catalog.presentation.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mangavinek.feature.catalog.repository.CatalogRepository
@@ -14,11 +15,17 @@ import timber.log.Timber
 
 class SearchViewModel(private val repository: CatalogRepository) : BaseViewModel(), AnkoLogger{
 
-    val mutableLiveDataListSearch = MutableLiveData<Resource<List<CatalogDomain>>>()
-    val mutableLiveDataLastPagination = MutableLiveData<Int>()
+    private val mutableLiveDataListSearch = MutableLiveData<Resource<List<CatalogDomain>>>()
+    private val mutableLiveDataLastPagination = MutableLiveData<Int>()
     var url: String = ""
-    var currentPage = 2
+    var currentPage = 1
     var releasedLoad: Boolean = true
+
+    val getLiveDataListSearch: LiveData<Resource<List<CatalogDomain>>>
+        get() = mutableLiveDataListSearch
+
+    val getLiveDataLastPagination: LiveData<Int>
+        get() = mutableLiveDataLastPagination
 
     fun fetchListSearch(url: String, page: Int = 1) {
         this.url = url
@@ -49,16 +56,16 @@ class SearchViewModel(private val repository: CatalogRepository) : BaseViewModel
     }
 
     fun nextPage() {
-        fetchListSearch(url, currentPage++)
+        fetchListSearch(url, ++currentPage)
         releasedLoad = false
     }
 
     fun backPreviousPage() {
-        fetchListSearch(url,currentPage-1)
+        fetchListSearch(url, currentPage)
     }
 
     fun refreshViewModel() {
-        currentPage = 2
+        currentPage = 1
         fetchListSearch(url)
     }
 }

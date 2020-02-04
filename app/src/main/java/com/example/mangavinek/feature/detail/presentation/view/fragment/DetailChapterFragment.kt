@@ -50,7 +50,7 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
     private fun loadData() {
         url = arguments?.getString("urlChapter").toString()
 
-        viewModel.mutableLiveDataListDetailChapter.observeResource(viewLifecycleOwner,
+        viewModel.getLiveDataListDetailChapter.observeResource(viewLifecycleOwner,
             onSuccess = {
                 populate(it)
                 showSuccess()

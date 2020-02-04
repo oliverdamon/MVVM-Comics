@@ -51,7 +51,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        viewModel.mutableLiveDataListSearch.observeResource(this,
+        viewModel.getLiveDataListSearch.observeResource(this,
             onSuccess = {
                 populate(it)
                 showSuccess()
@@ -63,13 +63,13 @@ class SearchActivity : AppCompatActivity() {
                 showLoading()
             })
 
-        viewModel.mutableLiveDataLastPagination.observe(this, Observer {
+        viewModel.getLiveDataLastPagination.observe(this, Observer {
             lastPage = it
         })
     }
 
     private fun fetchViewModel(url: String) {
-        viewModel.currentPage = 2
+        viewModel.currentPage = 1
         lastPage = 0
         adapterItem.clear(listCatalogDomain)
         viewModel.fetchListSearch(url)
@@ -170,7 +170,7 @@ class SearchActivity : AppCompatActivity() {
 
         image_refresh_default.setOnClickListener {
             ObjectAnimator.ofFloat(image_refresh_default, View.ROTATION, 0f, 360f).setDuration(300).start()
-            if (viewModel.currentPage > 2){
+            if (viewModel.currentPage > 1){
                 viewModel.backPreviousPage()
             } else {
                 adapterItem.clear(listCatalogDomain)

@@ -46,8 +46,7 @@ class FavoriteFragment : Fragment(), AnkoLogger {
     }
 
     private fun loadData() {
-        viewModel.getComicList()
-        viewModel.getList?.observe(this, Observer {
+        viewModel.getLiveDataListFavoriteDB?.observe(this, Observer {
             adapterFavorite.atualiza(it)
             showNotEmpty()
         })

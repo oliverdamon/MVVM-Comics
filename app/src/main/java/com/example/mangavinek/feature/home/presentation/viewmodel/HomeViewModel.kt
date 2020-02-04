@@ -1,5 +1,6 @@
 package com.example.mangavinek.feature.home.presentation.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mangavinek.core.base.BaseViewModel
@@ -13,13 +14,16 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel(private val repository: HomeRepository) : BaseViewModel() {
 
-    val mutableLiveDataListNewChapter = MutableLiveData<Resource<List<NewChapterDomain>>>()
-    var currentPage = 2
+    private val mutableLiveDataListNewChapter = MutableLiveData<Resource<List<NewChapterDomain>>>()
+    var currentPage = 1
     var releasedLoad: Boolean = true
 
     init {
         fetchListNewChapter()
     }
+
+    val getLiveDataListNewChapter: LiveData<Resource<List<NewChapterDomain>>>
+        get() = mutableLiveDataListNewChapter
 
     private fun fetchListNewChapter(currentPage: Int = 1) {
         viewModelScope.launch {
@@ -35,16 +39,16 @@ class HomeViewModel(private val repository: HomeRepository) : BaseViewModel() {
     }
 
     fun nextPage() {
-        fetchListNewChapter(currentPage++)
+        fetchListNewChapter(++currentPage)
         releasedLoad = false
     }
 
     fun backPreviousPage() {
-        fetchListNewChapter(currentPage-1)
+        fetchListNewChapter(currentPage)
     }
 
     fun refreshViewModel() {
-        currentPage = 2
+        currentPage = 1
         fetchListNewChapter()
     }
 }

@@ -1,5 +1,6 @@
 package com.example.mangavinek.feature.catalog.presentation.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mangavinek.feature.catalog.repository.CatalogRepository
@@ -14,14 +15,20 @@ import timber.log.Timber
 
 class CatalogViewModel(var url: String, private val repository: CatalogRepository) : BaseViewModel(), AnkoLogger{
 
-    val mutableLiveDataListCatalog = MutableLiveData<Resource<List<CatalogDomain>>>()
-    val mutableLiveDataLastPagination = MutableLiveData<Int>()
-    var currentPage = 2
+    private val mutableLiveDataListCatalog = MutableLiveData<Resource<List<CatalogDomain>>>()
+    private val mutableLiveDataLastPagination = MutableLiveData<Int>()
+    var currentPage = 1
     var releasedLoad: Boolean = true
 
     init {
         fetchListCatalog(url)
     }
+
+    val getLiveDataListCatalog: LiveData<Resource<List<CatalogDomain>>>
+        get() = mutableLiveDataListCatalog
+
+    val getLiveDataLastPagination: LiveData<Int>
+        get() = mutableLiveDataLastPagination
 
     private fun fetchListCatalog(url: String, page: Int = 1) {
         this.url = url
@@ -52,16 +59,16 @@ class CatalogViewModel(var url: String, private val repository: CatalogRepositor
     }
 
     fun nextPage() {
-        fetchListCatalog(url, currentPage++)
+        fetchListCatalog(url, ++currentPage)
         releasedLoad = false
     }
 
     fun backPreviousPage() {
-        fetchListCatalog(url,currentPage-1)
+        fetchListCatalog(url, currentPage)
     }
 
     fun refreshViewModel() {
-        currentPage = 2
+        currentPage = 1
         fetchListCatalog(url)
     }
 }

@@ -79,7 +79,7 @@ class HomeFragment : Fragment(), AnkoLogger {
     }
 
     private fun loadData() {
-        viewModel.mutableLiveDataListNewChapter.observeResource(viewLifecycleOwner,
+        viewModel.getLiveDataListNewChapter.observeResource(viewLifecycleOwner,
             onSuccess = {
                 populate(it)
                 showSuccess()
@@ -144,7 +144,7 @@ class HomeFragment : Fragment(), AnkoLogger {
         image_refresh_default.setOnClickListener {
             ObjectAnimator.ofFloat(image_refresh_default, View.ROTATION, 0f, 360f).setDuration(300).start()
 
-            if (currentPage > 2){
+            if (currentPage > 1){
                 viewModel.backPreviousPage()
             } else {
                 adapterHome.clear(listNewChapterDomain)

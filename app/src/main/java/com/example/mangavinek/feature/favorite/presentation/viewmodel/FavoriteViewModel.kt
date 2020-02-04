@@ -7,9 +7,13 @@ import com.example.mangavinek.feature.favorite.repository.FavoriteRepository
 
 class FavoriteViewModel(private val repository: FavoriteRepository) : BaseViewModel() {
 
-    var getList: LiveData<List<FavoriteDB>>? = null
+    var getLiveDataListFavoriteDB: LiveData<List<FavoriteDB>>? = null
 
-    fun getComicList() {
-        getList = repository.getListComic()
+    init {
+        getComicList()
+    }
+
+    private fun getComicList() {
+        getLiveDataListFavoriteDB = repository.getListComic()
     }
 }

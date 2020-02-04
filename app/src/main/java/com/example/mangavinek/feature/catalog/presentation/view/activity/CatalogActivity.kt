@@ -69,7 +69,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
     }
 
     private fun loadData() {
-        viewModel.mutableLiveDataListCatalog.observeResource(this,
+        viewModel.getLiveDataListCatalog.observeResource(this,
             onSuccess = {
                 populate(it)
                 showSuccess()
@@ -81,7 +81,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
                 showLoading()
             })
 
-        viewModel.mutableLiveDataLastPagination.observe(this, Observer {
+        viewModel.getLiveDataLastPagination.observe(this, Observer {
             lastPage = it
         })
     }
@@ -140,7 +140,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
 
         image_refresh_default.setOnClickListener {
             ObjectAnimator.ofFloat(image_refresh_default, View.ROTATION, 0f, 360f).setDuration(300).start()
-            if (viewModel.currentPage > 2){
+            if (viewModel.currentPage > 1){
                 viewModel.backPreviousPage()
             } else {
                 adapterCatalog.clear(listCatalogDomain)

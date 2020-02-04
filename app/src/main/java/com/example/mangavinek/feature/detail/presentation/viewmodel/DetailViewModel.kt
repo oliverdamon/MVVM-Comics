@@ -15,15 +15,24 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DetailViewModel(val url: String, private val repository: DetailRepository) : BaseViewModel() {
-    val mutableLiveDataDetail = MutableLiveData<Resource<DetailDomain>>()
-    val mutableLiveDataListDetailChapter = MutableLiveData<Resource<List<DetailChapterDomain>>>()
-    val mutableLiveDataListDetailStatusChapter = MutableLiveData<MutableList<StatusChapterDomain>>()
-    var liveDataGetFavorite: LiveData<FavoriteDB?>? = null
+    private val mutableLiveDataDetail = MutableLiveData<Resource<DetailDomain>>()
+    private val mutableLiveDataListDetailChapter = MutableLiveData<Resource<List<DetailChapterDomain>>>()
+    private val mutableLiveDataListDetailStatusChapter = MutableLiveData<MutableList<StatusChapterDomain>>()
+    var getLiveDataFavorite: LiveData<FavoriteDB?>? = null
 
     init {
         fetchDetail(url)
         fetchListDetailChapter(url)
     }
+
+    val getLiveDataDetail: LiveData<Resource<DetailDomain>>
+        get() = mutableLiveDataDetail
+
+    val getLiveDataListDetailChapter: LiveData<Resource<List<DetailChapterDomain>>>
+        get() = mutableLiveDataListDetailChapter
+
+    val getLiveDataListDetailStatusChapter: LiveData<MutableList<StatusChapterDomain>>
+        get() = mutableLiveDataListDetailStatusChapter
 
     fun fetchDetail(url: String) {
         viewModelScope.launch {
@@ -65,6 +74,6 @@ class DetailViewModel(val url: String, private val repository: DetailRepository)
     }
 
     fun findByTitle(title: String) {
-        liveDataGetFavorite = repository.findByTitle(title)
+        getLiveDataFavorite = repository.findByTitle(title)
     }
 }
