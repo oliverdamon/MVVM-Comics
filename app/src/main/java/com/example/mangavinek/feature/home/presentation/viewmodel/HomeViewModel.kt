@@ -9,7 +9,6 @@ import com.example.mangavinek.core.helper.Resource
 import com.example.mangavinek.feature.home.model.domain.NewChapterDomain
 import com.example.mangavinek.feature.home.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeViewModel(private val repository: HomeRepository) : BaseViewModel() {
@@ -26,16 +25,15 @@ class HomeViewModel(private val repository: HomeRepository) : BaseViewModel() {
         get() = mutableLiveDataListNewChapter
 
     private fun fetchListNewChapter(currentPage: Int = 1) {
-        viewModelScope.launch {
-            mutableLiveDataListNewChapter.loading()
-            try {
+        viewModelScope.launchWithCallback(
+            onSuccess = {
                 withContext(Dispatchers.IO) {
                     mutableLiveDataListNewChapter.success(repository.getListNewChapter(HOME_URL_PAGINATION.plus(currentPage)).let { it })
                 }
-            } catch (e: Exception) {
-                mutableLiveDataListNewChapter.error(e)
-            }
-        }
+            },
+            onError = {
+                mutableLiveDataListNewChapter.error(it)
+            })
     }
 
     fun nextPage() {
