@@ -25,10 +25,13 @@ class HomeViewModel(private val repository: HomeRepository) : BaseViewModel() {
         get() = mutableLiveDataListNewChapter
 
     private fun fetchListNewChapter(currentPage: Int = 1) {
+        mutableLiveDataListNewChapter.loading()
+
         viewModelScope.launchWithCallback(
             onSuccess = {
                 withContext(Dispatchers.IO) {
-                    mutableLiveDataListNewChapter.success(repository.getListNewChapter(HOME_URL_PAGINATION.plus(currentPage)).let { it })
+                    mutableLiveDataListNewChapter.success(repository.getComics(HOME_URL_PAGINATION.plus(currentPage)).let { it })
+                    releasedLoad = true
                 }
             },
             onError = {

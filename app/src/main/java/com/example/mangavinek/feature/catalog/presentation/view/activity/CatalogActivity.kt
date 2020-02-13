@@ -1,48 +1,56 @@
 package com.example.mangavinek.feature.catalog.presentation.view.activity
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
+import com.example.mangavinek.core.helper.AdapterPagination
 import com.example.mangavinek.core.constant.BASE_URL
-import com.example.mangavinek.core.helper.PaginationScroll
+import com.example.mangavinek.core.helper.addPaginationScroll
 import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.core.util.maxNumberGridLayout
 import com.example.mangavinek.feature.catalog.model.domain.CatalogDomain
-import com.example.mangavinek.feature.catalog.presentation.view.adapter.CatalogAdapter
+import com.example.mangavinek.feature.catalog.presentation.view.viewholder.CatalogViewHolder
 import com.example.mangavinek.feature.catalog.presentation.viewmodel.CatalogViewModel
 import com.example.mangavinek.feature.detail.presentation.view.activity.DetailActivity
+import com.example.mangavinek.core.helper.startActivity
 import kotlinx.android.synthetic.main.activity_catalog.*
-import kotlinx.android.synthetic.main.layout_screen_error.*
+import kotlinx.android.synthetic.main.activity_catalog.include_layout_error
+import kotlinx.android.synthetic.main.activity_catalog.include_layout_loading
+import kotlinx.android.synthetic.main.activity_catalog.swipe_refresh
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class CatalogActivity : AppCompatActivity(), AnkoLogger {
+class CatalogActivity : AppCompatActivity() {
 
-    private val adapterCatalog: CatalogAdapter by lazy {
-        CatalogAdapter(listCatalogDomain) {
-            if (viewModel.releasedLoad) {
-                startActivity<DetailActivity>("url" to BASE_URL.plus(it.url))
-            }
-        }
+    private val adapterCatalog: AdapterPagination by lazy {
+        AdapterPagination(
+            getLayout = R.layout.row_data,
+
+            viewHolder = {
+                CatalogViewHolder(it, onItemClickListener = { item ->
+                    startActivity<DetailActivity>("url" to BASE_URL.plus(item.url))
+                })
+            },
+
+            onRetryClickListener = {
+                errorBottomScroll(false)
+                viewModel.backPreviousPage()
+            })
     }
 
     private val viewModel by viewModel<CatalogViewModel>{
         parametersOf(url)
     }
 
-    private var listCatalogDomain = arrayListOf<CatalogDomain>()
     private var url: String = ""
-    private var lastPage: Int = 0
+    private var lastPage: Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,17 +60,7 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
 
         url = intent.getStringExtra("url")
 
-        swipe_refresh.setOnRefreshListener {
-            GlobalScope.launch(context = Dispatchers.Main) {
-                if (viewModel.releasedLoad) {
-                    delay(1000)
-                    include_layout_error.visibility = View.GONE
-                    adapterCatalog.clear(listCatalogDomain)
-                    viewModel.refreshViewModel()
-                }
-                swipe_refresh.isRefreshing = false
-            }
-        }
+        swipeRefresh()
 
         loadData()
         initUI()
@@ -87,30 +85,52 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
     }
 
     private fun populate(listCatalogDomain: List<CatalogDomain>) {
-        this.listCatalogDomain.addAll(listCatalogDomain)
-        adapterCatalog.notifyItemChanged(this.listCatalogDomain.size - 15, this.listCatalogDomain.size)
+        adapterCatalog.addList(listCatalogDomain)
+        pagingFinished()
+    }
+
+    private fun refresh() {
+        adapterCatalog.clearList()
+        viewModel.refreshViewModel()
+    }
+
+    private fun swipeRefresh() {
+        swipe_refresh.setOnRefreshListener {
+            GlobalScope.launch(context = Dispatchers.Main) {
+                delay(1000)
+                refresh()
+                swipe_refresh.isRefreshing = false
+            }
+        }
     }
 
     private fun initUI() {
         with(recycler_catalog) {
             adapter = adapterCatalog
             val gridLayoutManager = GridLayoutManager(context, maxNumberGridLayout(context))
-            addOnScrollListener(object : PaginationScroll(gridLayoutManager) {
-                override fun loadMoreItems() {
-                    if (viewModel.currentPage <= lastPage) {
-                        viewModel.nextPage()
-                        progress_bottom.visibility = View.VISIBLE
+            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return when (adapterCatalog.getItemViewType(position)) {
+                        AdapterPagination.ITEM_LIST -> 1
+                        AdapterPagination.ITEM_BOTTOM -> gridLayoutManager.spanCount
+                        else -> gridLayoutManager.spanCount
                     }
                 }
-
-                override fun isLoading(): Boolean {
-                    return viewModel.releasedLoad
-                }
-
-                override fun hideMoreItems() {
+            }
+            addPaginationScroll(gridLayoutManager,
+                loadMoreItems = {
+                    viewModel.nextPage()
+                },
+                isLoading = {
+                    viewModel.releasedLoad
+                },
+                isLastPage = {
+                    viewModel.lastPage
+                },
+                hideOthersItems = {
                     include_layout_loading.visibility = View.GONE
-                }
-            })
+                })
+
             layoutManager = gridLayoutManager
         }
     }
@@ -124,28 +144,37 @@ class CatalogActivity : AppCompatActivity(), AnkoLogger {
         recycler_catalog.visibility = View.VISIBLE
         include_layout_loading.visibility = View.GONE
         include_layout_error.visibility = View.GONE
-        progress_bottom.visibility = View.GONE
-        viewModel.releasedLoad = true
     }
 
     private fun showLoading() {
-        include_layout_loading.visibility = View.VISIBLE
+        if (viewModel.releasedLoad) {
+            include_layout_loading.visibility = View.VISIBLE
+        }
     }
 
-    private fun showError() {
+    private fun showError(){
+        if (viewModel.currentPage > 1) {
+            errorBottomScroll(true)
+        } else {
+            showErrorFullScreen()
+        }
+    }
+
+    private fun showErrorFullScreen() {
         include_layout_error.visibility = View.VISIBLE
         include_layout_loading.visibility = View.GONE
         recycler_catalog.visibility = View.GONE
-        progress_bottom.visibility = View.GONE
+        viewModel.refreshViewModel()
+    }
 
-        image_refresh_default.setOnClickListener {
-            ObjectAnimator.ofFloat(image_refresh_default, View.ROTATION, 0f, 360f).setDuration(300).start()
-            if (viewModel.currentPage > 1){
-                viewModel.backPreviousPage()
-            } else {
-                adapterCatalog.clear(listCatalogDomain)
-                viewModel.refreshViewModel()
-            }
+    private fun errorBottomScroll(showError: Boolean) {
+        adapterCatalog.showErrorRetry(showError)
+    }
+
+    private fun pagingFinished(){
+        if (viewModel.currentPage == lastPage || lastPage == null) {
+            adapterCatalog.removeItemBottom()
+            viewModel.pagingFinished()
         }
     }
 }

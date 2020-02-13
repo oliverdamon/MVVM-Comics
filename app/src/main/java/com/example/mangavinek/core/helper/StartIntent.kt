@@ -1,4 +1,4 @@
-package com.example.mangavinek
+package com.example.mangavinek.core.helper
 
 import android.app.Activity
 import android.content.Context
@@ -8,7 +8,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.FragmentManager
-
 
 inline fun <reified T : Activity> Context.startActivity(vararg params: Pair<String, Any?>) {
         val intent = Intent (this, T::class.java)

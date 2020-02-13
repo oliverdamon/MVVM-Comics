@@ -23,7 +23,7 @@ object ApiServiceSoup {
             .loggingInterceptorJSoupElement()
     }
 
-    fun getCatalogLastPagination(url: String): Elements {
-        return ApiClientSoup.requestSoup(url).select("a.pagination_last").loggingInterceptorJSoupElement()
+    fun getLastPagination(url: String): Elements {
+        return ApiClientSoup.requestSoup(url).select(".pagination a").loggingInterceptorJSoupElement()
     }
 }

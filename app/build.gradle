@@ -88,7 +88,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$life_cycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$life_cycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$life_cycle_version"
-
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$life_cycle_version"
     implementation "org.koin:koin-androidx-scope:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

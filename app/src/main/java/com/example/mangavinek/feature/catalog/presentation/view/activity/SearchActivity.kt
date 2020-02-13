@@ -1,6 +1,5 @@
 package com.example.mangavinek.feature.catalog.presentation.view.activity
 
-import android.animation.ObjectAnimator
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
@@ -14,32 +13,42 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
 import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.constant.BASE_URL_SEARCH
-import com.example.mangavinek.core.helper.PaginationScroll
+import com.example.mangavinek.core.helper.AdapterPagination
+import com.example.mangavinek.core.helper.addPaginationScroll
 import com.example.mangavinek.core.helper.observeResource
+import com.example.mangavinek.core.helper.startActivity
 import com.example.mangavinek.core.util.maxNumberGridLayout
 import com.example.mangavinek.feature.catalog.model.domain.CatalogDomain
-import com.example.mangavinek.feature.catalog.presentation.view.adapter.CatalogAdapter
+import com.example.mangavinek.feature.catalog.presentation.view.viewholder.CatalogViewHolder
 import com.example.mangavinek.feature.catalog.presentation.viewmodel.SearchViewModel
 import com.example.mangavinek.feature.detail.presentation.view.activity.DetailActivity
+import kotlinx.android.synthetic.main.activity_catalog.*
 import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.android.synthetic.main.layout_screen_error.*
-import org.jetbrains.anko.startActivity
+import kotlinx.android.synthetic.main.activity_search.include_layout_error
+import kotlinx.android.synthetic.main.activity_search.include_layout_loading
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
-    private val adapterItem: CatalogAdapter by lazy {
-        CatalogAdapter(listCatalogDomain) {
-            if (viewModel.releasedLoad) {
-                startActivity<DetailActivity>("url" to BASE_URL.plus(it.url))
-            }
-        }
+    private val adapterItem: AdapterPagination by lazy {
+        AdapterPagination(
+            getLayout = R.layout.row_data,
+
+            viewHolder = {
+                CatalogViewHolder(it, onItemClickListener = { item ->
+                    startActivity<DetailActivity>("url" to BASE_URL.plus(item.url))
+                })
+            },
+
+            onRetryClickListener = {
+                errorBottomScroll(false)
+                viewModel.backPreviousPage()
+            })
     }
 
     private val viewModel by viewModel<SearchViewModel>()
 
-    private var listCatalogDomain = arrayListOf<CatalogDomain>()
-    private var lastPage: Int = 0
+    private var lastPage: Int? = 0
     private var url: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +63,7 @@ class SearchActivity : AppCompatActivity() {
         viewModel.getLiveDataListSearch.observeResource(this,
             onSuccess = {
                 populate(it)
-                showSuccess()
+                showSuccess(it)
             },
             onError = {
                 showError()
@@ -70,36 +79,39 @@ class SearchActivity : AppCompatActivity() {
 
     private fun fetchViewModel(url: String) {
         viewModel.currentPage = 1
-        lastPage = 0
-        adapterItem.clear(listCatalogDomain)
+        adapterItem.clearList()
         viewModel.fetchListSearch(url)
     }
 
     private fun populate(listCatalogDomain: List<CatalogDomain>) {
-        this.listCatalogDomain.addAll(listCatalogDomain)
-        adapterItem.notifyItemChanged(this.listCatalogDomain.size - 15, this.listCatalogDomain.size)
+        adapterItem.addList(listCatalogDomain)
+        pagingFinished()
     }
 
     private fun initUI() {
         with(recycler_search) {
             adapter = adapterItem
             val gridLayoutManager = GridLayoutManager(context, maxNumberGridLayout(context))
-            addOnScrollListener(object : PaginationScroll(gridLayoutManager) {
-                override fun loadMoreItems() {
-                    if (viewModel.currentPage <= lastPage) {
-                        viewModel.nextPage()
-                        progress_bottom.visibility = View.VISIBLE
+            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return when (adapterItem.getItemViewType(position)) {
+                        AdapterPagination.ITEM_LIST -> 1
+                        AdapterPagination.ITEM_BOTTOM -> gridLayoutManager.spanCount
+                        else -> gridLayoutManager.spanCount
                     }
                 }
-
-                override fun isLoading(): Boolean {
-                    return viewModel.releasedLoad
-                }
-
-                override fun hideMoreItems() {
+            }
+            addPaginationScroll(gridLayoutManager,
+                loadMoreItems = {
+                    viewModel.nextPage()
+                },
+                isLoading = {
+                    viewModel.releasedLoad
+                },
+                hideOthersItems = {
                     include_layout_loading.visibility = View.GONE
-                }
-            })
+                })
+
             layoutManager = gridLayoutManager
         }
     }
@@ -143,13 +155,11 @@ class SearchActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    private fun showSuccess() {
+    private fun showSuccess(listCatalogDomain: List<CatalogDomain>) {
         recycler_search.visibility = View.VISIBLE
         include_layout_loading.visibility = View.GONE
         include_layout_error.visibility = View.GONE
-        progress_bottom.visibility = View.GONE
         text_type.visibility = View.GONE
-        viewModel.releasedLoad = true
 
         if (listCatalogDomain.isEmpty()) {
             text_type.visibility = View.VISIBLE
@@ -158,25 +168,34 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showLoading() {
-        include_layout_loading.visibility = View.VISIBLE
-    }
-
-    private fun showError() {
-        include_layout_error.visibility = View.VISIBLE
-        include_layout_loading.visibility = View.GONE
-        progress_bottom.visibility = View.GONE
-        recycler_search.visibility = View.GONE
-        text_type.visibility = View.GONE
-
-        image_refresh_default.setOnClickListener {
-            ObjectAnimator.ofFloat(image_refresh_default, View.ROTATION, 0f, 360f).setDuration(300).start()
-            if (viewModel.currentPage > 1){
-                viewModel.backPreviousPage()
-            } else {
-                adapterItem.clear(listCatalogDomain)
-                viewModel.refreshViewModel()
-            }
+        if (viewModel.releasedLoad) {
+            include_layout_loading.visibility = View.VISIBLE
         }
     }
 
+    private fun showError(){
+        if (viewModel.currentPage > 1) {
+            errorBottomScroll(true)
+        } else {
+            showErrorFullScreen()
+        }
+    }
+
+    private fun showErrorFullScreen() {
+        include_layout_error.visibility = View.VISIBLE
+        include_layout_loading.visibility = View.GONE
+        recycler_catalog.visibility = View.GONE
+        viewModel.refreshViewModel()
+    }
+
+    private fun errorBottomScroll(showError: Boolean) {
+        adapterItem.showErrorRetry(showError)
+    }
+
+    private fun pagingFinished(){
+        if (viewModel.currentPage == lastPage || lastPage == null) {
+            adapterItem.removeItemBottom()
+            viewModel.pagingFinished()
+        }
+    }
 }

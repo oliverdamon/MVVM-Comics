@@ -14,7 +14,7 @@
                 android:id="@+id/recycler_catalog"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@+id/progress_bottom"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -29,14 +29,5 @@
                 android:id="@+id/include_layout_error"
                 android:visibility="gone">
         </include>
-
-        <com.github.ybq.android.spinkit.SpinKitView
-                android:id="@+id/progress_bottom"
-                style="@style/SpinKitView.Small.Wave"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toRightOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

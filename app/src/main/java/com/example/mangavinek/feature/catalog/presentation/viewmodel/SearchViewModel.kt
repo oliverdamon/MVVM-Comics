@@ -10,16 +10,15 @@ import com.example.mangavinek.feature.catalog.model.domain.CatalogDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.anko.AnkoLogger
-import timber.log.Timber
 
-class SearchViewModel(private val repository: CatalogRepository) : BaseViewModel(), AnkoLogger{
+class SearchViewModel(private val repository: CatalogRepository) : BaseViewModel(){
 
     private val mutableLiveDataListSearch = MutableLiveData<Resource<List<CatalogDomain>>>()
     private val mutableLiveDataLastPagination = MutableLiveData<Int>()
     var url: String = ""
     var currentPage = 1
     var releasedLoad: Boolean = true
+    var lastPage: Boolean = false
 
     val getLiveDataListSearch: LiveData<Resource<List<CatalogDomain>>>
         get() = mutableLiveDataListSearch
@@ -34,25 +33,20 @@ class SearchViewModel(private val repository: CatalogRepository) : BaseViewModel
             mutableLiveDataListSearch.loading()
             try {
                 withContext(Dispatchers.IO) {
+                    mutableLiveDataLastPagination.postValue(repository.getLastPagination(url))
                     mutableLiveDataListSearch.success(repository.getListCatalog(url.plus(page))?.let { it })
+
+                    resetPagingFlags()
                 }
             } catch (e: Exception) {
                 mutableLiveDataListSearch.error(e)
             }
-
-            fetchLastPagination(url)
         }
-
     }
 
-    private suspend fun fetchLastPagination(url: String) {
-        try {
-            withContext(Dispatchers.IO) {
-                mutableLiveDataLastPagination.postValue(repository.getLastPagination(url)?.let { it })
-            }
-        } catch (e: Exception) {
-            Timber.d(e)
-        }
+    private fun resetPagingFlags(){
+        releasedLoad = true
+        lastPage = false
     }
 
     fun nextPage() {
@@ -67,5 +61,9 @@ class SearchViewModel(private val repository: CatalogRepository) : BaseViewModel
     fun refreshViewModel() {
         currentPage = 1
         fetchListSearch(url)
+    }
+
+    fun pagingFinished(){
+        lastPage = true
     }
 }

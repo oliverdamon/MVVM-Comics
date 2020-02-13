@@ -10,15 +10,14 @@ import com.example.mangavinek.feature.catalog.model.domain.CatalogDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.anko.AnkoLogger
-import timber.log.Timber
 
-class CatalogViewModel(var url: String, private val repository: CatalogRepository) : BaseViewModel(), AnkoLogger{
+class CatalogViewModel(var url: String, private val repository: CatalogRepository) : BaseViewModel(){
 
     private val mutableLiveDataListCatalog = MutableLiveData<Resource<List<CatalogDomain>>>()
     private val mutableLiveDataLastPagination = MutableLiveData<Int>()
     var currentPage = 1
     var releasedLoad: Boolean = true
+    var lastPage: Boolean = false
 
     init {
         fetchListCatalog(url)
@@ -37,25 +36,20 @@ class CatalogViewModel(var url: String, private val repository: CatalogRepositor
             mutableLiveDataListCatalog.loading()
             try {
                 withContext(Dispatchers.IO) {
+                    mutableLiveDataLastPagination.postValue(repository.getLastPagination(url))
                     mutableLiveDataListCatalog.success(repository.getListCatalog(url.plus(page))?.let { it })
+
+                    resetPagingFlags()
                 }
             } catch (e: Exception) {
                 mutableLiveDataListCatalog.error(e)
             }
-
-            fetchLastPagination(url)
         }
-
     }
 
-    private suspend fun fetchLastPagination(url: String) {
-        try {
-            withContext(Dispatchers.IO) {
-                mutableLiveDataLastPagination.postValue(repository.getLastPagination(url)?.let { it })
-            }
-        } catch (e: Exception) {
-            Timber.d(e)
-        }
+    private fun resetPagingFlags(){
+        releasedLoad = true
+        lastPage = false
     }
 
     fun nextPage() {
@@ -70,5 +64,9 @@ class CatalogViewModel(var url: String, private val repository: CatalogRepositor
     fun refreshViewModel() {
         currentPage = 1
         fetchListCatalog(url)
+    }
+
+    fun pagingFinished(){
+        lastPage = true
     }
 }

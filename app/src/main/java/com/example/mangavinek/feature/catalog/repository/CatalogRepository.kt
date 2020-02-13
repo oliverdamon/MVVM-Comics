@@ -1,5 +1,6 @@
 package com.example.mangavinek.feature.catalog.repository
 
+import com.example.mangavinek.core.util.alphaNumericOnly
 import com.example.mangavinek.data.entity.catalog.CatalogResponse
 import com.example.mangavinek.data.source.remote.ApiServiceSoup
 import com.example.mangavinek.feature.catalog.model.domain.CatalogDomain
@@ -13,6 +14,10 @@ class CatalogRepository(private val apiServiceSoup: ApiServiceSoup) {
     }
 
     fun getLastPagination(url: String): Int?{
-        return apiServiceSoup.getCatalogLastPagination(url)[0].text().toInt()
+        return try {
+            apiServiceSoup.getLastPagination(url).text().alphaNumericOnly()
+        } catch (t: Throwable){
+            null
+        }
     }
 }

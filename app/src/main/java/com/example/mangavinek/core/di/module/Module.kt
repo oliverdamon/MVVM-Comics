@@ -18,7 +18,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<HomeRepository> { HomeRepository(get()) }
+    single<HomeRepository> { HomeRepository(get(), get()) }
     factory<DetailRepository> { DetailRepository(get(), get()) }
     single<PublishingRepository> { PublishingRepository() }
     factory<CatalogRepository> { CatalogRepository(get()) }
