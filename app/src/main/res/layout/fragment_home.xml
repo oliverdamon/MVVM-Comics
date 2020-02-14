@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#303030"
-            tools:context=".feature.home.presentation.view.fragment.HomeFragment">
+            tools:context=".presentation.home.ui.fragment.HomeFragment">
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
