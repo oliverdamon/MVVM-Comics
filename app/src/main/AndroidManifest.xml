@@ -11,7 +11,7 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true"
             android:name=".MyApplication">
-        <activity android:name=".presentation.MainActivity"
+        <activity android:name="com.example.mangavinek.feature.MainActivity"
                 android:configChanges="screenSize|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -19,11 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.example.mangavinek.presentation.detail.ui.activity.DetailActivity"
+        <activity android:name="com.example.mangavinek.feature.detail.presentation.ui.activity.DetailActivity"
                 android:configChanges="screenSize|orientation"/>
-        <activity android:name="com.example.mangavinek.presentation.catalog.ui.activity.CatalogActivity"
+        <activity android:name="com.example.mangavinek.feature.catalog.presentation.ui.activity.CatalogActivity"
                 android:configChanges="screenSize|orientation"/>
-        <activity android:name="com.example.mangavinek.presentation.catalog.ui.activity.SearchActivity"
+        <activity android:name="com.example.mangavinek.feature.catalog.presentation.ui.activity.SearchActivity"
                 android:configChanges="screenSize|orientation"/>
     </application>
 

@@ -2,8 +2,8 @@ package com.example.mangavinek.data.source.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.mangavinek.model.favorite.entity.FavoriteDB
-import com.example.mangavinek.model.home.entity.NewChapterResponse
+import com.example.mangavinek.feature.model.favorite.entity.FavoriteDB
+import com.example.mangavinek.feature.model.home.entity.NewChapterResponse
 
 @Dao
 interface FavoriteDao {

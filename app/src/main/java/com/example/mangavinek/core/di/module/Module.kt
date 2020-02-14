@@ -1,19 +1,19 @@
 package com.example.mangavinek.core.di.module
 
 import com.example.mangavinek.data.repository.catalog.CatalogRepository
-import com.example.mangavinek.presentation.catalog.viewmodel.CatalogViewModel
+import com.example.mangavinek.feature.catalog.presentation.viewmodel.CatalogViewModel
 import com.example.mangavinek.data.source.local.AppDatabase
 import com.example.mangavinek.data.source.local.dao.FavoriteDao
 import com.example.mangavinek.data.source.remote.api.ApiServiceSoup
-import com.example.mangavinek.presentation.catalog.viewmodel.SearchViewModel
+import com.example.mangavinek.feature.catalog.presentation.viewmodel.SearchViewModel
 import com.example.mangavinek.data.repository.detail.DetailRepository
-import com.example.mangavinek.presentation.detail.viewmodel.DetailViewModel
-import com.example.mangavinek.presentation.favorite.viewmodel.FavoriteViewModel
+import com.example.mangavinek.feature.detail.presentation.viewmodel.DetailViewModel
+import com.example.mangavinek.feature.favorite.presentation.viewmodel.FavoriteViewModel
 import com.example.mangavinek.data.repository.favorite.FavoriteRepository
 import com.example.mangavinek.data.repository.home.HomeRepository
 import com.example.mangavinek.data.repository.publishing.PublishingRepository
-import com.example.mangavinek.presentation.home.viewmodel.HomeViewModel
-import com.example.mangavinek.presentation.publishing.viewmodel.PublishingViewModel
+import com.example.mangavinek.feature.home.presentation.viewmodel.HomeViewModel
+import com.example.mangavinek.feature.publishing.presentation.viewmodel.PublishingViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

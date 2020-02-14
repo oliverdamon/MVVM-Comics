@@ -1,7 +1,7 @@
 package com.example.mangavinek.data.repository.publishing
 
 import com.example.mangavinek.R
-import com.example.mangavinek.model.publishing.domain.PublishingDomain
+import com.example.mangavinek.feature.publishing.model.domain.PublishingDomain
 
 class PublishingRepository {
     private val itemList = arrayListOf<PublishingDomain>()
