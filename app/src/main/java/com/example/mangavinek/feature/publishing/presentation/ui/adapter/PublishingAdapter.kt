@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mangavinek.R
-import com.example.mangavinek.feature.publishing.model.domain.PublishingDomain
+import com.example.mangavinek.data.model.publishing.domain.PublishingDomain
 import kotlinx.android.synthetic.main.row_data.view.*
 
 class PublishingAdapter(

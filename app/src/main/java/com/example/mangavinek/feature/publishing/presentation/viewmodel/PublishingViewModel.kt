@@ -3,8 +3,8 @@ package com.example.mangavinek.feature.publishing.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.mangavinek.feature.publishing.model.domain.PublishingDomain
-import com.example.mangavinek.data.repository.publishing.PublishingRepository
+import com.example.mangavinek.data.model.publishing.domain.PublishingDomain
+import com.example.mangavinek.feature.publishing.repository.PublishingRepository
 
 class PublishingViewModel(private val repository: PublishingRepository) : ViewModel() {
 

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
 import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.core.util.maxNumberGridLayout
-import com.example.mangavinek.feature.detail.model.domain.DetailChapterDomain
+import com.example.mangavinek.data.model.detail.domain.DetailChapterDomain
 import com.example.mangavinek.feature.detail.presentation.ui.adapter.ChapterAdapter
 import com.example.mangavinek.feature.detail.presentation.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.fragment_detail_chapter.*

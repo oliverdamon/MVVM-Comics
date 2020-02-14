@@ -3,10 +3,10 @@ package com.example.mangavinek.feature.catalog.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.mangavinek.data.repository.catalog.CatalogRepository
+import com.example.mangavinek.feature.catalog.repository.CatalogRepository
 import com.example.mangavinek.core.base.BaseViewModel
 import com.example.mangavinek.core.helper.Resource
-import com.example.mangavinek.feature.catalog.model.domain.CatalogDomain
+import com.example.mangavinek.data.model.catalog.domain.CatalogDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

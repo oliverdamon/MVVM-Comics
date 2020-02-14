@@ -6,10 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.mangavinek.core.base.BaseViewModel
 import com.example.mangavinek.core.helper.Resource
 import com.example.mangavinek.feature.model.favorite.entity.FavoriteDB
-import com.example.mangavinek.feature.detail.model.domain.DetailChapterDomain
-import com.example.mangavinek.feature.detail.model.domain.DetailDomain
-import com.example.mangavinek.feature.detail.model.domain.StatusChapterDomain
-import com.example.mangavinek.data.repository.detail.DetailRepository
+import com.example.mangavinek.data.model.detail.domain.DetailChapterDomain
+import com.example.mangavinek.data.model.detail.domain.DetailDomain
+import com.example.mangavinek.data.model.detail.domain.StatusChapterDomain
+import com.example.mangavinek.feature.detail.repository.DetailRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

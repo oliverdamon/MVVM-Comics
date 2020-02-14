@@ -13,7 +13,7 @@ import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.helper.*
 import com.example.mangavinek.core.util.maxNumberGridLayout
 import com.example.mangavinek.feature.detail.presentation.ui.activity.DetailActivity
-import com.example.mangavinek.feature.home.model.domain.NewChapterDomain
+import com.example.mangavinek.data.model.home.domain.NewChapterDomain
 import com.example.mangavinek.feature.home.presentation.ui.viewholder.HomeViewHolder
 import com.example.mangavinek.feature.home.presentation.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*

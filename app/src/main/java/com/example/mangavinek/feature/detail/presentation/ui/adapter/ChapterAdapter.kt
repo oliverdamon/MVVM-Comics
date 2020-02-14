@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.mangavinek.R
-import com.example.mangavinek.feature.detail.model.domain.DetailChapterDomain
+import com.example.mangavinek.data.model.detail.domain.DetailChapterDomain
 import kotlinx.android.synthetic.main.row_data.view.*
 
 class ChapterAdapter(private var listDetailChapterDomain: ArrayList<DetailChapterDomain>, private val onItemClickListener: ((detailChapterDomain: DetailChapterDomain) -> Unit)) :

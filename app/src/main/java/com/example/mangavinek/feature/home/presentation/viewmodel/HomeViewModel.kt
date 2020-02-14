@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.mangavinek.core.base.BaseViewModel
 import com.example.mangavinek.core.constant.HOME_URL_PAGINATION
 import com.example.mangavinek.core.helper.Resource
-import com.example.mangavinek.data.repository.home.HomeRepository
-import com.example.mangavinek.feature.home.model.domain.NewChapterDomain
+import com.example.mangavinek.feature.home.repository.HomeRepository
+import com.example.mangavinek.data.model.home.domain.NewChapterDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

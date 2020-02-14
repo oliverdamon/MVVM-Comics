@@ -24,8 +24,8 @@ import com.example.mangavinek.R
 import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.feature.model.favorite.entity.FavoriteDB
-import com.example.mangavinek.feature.detail.model.domain.DetailDomain
-import com.example.mangavinek.feature.detail.model.domain.StatusChapterDomain
+import com.example.mangavinek.data.model.detail.domain.DetailDomain
+import com.example.mangavinek.data.model.detail.domain.StatusChapterDomain
 import com.example.mangavinek.feature.detail.presentation.ui.adapter.StatusChapterAdapter
 import com.example.mangavinek.feature.detail.presentation.ui.fragment.DetailChapterFragment
 import com.example.mangavinek.feature.detail.presentation.viewmodel.DetailViewModel

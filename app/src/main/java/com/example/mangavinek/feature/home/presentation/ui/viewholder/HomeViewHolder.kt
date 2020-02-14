@@ -6,7 +6,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.mangavinek.R
 import com.example.mangavinek.core.helper.AdapterPagination
-import com.example.mangavinek.feature.home.model.domain.NewChapterDomain
+import com.example.mangavinek.data.model.home.domain.NewChapterDomain
 import kotlinx.android.synthetic.main.row_data.view.*
 
 class HomeViewHolder(private val view: View, private val onItemClickListener: (newChapterDomain: NewChapterDomain) -> Unit) :

@@ -7,7 +7,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.mangavinek.R
 import com.example.mangavinek.core.helper.AdapterPagination
 import com.example.mangavinek.core.constant.BASE_URL
-import com.example.mangavinek.feature.catalog.model.domain.CatalogDomain
+import com.example.mangavinek.data.model.catalog.domain.CatalogDomain
 import kotlinx.android.synthetic.main.row_data.view.*
 
 class CatalogViewHolder(private val view: View, private val onItemClickListener: ((catalogDomain: CatalogDomain) -> Unit)):

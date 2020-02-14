@@ -11,7 +11,7 @@ import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.helper.addPaginationScroll
 import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.core.util.maxNumberGridLayout
-import com.example.mangavinek.feature.catalog.model.domain.CatalogDomain
+import com.example.mangavinek.data.model.catalog.domain.CatalogDomain
 import com.example.mangavinek.feature.catalog.presentation.ui.viewholder.CatalogViewHolder
 import com.example.mangavinek.feature.catalog.presentation.viewmodel.CatalogViewModel
 import com.example.mangavinek.feature.detail.presentation.ui.activity.DetailActivity
