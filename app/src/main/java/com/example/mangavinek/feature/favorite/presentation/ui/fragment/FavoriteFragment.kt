@@ -8,17 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
+import com.example.mangavinek.core.helper.startActivity
 import com.example.mangavinek.core.util.maxNumberGridLayout
 import com.example.mangavinek.feature.model.favorite.entity.FavoriteDB
 import com.example.mangavinek.feature.detail.presentation.ui.activity.DetailActivity
 import com.example.mangavinek.feature.favorite.presentation.ui.adapter.FavoriteAdapter
 import com.example.mangavinek.feature.favorite.presentation.viewmodel.FavoriteViewModel
 import kotlinx.android.synthetic.main.fragment_favorite.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FavoriteFragment : Fragment(), AnkoLogger {
+class FavoriteFragment : Fragment() {
 
     companion object {
         const val TAG = "FavoriteFragment"

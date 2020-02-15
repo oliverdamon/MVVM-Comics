@@ -37,6 +37,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
@@ -52,8 +56,7 @@ android {
 }
 
 dependencies {
-    def anko_version = "0.10.8"
-    def glide_version = "4.9.0"
+    def coil_version = "0.9.5"
     def skin_kit_version = "1.2.0"
     def jsoup_version = "1.10.2"
     def room_version = "2.2.3"
@@ -70,14 +73,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0'
 
-    implementation "org.jetbrains.anko:anko-commons:$anko_version"
-
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+    implementation "io.coil-kt:coil:$coil_version"
+    implementation "io.coil-kt:coil-gif:$coil_version"
 
     implementation "com.github.ybq:Android-SpinKit:$skin_kit_version"
 
@@ -89,9 +91,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$life_cycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$life_cycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$life_cycle_version"
+
     implementation "org.koin:koin-androidx-scope:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     implementation "com.jakewharton.timber:timber:$timber_version"
 

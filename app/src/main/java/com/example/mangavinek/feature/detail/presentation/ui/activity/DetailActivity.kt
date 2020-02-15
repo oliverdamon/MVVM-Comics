@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +20,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
+import coil.api.load
 import com.example.mangavinek.R
 import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.helper.observeResource
@@ -33,12 +34,10 @@ import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.layout_detail.*
 import kotlinx.android.synthetic.main.layout_detail.text_title
 import kotlinx.android.synthetic.main.layout_screen_error.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class DetailActivity : AppCompatActivity(), AnkoLogger {
+class DetailActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<DetailViewModel>{
         parametersOf(url)
@@ -48,8 +47,8 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
     private var favoriteDB: FavoriteDB? = null
     private var menu: Menu? = null
     private var menuItemFavorite: MenuItem? = null
-    var listStatusChapterDomain = arrayListOf<StatusChapterDomain>()
-    var insertObjectEnabled = false
+    private var listStatusChapterDomain = arrayListOf<StatusChapterDomain>()
+    private var insertObjectEnabled = false
 
     private val adapterStatusChapter by lazy {
         StatusChapterAdapter(listStatusChapterDomain)
@@ -125,8 +124,10 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
     private fun favoriteComic(favoriteDB: FavoriteDB){
         viewModel.insertOrRemoveComic(insertObjectEnabled, favoriteDB)
 
-        toast(getString(if (insertObjectEnabled) R.string.action_button_removed
-        else R.string.action_button_favorite))
+        val messageFavorite = getString(if (insertObjectEnabled) R.string.action_button_removed
+        else R.string.action_button_favorite)
+
+        Toast.makeText(this, messageFavorite, Toast.LENGTH_LONG).show()
     }
 
     private fun changeIconButtonFavorite(@DrawableRes iconDrawable: Int) {
@@ -158,13 +159,8 @@ class DetailActivity : AppCompatActivity(), AnkoLogger {
             text_sinopse.text = it.sinopse
             val urlImage = BASE_URL.plus(it.imageCover)
 
-            Glide.with(this@DetailActivity)
-                .load(urlImage)
-                .into(image_cover)
-
-            Glide.with(this@DetailActivity)
-                .load(urlImage)
-                .into(image_cover_complet)
+            image_cover.load(urlImage) { placeholder(R.drawable.ic_image_24dp) }
+            image_cover_complet.load(urlImage) { placeholder(R.drawable.ic_image_24dp) }
 
             initRecycler()
             initFragment(it.url)

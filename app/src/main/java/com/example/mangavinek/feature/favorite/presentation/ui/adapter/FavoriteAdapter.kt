@@ -5,10 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
+import coil.api.load
 import com.example.mangavinek.R
+import com.example.mangavinek.core.util.gifDecoder
 import com.example.mangavinek.feature.model.favorite.entity.FavoriteDB
 import kotlinx.android.synthetic.main.row_data.view.*
 
@@ -39,21 +38,15 @@ class FavoriteAdapter(private var listItem: ArrayList<FavoriteDB>,
         RecyclerView.ViewHolder(view) {
 
         private val title = view.text_title
-        private val image = view.image_cover
+        private val imageCover = view.image_cover
 
         fun bindView(favoriteDB: FavoriteDB) = with(view){
             title.text = favoriteDB.title
 
-            image.alpha = 0.3f
-            image.animate().setDuration(400).setInterpolator(AccelerateDecelerateInterpolator()).alpha(1f)
-            Glide.with(this)
-                .load(favoriteDB.image)
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.ic_image_24dp)
-                )
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(image)
+            imageCover.alpha = 0.3f
+            imageCover.animate().setDuration(400).setInterpolator(AccelerateDecelerateInterpolator()).alpha(1f)
+
+            imageCover.load(favoriteDB.image, gifDecoder(context)) { placeholder(R.drawable.ic_image_24dp) }
 
             this.setOnClickListener {
                 onItemClickListener.invoke(favoriteDB)

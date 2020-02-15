@@ -5,9 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
+import coil.api.load
 import com.example.mangavinek.R
+import com.example.mangavinek.core.util.gifDecoder
 import com.example.mangavinek.data.model.detail.domain.DetailChapterDomain
 import kotlinx.android.synthetic.main.row_data.view.*
 
@@ -28,16 +28,16 @@ class ChapterAdapter(private var listDetailChapterDomain: ArrayList<DetailChapte
     }
 
     class ItemViewHolder(private val view: View, private val onItemClickListener: ((detailChapterDomain: DetailChapterDomain) -> Unit)) : RecyclerView.ViewHolder(view) {
-        private val image = view.image_cover
+        private val imageCover = view.image_cover
 
         fun bindView(detailChapterDomain: DetailChapterDomain) = with(view){
-            image.alpha = 0.3f
-            image.animate().setDuration(400).setInterpolator(AccelerateDecelerateInterpolator()).alpha(1f)
-            Glide.with(context)
-                .load(detailChapterDomain.imageCover)
-                .placeholder(R.drawable.ic_image_24dp)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(image)
+
+            imageCover.alpha = 0.3f
+            imageCover.animate().setDuration(400).setInterpolator(AccelerateDecelerateInterpolator()).alpha(1f)
+
+            imageCover.load(detailChapterDomain.imageCover,
+                gifDecoder(context)
+            ) { placeholder(R.drawable.ic_image_24dp) }
 
             this.setOnClickListener {
                 onItemClickListener.invoke(detailChapterDomain)

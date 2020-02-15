@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import com.example.mangavinek.R
 import com.example.mangavinek.data.model.publishing.domain.PublishingDomain
 import kotlinx.android.synthetic.main.row_data.view.*
@@ -35,16 +36,17 @@ class PublishingAdapter(
         RecyclerView.ViewHolder(view) {
 
         private val title = view.text_title
-        private val image = view.image_cover
+        private val imageCover = view.image_cover
 
         fun bindView(publishingDomain: PublishingDomain) = with(view) {
             title.text = publishingDomain.name
-            image.setImageDrawable(ContextCompat.getDrawable(context, publishingDomain.image))
+
+            val drawableImage = ContextCompat.getDrawable(context, publishingDomain.image)
+            imageCover.load(drawableImage)
 
             this.setOnClickListener {
                 onItemClickListener.invoke(publishingDomain)
             }
-
         }
     }
 }

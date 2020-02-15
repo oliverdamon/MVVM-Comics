@@ -1,6 +1,8 @@
 package com.example.mangavinek.feature.detail.presentation.ui.fragment
 
 import android.animation.ObjectAnimator
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,12 +18,10 @@ import com.example.mangavinek.feature.detail.presentation.viewmodel.DetailViewMo
 import kotlinx.android.synthetic.main.fragment_detail_chapter.*
 import kotlinx.android.synthetic.main.fragment_detail_chapter.view.*
 import kotlinx.android.synthetic.main.layout_screen_error.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.browse
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class DetailChapterFragment : Fragment(), AnkoLogger {
+class DetailChapterFragment : Fragment() {
 
     private val viewModel by viewModel<DetailViewModel>{
         parametersOf(url)
@@ -29,7 +29,7 @@ class DetailChapterFragment : Fragment(), AnkoLogger {
 
     private val adapterChapter: ChapterAdapter by lazy {
         ChapterAdapter(listDetailChapterDomain) {
-            context!!.browse(it.url)
+            context!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.url)))
         }
     }
     private var listDetailChapterDomain = arrayListOf<DetailChapterDomain>()

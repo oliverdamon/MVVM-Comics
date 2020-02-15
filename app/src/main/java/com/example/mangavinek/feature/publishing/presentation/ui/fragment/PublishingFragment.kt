@@ -11,11 +11,11 @@ import com.example.mangavinek.R
 import com.example.mangavinek.feature.catalog.presentation.ui.activity.CatalogActivity
 import com.example.mangavinek.core.constant.BASE_URL_PUBLISHING
 import com.example.mangavinek.core.constant.BASE_URL_PUBLISHING_DEFAULT
+import com.example.mangavinek.core.helper.startActivity
 import com.example.mangavinek.data.model.publishing.domain.PublishingDomain
 import com.example.mangavinek.feature.publishing.presentation.ui.adapter.PublishingAdapter
 import com.example.mangavinek.feature.publishing.presentation.viewmodel.PublishingViewModel
 import kotlinx.android.synthetic.main.fragment_publishing.*
-import org.jetbrains.anko.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PublishingFragment: Fragment(){
