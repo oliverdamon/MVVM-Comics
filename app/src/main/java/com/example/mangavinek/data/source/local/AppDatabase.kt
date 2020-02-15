@@ -6,9 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.mangavinek.data.source.local.dao.FavoriteDao
 import com.example.mangavinek.feature.model.favorite.entity.FavoriteDB
-import com.example.mangavinek.feature.model.home.entity.NewChapterResponse
 
-@Database(entities = [FavoriteDB::class, NewChapterResponse::class], version = 2)
+@Database(entities = [FavoriteDB::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun favoriteDao(): FavoriteDao
 

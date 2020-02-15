@@ -1,7 +1,7 @@
 package com.example.mangavinek.feature.home.repository
 
 import com.example.mangavinek.core.base.BaseRepository
-import com.example.mangavinek.feature.model.home.entity.NewChapterResponse
+import com.example.mangavinek.data.model.home.entity.NewChapterResponse
 import com.example.mangavinek.data.source.local.dao.FavoriteDao
 import com.example.mangavinek.data.source.remote.api.ApiServiceSoup
 import com.example.mangavinek.data.model.home.domain.NewChapterDomain
