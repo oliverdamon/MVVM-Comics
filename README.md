@@ -14,7 +14,7 @@ App para facilitar download de comics
 - ViewModel
 - Room
 - Koin
-- Glide
+- Coil
 - Lottie
 
 # Download
