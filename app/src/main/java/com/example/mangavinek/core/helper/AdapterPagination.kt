@@ -32,7 +32,7 @@ class AdapterPagination(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, p1: Int) {
         when (holder) {
-            is CustomerViewHolder -> {
+            is CustomViewHolder -> {
                 val dataItem = listItem[p1]
                 holder.bindView(dataItem)
             }
@@ -81,7 +81,7 @@ class AdapterPagination(
         notifyItemChanged(this.listItem.size, 1)
     }
 
-    abstract class CustomerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    abstract class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         abstract fun bindView(item: Any)
     }
 

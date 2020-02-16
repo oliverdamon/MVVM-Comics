@@ -10,7 +10,7 @@ import com.example.mangavinek.data.model.home.domain.NewChapterDomain
 import kotlinx.android.synthetic.main.row_data.view.*
 
 class HomeViewHolder(private val view: View, private val onItemClickListener: (newChapterDomain: NewChapterDomain) -> Unit) :
-    AdapterPagination.CustomerViewHolder(view) {
+    AdapterPagination.CustomViewHolder(view) {
 
     private val title = view.text_title
     private val imageCover = view.image_cover
@@ -23,9 +23,7 @@ class HomeViewHolder(private val view: View, private val onItemClickListener: (n
         imageCover.alpha = 0.3f
         imageCover.animate().setDuration(400).setInterpolator(AccelerateDecelerateInterpolator()).alpha(1f)
 
-        imageCover.load(newChapterDomain.image,
-            gifDecoder(context)
-        ) { placeholder(R.drawable.ic_image_24dp) }
+        imageCover.load(newChapterDomain.image, gifDecoder(context)) { placeholder(R.drawable.ic_image_24dp) }
 
         this.setOnClickListener {
             onItemClickListener.invoke(newChapterDomain)

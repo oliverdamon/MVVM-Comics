@@ -10,7 +10,7 @@ import com.example.mangavinek.data.model.catalog.domain.CatalogDomain
 import kotlinx.android.synthetic.main.row_data.view.*
 
 class CatalogViewHolder(private val view: View, private val onItemClickListener: ((catalogDomain: CatalogDomain) -> Unit)):
-    AdapterPagination.CustomerViewHolder(view) {
+    AdapterPagination.CustomViewHolder(view) {
 
     private val title = view.text_title
     private val imageCover = view.image_cover
