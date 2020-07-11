@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mangavinek.R
 import com.example.mangavinek.core.helper.AdapterPagination.Companion.ITEM_BOTTOM
 import com.example.mangavinek.core.helper.AdapterPagination.Companion.ITEM_LIST
-import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.helper.*
 import com.example.mangavinek.core.util.maxNumberGridLayout
 import com.example.mangavinek.feature.detail.presentation.ui.activity.DetailActivity
@@ -35,7 +34,7 @@ class HomeFragment : Fragment() {
 
             viewHolder = {
                 HomeViewHolder(it, onItemClickListener = { item ->
-                    context!!.startActivity<DetailActivity>("url" to BASE_URL.plus(item.url))
+                    context!!.startActivity<DetailActivity>("url" to item.url)
                 })
             },
 

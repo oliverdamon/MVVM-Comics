@@ -1,12 +1,12 @@
-package com.example.mangavinek.feature.model.catalog.entity
+package com.example.mangavinek.data.model.catalog.entity
 
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
 class CatalogResponse(element: Element? = null){
     val title = element?.select(".thead")?.text().toString()
-    val image = element?.select("img")?.attr("src").toString()
-    val url = element?.select("a")?.attr("href").toString()
+    val image = element?.select("img")?.attr("abs:src").toString()
+    val url = element?.select("a")?.attr("abs:href").toString()
 
     fun addElements(elements: Elements): List<CatalogResponse> {
         val listElements = mutableListOf<CatalogResponse>()

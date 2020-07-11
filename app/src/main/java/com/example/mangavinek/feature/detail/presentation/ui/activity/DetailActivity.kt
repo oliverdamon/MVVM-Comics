@@ -22,7 +22,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.api.load
 import com.example.mangavinek.R
-import com.example.mangavinek.core.constant.BASE_URL
 import com.example.mangavinek.core.helper.observeResource
 import com.example.mangavinek.feature.model.favorite.entity.FavoriteDB
 import com.example.mangavinek.data.model.detail.domain.DetailDomain
@@ -157,7 +156,7 @@ class DetailActivity : AppCompatActivity() {
             text_publication.text = it.publication.getStringBold(R.string.info_publication)
             text_year.text = it.year.getStringBold(R.string.info_year)
             text_sinopse.text = it.sinopse
-            val urlImage = BASE_URL.plus(it.imageCover)
+            val urlImage = it.imageCover
 
             image_cover.load(urlImage) { placeholder(R.drawable.ic_image_24dp) }
             image_cover_complet.load(urlImage) { placeholder(R.drawable.ic_image_24dp) }

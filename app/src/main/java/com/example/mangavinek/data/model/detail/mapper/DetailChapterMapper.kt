@@ -1,6 +1,6 @@
 package com.example.mangavinek.data.model.detail.mapper
 
-import com.example.mangavinek.feature.model.detail.entity.DetailChapterResponse
+import com.example.mangavinek.data.model.detail.entity.DetailChapterResponse
 import com.example.mangavinek.data.model.detail.domain.DetailChapterDomain
 
 object DetailChapterMapper {

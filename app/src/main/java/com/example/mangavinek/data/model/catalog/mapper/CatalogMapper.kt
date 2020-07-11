@@ -1,6 +1,6 @@
 package com.example.mangavinek.data.model.catalog.mapper
 
-import com.example.mangavinek.feature.model.catalog.entity.CatalogResponse
+import com.example.mangavinek.data.model.catalog.entity.CatalogResponse
 import com.example.mangavinek.data.model.catalog.domain.CatalogDomain
 
 object CatalogMapper {

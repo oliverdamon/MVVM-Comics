@@ -35,7 +35,7 @@ class CatalogActivity : AppCompatActivity() {
 
             viewHolder = {
                 CatalogViewHolder(it, onItemClickListener = { item ->
-                    startActivity<DetailActivity>("url" to BASE_URL.plus(item.url))
+                    startActivity<DetailActivity>("url" to item.url)
                 })
             },
 

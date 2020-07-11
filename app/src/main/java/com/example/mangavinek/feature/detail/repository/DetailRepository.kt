@@ -9,8 +9,8 @@ import com.example.mangavinek.data.model.detail.domain.DetailDomain
 import com.example.mangavinek.data.model.detail.domain.StatusChapterDomain
 import com.example.mangavinek.data.model.detail.mapper.DetailChapterMapper
 import com.example.mangavinek.data.model.detail.mapper.DetailMapper
-import com.example.mangavinek.feature.model.detail.entity.DetailChapterResponse
-import com.example.mangavinek.feature.model.detail.entity.DetailResponse
+import com.example.mangavinek.data.model.detail.entity.DetailChapterResponse
+import com.example.mangavinek.data.model.detail.entity.DetailResponse
 
 class DetailRepository(private val apiServiceSoup: ApiServiceSoup, private val favoriteDao: FavoriteDao) {
 

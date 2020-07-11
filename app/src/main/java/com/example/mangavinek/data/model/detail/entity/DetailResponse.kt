@@ -1,4 +1,4 @@
-package com.example.mangavinek.feature.model.detail.entity
+package com.example.mangavinek.data.model.detail.entity
 
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -12,7 +12,7 @@ class DetailResponse(element: Element? = null) {
     val status = element?.select("table.smalltext tbody tr:nth-child(6) td:nth-child(3)")?.text().toString()
     val chapter = element?.select("table.smalltext tbody tr:nth-child(7) td:nth-child(3)")?.text().toString()
     val sinopse = element?.select("table.tborder:nth-child(1) span")?.text().toString()
-    val image = element?.select("a.cbimg img")?.attr("src").toString()
+    val image = element?.select("a.cbimg img")?.attr("abs:src").toString()
     val url = element?.select("td.trow1 a.iframe")?.attr("href").toString()
 
     val issueAvailable = element?.select("div.issue-br")?.text().toString()
